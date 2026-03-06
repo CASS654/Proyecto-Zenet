@@ -15,6 +15,7 @@ namespace Sistema_Bancario
         public static int vIdUsuario_Global;
 
         // hola como estas prueba nada mas
+        // cambio de prueba
 
     }
 }
