@@ -14,6 +14,7 @@ namespace Sistema_Bancario
         public static string vPassUsuarioINIConnect_Global;
         public static int vIdUsuario_Global;
 
+        // hola como estas prueba nada mas
 
     }
 }
