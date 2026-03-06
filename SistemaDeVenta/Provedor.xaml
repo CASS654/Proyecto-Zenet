@@ -1,0 +1,11 @@
+﻿<Window x:Class="SistemaDeVenta.SelectorProveedor"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Seleccionar Proveedor"
+        Height="450" Width="800">
+
+    <ScrollViewer>
+        <WrapPanel x:Name="wpProveedores" Margin="10" />
+    </ScrollViewer>
+
+</Window>

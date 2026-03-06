@@ -1,0 +1,358 @@
+﻿<UserControl x:Class="SistemaDeVenta.Usuarios"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:local="clr-namespace:SistemaDeVenta"
+             Background="#F2F2F2">
+
+    <!-- ========================
+         RECURSOS
+    ========================== -->
+    <UserControl.Resources>
+
+        <!-- ========================
+             ESTILO DEL DATAGRID
+        ========================== -->
+        <Style TargetType="DataGrid">
+            <Setter Property="GridLinesVisibility" Value="None"/>
+            <Setter Property="HeadersVisibility" Value="Column"/>
+            <Setter Property="RowHeight" Value="32"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="BorderBrush" Value="#DDDDDD"/>
+            <Setter Property="BorderThickness" Value="1"/>
+        </Style>
+
+        <!-- ENCABEZADO AZUL -->
+        <Style TargetType="DataGridColumnHeader">
+            <Setter Property="Background" Value="#007BFF"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="Padding" Value="10"/>
+        </Style>
+
+        <Style TargetType="DataGridCell">
+            <Setter Property="Padding" Value="8"/>
+            <Setter Property="Background" Value="White"/>
+            <Setter Property="Foreground" Value="#222"/>
+            <Setter Property="BorderThickness" Value="0"/>
+        </Style>
+
+        <!-- ========================
+             CONTEXTMENU MODERNO
+        ========================== -->
+        <Style TargetType="ContextMenu">
+            <Setter Property="OverridesDefaultStyle" Value="True"/>
+            <Setter Property="SnapsToDevicePixels" Value="True"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ContextMenu">
+                        <Border Background="White"
+                                CornerRadius="8"
+                                Padding="5"
+                                BorderBrush="#DDD"
+                                BorderThickness="1"
+                                SnapsToDevicePixels="True"
+                                MinWidth="150"
+                                Effect="{DynamicResource DropShadow}">
+                            <StackPanel IsItemsHost="True"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!-- SOMBRA GENERAL -->
+        <DropShadowEffect x:Key="DropShadow"
+                          BlurRadius="12"
+                          ShadowDepth="2"
+                          Opacity="0.25"/>
+
+        <!-- ======== MENUITEM MODERNO ======== -->
+        <Style TargetType="MenuItem">
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="FontFamily" Value="Segoe UI"/>
+            <Setter Property="Foreground" Value="#222"/>
+            <Setter Property="Padding" Value="10 6"/>
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="MenuItem">
+                        <Border x:Name="bd"
+                                Background="{TemplateBinding Background}"
+                                CornerRadius="6"
+                                Padding="5">
+                            <ContentPresenter ContentSource="Header"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="bd" Property="Background" Value="#F2F2F2"/>
+                            </Trigger>
+                            <Trigger Property="IsChecked" Value="True">
+                                <Setter TargetName="bd" Property="Background" Value="#D0E8FF"/>
+                                <Setter Property="Foreground" Value="#0066CC"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <ContextMenu x:Key="MenuFiltroTemplate">
+            <MenuItem Header="Nombre Completo" Click="FiltroMenu_Click"/>
+            <MenuItem Header="Usuario" Click="FiltroMenu_Click"/>
+            <MenuItem Header="Rol" Click="FiltroMenu_Click"/>
+            <MenuItem Header="Estado" Click="FiltroMenu_Click"/>
+        </ContextMenu>
+
+        <!-- ============================================
+     COMBOBOX ESTILO IGUAL A MENU/FILTRO
+=============================================== -->
+        <Style x:Key="ComboFiltroStyle" TargetType="ComboBox">
+            <Setter Property="Foreground" Value="#222"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="Padding" Value="5"/>
+            <Setter Property="Background" Value="White"/>
+            <Setter Property="BorderBrush" Value="#CCC"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Height" Value="32"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ComboBox">
+
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition/>
+                                <ColumnDefinition Width="30"/>
+                            </Grid.ColumnDefinitions>
+
+                            <!-- Fondo del ComboBox -->
+                            <Border x:Name="bd"
+                            Background="{TemplateBinding Background}"
+                            CornerRadius="6"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="{TemplateBinding BorderThickness}">
+                                <Border.Effect>
+                                    <DropShadowEffect Color="#000000"
+                                              BlurRadius="14"
+                                              ShadowDepth="2"
+                                              Opacity="0.18"/>
+                                </Border.Effect>
+                            </Border>
+
+                            <!-- Texto -->
+                            <ContentPresenter Margin="10,0,34,0"
+                                      VerticalAlignment="Center"
+                                      Content="{TemplateBinding SelectionBoxItem}"
+                                      IsHitTestVisible="False"/>
+
+                            <!-- Botón ▼ -->
+                            <ToggleButton x:Name="PART_ToggleButton"
+                                  Grid.Column="1"
+                                  Focusable="False"
+                                  Background="Transparent"
+                                  BorderThickness="0"
+                                  Width="30"
+                                  IsChecked="{Binding IsDropDownOpen, RelativeSource={RelativeSource TemplatedParent}, Mode=TwoWay}">
+                                <Path Data="M 0 0 L 4 4 L 8 0"
+                              Stroke="#444"
+                              StrokeThickness="2"
+                              HorizontalAlignment="Center"
+                              VerticalAlignment="Center"/>
+                            </ToggleButton>
+
+                            <!-- POPUP -->
+                            <Popup x:Name="PART_Popup"
+                           Placement="Bottom"
+                           AllowsTransparency="True"
+                           PopupAnimation="Slide"
+                           IsOpen="{Binding IsDropDownOpen, RelativeSource={RelativeSource TemplatedParent}}"
+                           StaysOpen="False">
+
+                                <Border Background="White"
+                                CornerRadius="6"
+                                BorderBrush="#DDD"
+                                BorderThickness="1"
+                                Padding="4">
+                                    <Border.Effect>
+                                        <DropShadowEffect Color="#000000"
+                                                  BlurRadius="14"
+                                                  ShadowDepth="2"
+                                                  Opacity="0.18"/>
+                                    </Border.Effect>
+
+                                    <ScrollViewer MaxHeight="150">
+                                        <ItemsPresenter/>
+                                    </ScrollViewer>
+                                </Border>
+                            </Popup>
+                        </Grid>
+
+                        <!-- TRIGGERS -->
+                        <ControlTemplate.Triggers>
+
+                            <!-- Hover del cuadro -->
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="bd" Property="Background" Value="#F2F2F2"/>
+                            </Trigger>
+
+                            <Trigger Property="IsKeyboardFocusWithin" Value="True">
+                                <Setter TargetName="bd" Property="BorderBrush" Value="#999"/>
+                            </Trigger>
+
+                            <Trigger Property="IsEnabled" Value="False">
+                                <Setter Property="Opacity" Value="0.6"/>
+                            </Trigger>
+
+                        </ControlTemplate.Triggers>
+
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!-- ================================
+     ESTILO PARA LOS ITEMS (HOVER)
+================================ -->
+        <Style TargetType="ComboBoxItem">
+            <Setter Property="Padding" Value="8"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Background" Value="White"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ComboBoxItem">
+                        <Border x:Name="bd"
+                        Background="White"
+                        CornerRadius="4"
+                        Padding="6"
+                        SnapsToDevicePixels="True">
+                            <ContentPresenter/>
+                        </Border>
+
+                        <ControlTemplate.Triggers>
+
+                            <!-- HOVER IGUAL A FOTO 1A -->
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="bd" Property="Background" Value="#F2F2F2"/>
+                            </Trigger>
+
+                            <!-- SELECCIÓN -->
+                            <Trigger Property="IsSelected" Value="True">
+                                <Setter TargetName="bd" Property="Background" Value="#D0E8FF"/>
+                            </Trigger>
+
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+
+    </UserControl.Resources>
+
+    <!-- =========================
+         INTERFAZ
+    ========================== -->
+    <Grid Margin="10">
+
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="350"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <!-- PANEL IZQUIERDO -->
+        <Border Background="White" Margin="0,0,10,0" Padding="15">
+            <StackPanel>
+
+                <TextBlock Text="Detalle Usuario"
+                           FontSize="22"
+                           FontWeight="Bold"
+                           Margin="0,0,0,20"/>
+
+                <TextBlock Text="Nombre Completo:"/>
+                <TextBox x:Name="txtNombre" Height="28" Margin="0,5,0,15"/>
+
+                <TextBlock Text="Usuario:"/>
+                <TextBox x:Name="txtUsuario" Height="28" Margin="0,5,0,15"/>
+
+                <TextBlock Text="Contraseña:"/>
+                <PasswordBox x:Name="txtClave" Height="28" Margin="0,5,0,15"/>
+
+                <TextBlock Text="Rol:"/>
+                <ComboBox x:Name="cbRol"
+                          Style="{StaticResource ComboFiltroStyle}"
+                          Margin="0,5,0,15">
+                    <ComboBoxItem Content="Admin"/>
+                    <ComboBoxItem Content="Cajero"/>
+                    <ComboBoxItem Content="Gerente"/>
+                </ComboBox>
+
+                <TextBlock Text="Estado:"/>
+                <ComboBox x:Name="cbEstado"
+                          Style="{StaticResource ComboFiltroStyle}"
+                          Margin="0,5,0,20">
+                    <ComboBoxItem Content="Activo"/>
+                    <ComboBoxItem Content="Inactivo"/>
+                </ComboBox>
+
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                    <Button Content="Guardar" Height="30" Width="80" Margin="5"
+                            Background="#28A745" Foreground="White" Click="Guardar_Click"/>
+                    <Button Content="Modificar" Height="30" Width="80" Margin="5"
+                            Background="#007BFF" Foreground="White" Click="Modificar_Click"/>
+                    <Button Content="Eliminar" Height="30" Width="80" Margin="5"
+                            Background="#DC3545" Foreground="White" Click="Eliminar_Click"/>
+                </StackPanel>
+
+            </StackPanel>
+        </Border>
+
+        <!-- PANEL DERECHO -->
+        <Border Grid.Column="1" Background="White" Padding="15">
+            <Grid>
+
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="70"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+
+                <!-- BUSQUEDA + FILTRO -->
+                <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                    <TextBox x:Name="txtBuscar" Width="491" Height="28" Margin="0,0,10,0" RenderTransformOrigin="0.507,0.986" KeyDown="txtBuscar_KeyDown"/>
+                    <Button Width="40" Height="28"
+                            Background="#007BFF" Foreground="White"
+                            Content="🔍"
+                            Click="Buscar_Click"/>
+                    <Button x:Name="btnFiltro"
+                            Width="35" Height="35"
+                            Background="Transparent"
+                            BorderBrush="Transparent"
+                            Click="btnFiltro_Click"
+                            ContextMenu="{StaticResource MenuFiltroTemplate}">
+                        <Image Source="/Iconos/filter_icon_155401.png" Width="22" Height="22"/>
+                    </Button>
+                </StackPanel>
+
+                <!-- TABLA -->
+                <DataGrid x:Name="TablaUsuarios"
+                          Grid.Row="1"
+                          AutoGenerateColumns="False"
+                          CanUserAddRows="False"
+                          IsReadOnly="True"
+                          SelectionChanged="TablaUsuarios_SelectionChanged"
+                          Margin="0,10,0,0">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="Nombre Completo" Binding="{Binding Nombre_Completo}" Width="200"/>
+                        <DataGridTextColumn Header="Usuario" Binding="{Binding Usser}" Width="150"/>
+                        <DataGridTextColumn Header="Rol" Binding="{Binding Rol}" Width="120"/>
+                        <DataGridTextColumn Header="Estado" Binding="{Binding Activo}" Width="120"/>
+                    </DataGrid.Columns>
+                </DataGrid>
+
+            </Grid>
+        </Border>
+
+    </Grid>
+
+</UserControl>

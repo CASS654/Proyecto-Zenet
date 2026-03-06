@@ -1,0 +1,396 @@
+﻿<Window x:Class="SistemaDeVenta.AdministradorWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="POS Admin"
+        WindowStartupLocation="CenterScreen"
+        Background="#0B0F14"
+        ResizeMode="NoResize"
+        WindowStyle="None"
+        WindowState="Maximized">
+
+    <!-- ================= RECURSOS ================= -->
+
+    <Window.Resources>
+        <SolidColorBrush x:Key="Primary" Color="#EF1C3A"/>
+        <SolidColorBrush x:Key="Dark1" Color="#0B0F14"/>
+        <SolidColorBrush x:Key="Dark2" Color="#141A22"/>
+        <SolidColorBrush x:Key="Dark3" Color="#1C232D"/>
+        <SolidColorBrush x:Key="Border" Color="#2B3442"/>
+        <SolidColorBrush x:Key="TextGray" Color="#8A94A6"/>
+
+        <Style x:Key="MenuButton" TargetType="Button">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="Foreground" Value="#8A94A6"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Height" Value="45"/>
+            <Setter Property="Margin" Value="0,2"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="HorizontalContentAlignment" Value="Left"/>
+
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="border"
+                                Background="{TemplateBinding Background}"
+                                CornerRadius="8"
+                                Padding="15,0">
+
+                            <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                              VerticalAlignment="Center"/>
+                        </Border>
+
+                        <ControlTemplate.Triggers>
+
+                            <!-- Hover -->
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="border"
+                                        Property="Background"
+                                        Value="#1E2632"/>
+                                <Setter Property="Foreground"
+                                        Value="White"/>
+                            </Trigger>
+
+                            <!-- MODO COMPACTO -->
+                            <DataTrigger Binding="{Binding ActualWidth, ElementName=Sidebar}"
+                                         Value="75">
+                                <Setter Property="HorizontalContentAlignment"
+                                        Value="Center"/>
+                                <Setter TargetName="border"
+                                        Property="Padding"
+                                        Value="0"/>
+                            </DataTrigger>
+
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="PrimaryBtn" TargetType="Button">
+            <Setter Property="Background" Value="{StaticResource Primary}"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Height" Value="34"/>
+            <Setter Property="Padding" Value="24,0"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}" CornerRadius="7">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </Window.Resources>
+
+    <!-- ================= PRINCIPAL ================= -->
+
+    <Grid>
+
+        <Grid.ColumnDefinitions>
+            <!-- AUTO AJUSTABLE -->
+            <ColumnDefinition x:Name="SidebarColumn" Width="240" MinWidth="75"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <!-- ================= SIDEBAR ================= -->
+
+        <Border x:Name="Sidebar"
+                Grid.Column="0"
+                Background="{StaticResource Dark2}">
+
+            <DockPanel Margin="12">
+
+                <!-- PERFIL -->
+                <Border x:Name="ProfileSection"
+                        DockPanel.Dock="Bottom"
+                        Background="#101620"
+                        CornerRadius="10"
+                        Padding="10">
+
+                    <Grid>
+                        <!-- Avatar solo (modo colapsado) -->
+                        <Ellipse x:Name="ProfileAvatar"
+                                 Width="30"
+                                 Height="30"
+                                 Fill="{StaticResource Primary}"
+                                 HorizontalAlignment="Center"
+                                 Visibility="Collapsed"/>
+
+                        <!-- Perfil completo (modo expandido) -->
+                        <StackPanel x:Name="ProfileFull"
+                                    Orientation="Horizontal"
+                                    HorizontalAlignment="Left" Margin="10,0,0,0">
+
+                            <Ellipse Width="30"
+                                     Height="30"
+                                     Fill="{StaticResource Primary}"/>
+
+                            <StackPanel Margin="8,0"/>
+
+                        </StackPanel>
+                    </Grid>
+
+                </Border>
+
+                <!-- MENU -->
+                <StackPanel x:Name="MenuPanel">
+
+                    <!-- LOGO + BOTÓN AJUSTABLE -->
+                    <Grid x:Name="HeaderSection" Margin="0,10,0,25">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+
+                        <!-- Logo Container (Modo Expandido) -->
+                        <StackPanel x:Name="LogoContainer"
+                                    Grid.Column="0"
+                                    Grid.Row="0"
+                                    Orientation="Horizontal"
+                                    HorizontalAlignment="Left"
+                                    VerticalAlignment="Center">
+
+                            <Border Width="32"
+                                    Height="32"
+                                    Background="{StaticResource Primary}"
+                                    CornerRadius="6"/>
+
+                            <TextBlock x:Name="LogoText"
+                                       Text=" POS Admin"
+                                       FontSize="18"
+                                       FontWeight="Bold"
+                                       Foreground="White"
+                                       VerticalAlignment="Center"
+                                       Margin="10,0,0,0"/>
+                        </StackPanel>
+
+                        <!-- Logo solo centrado (Modo Colapsado) -->
+                        <Border x:Name="LogoCollapsed"
+                                Grid.Column="0"
+                                Grid.ColumnSpan="2"
+                                Grid.Row="0"
+                                Width="32"
+                                Height="32"
+                                Background="{StaticResource Primary}"
+                                CornerRadius="6"
+                                HorizontalAlignment="Center"
+                                Visibility="Collapsed"/>
+
+                        <!-- Botón menú (empieza a la derecha del logo - Modo Expandido) -->
+                        <Button x:Name="MenuToggleButton"
+                                Grid.Column="1"
+                                Grid.Row="0"
+                                Width="32"
+                                Height="32"
+                                Content="☰"
+                                FontSize="16"
+                                Background="Transparent"
+                                Foreground="White"
+                                BorderThickness="0"
+                                Cursor="Hand"
+                                HorizontalAlignment="Right"
+                                VerticalAlignment="Center"
+                                Click="ToggleSidebar_Click"/>
+
+                        <!-- Botón menú abajo (Modo Colapsado) -->
+                        <Button x:Name="MenuToggleButtonCollapsed"
+                                Grid.Column="0"
+                                Grid.ColumnSpan="2"
+                                Grid.Row="1"
+                                Width="32"
+                                Height="32"
+                                Content="☰"
+                                FontSize="16"
+                                Background="Transparent"
+                                Foreground="White"
+                                BorderThickness="0"
+                                Cursor="Hand"
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="Center"
+                                Margin="0,20,0,0"
+                                Visibility="Collapsed"
+                                Click="ToggleSidebar_Click"/>
+                    </Grid>
+
+                    <!-- BOTONES -->
+
+                    <Button Style="{StaticResource MenuButton}">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="📊" FontSize="18" Width="30" TextAlignment="Center"/>
+                            <TextBlock x:Name="TxtDashboard" Text="Dashboard" Margin="10,0,0,0"/>
+                        </StackPanel>
+                    </Button>
+
+                    <Button Style="{StaticResource MenuButton}">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="🛒" FontSize="18" Width="30" TextAlignment="Center"/>
+                            <TextBlock x:Name="TxtSales" Text="Sales" Margin="10,0,0,0"/>
+                        </StackPanel>
+                    </Button>
+
+                    <Button Style="{StaticResource MenuButton}">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="📋" FontSize="18" Width="30" TextAlignment="Center"/>
+                            <TextBlock x:Name="TxtHistory" Text="History" Margin="10,0,0,0"/>
+                        </StackPanel>
+                    </Button>
+
+                    <Button Style="{StaticResource MenuButton}">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="📦" FontSize="18" Width="30" TextAlignment="Center"/>
+                            <TextBlock x:Name="TxtInventory" Text="Inventory" Margin="10,0,0,0"/>
+                        </StackPanel>
+                    </Button>
+
+                    <Button Style="{StaticResource MenuButton}">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="📈" FontSize="18" Width="30" TextAlignment="Center"/>
+                            <TextBlock x:Name="TxtReports" Text="Reports" Margin="10,0,0,0"/>
+                        </StackPanel>
+                    </Button>
+
+                    <Button Style="{StaticResource MenuButton}">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="👥" FontSize="18" Width="30" TextAlignment="Center"/>
+                            <TextBlock x:Name="TxtEmployees" Text="Employees" Margin="10,0,0,0"/>
+                        </StackPanel>
+                    </Button>
+
+                    <Button Style="{StaticResource MenuButton}">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="👤" FontSize="18" Width="30" TextAlignment="Center"/>
+                            <TextBlock x:Name="TxtCustomers" Text="Customers" Margin="10,0,0,0"/>
+                        </StackPanel>
+                    </Button>
+
+                    <Button Style="{StaticResource MenuButton}">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="🚚" FontSize="18" Width="30" TextAlignment="Center"/>
+                            <TextBlock x:Name="TxtSuppliers" Text="Suppliers" Margin="10,0,0,0"/>
+                        </StackPanel>
+                    </Button>
+
+                    <Button Style="{StaticResource MenuButton}">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="💾" FontSize="18" Width="30" TextAlignment="Center"/>
+                            <TextBlock x:Name="TxtAllData" Text="All Data" Margin="10,0,0,0"/>
+                        </StackPanel>
+                    </Button>
+
+                </StackPanel>
+
+            </DockPanel>
+
+        </Border>
+
+        <!-- ================= PANEL DERECHO (INTACTO) ================= -->
+
+        <Grid Grid.Column="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="119*"/>
+                <ColumnDefinition Width="352*"/>
+            </Grid.ColumnDefinitions>
+
+            <Grid.RowDefinitions>
+                <RowDefinition Height="90"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="45"/>
+            </Grid.RowDefinitions>
+
+
+            <!-- HEADER -->
+
+            <Border Grid.Row="0"
+            Background="{StaticResource Dark2}"
+            BorderBrush="{StaticResource Border}"
+            BorderThickness="0,0,0,1" Grid.ColumnSpan="2">
+
+                <Grid Margin="24">
+
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+
+
+                    <TextBlock Text="Inicio"
+                       Foreground="White"
+                       FontSize="26"
+                       VerticalAlignment="Center" MouseLeftButtonDown="TextBlock_MouseLeftButtonDown"/>
+
+
+                    <StackPanel Grid.Column="1"
+                        Orientation="Horizontal"
+                        VerticalAlignment="Center">
+
+                        <Border Width="240"
+                        Height="34"
+                        Background="#101620"
+                        CornerRadius="7"
+                        Margin="0,0,14,0" HorizontalAlignment="Center" VerticalAlignment="Top">
+
+                            <TextBox Text=" Search..."
+                             Background="Transparent"
+                             BorderThickness="0"
+                             Foreground="White" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+
+                        </Border>
+
+
+                        <TextBlock Text="🔔"
+                           FontSize="18"
+                           Margin="0,0,14,0"/>
+
+
+                        <Button Style="{StaticResource PrimaryBtn}">
+                            🛒 New Sale
+                        </Button>
+
+                    </StackPanel>
+
+                </Grid>
+
+            </Border>
+
+
+            <!-- CONTENIDO -->
+
+            <Border Grid.Row="1"
+            Background="{StaticResource Dark1}"
+            Padding="24" Grid.ColumnSpan="2">
+
+                <Border Background="{StaticResource Dark3}"
+                CornerRadius="14"
+                BorderBrush="{StaticResource Border}"
+                BorderThickness="1"
+                Padding="20">
+
+                    <ContentControl x:Name="MainContent"/>
+
+                </Border>
+
+            </Border>
+
+
+            <!-- FOOTER -->
+
+            <Border Grid.Row="2"
+            Background="{StaticResource Dark2}"
+            BorderBrush="{StaticResource Border}"
+            BorderThickness="0,1,0,0" Grid.ColumnSpan="2">
+
+                <Grid Margin="20"/>
+
+            </Border>
+
+        </Grid>
+
+    </Grid>
+
+</Window>

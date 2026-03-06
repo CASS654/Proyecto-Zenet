@@ -1,0 +1,415 @@
+﻿<UserControl x:Class="SistemaDeVenta.Inventario"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             Background="#F2F2F2">
+
+    <UserControl.Resources>
+
+        <!-- ============================================================
+                ESTILO TEXBOX DEL BUSCADOR (MISMA SOMBRA Y BORDE)
+        ============================================================ -->
+        <Style x:Key="TextBoxFiltroStyle" TargetType="TextBox">
+            <Setter Property="Foreground" Value="#222"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="Padding" Value="6"/>
+            <Setter Property="Background" Value="White"/>
+            <Setter Property="BorderBrush" Value="#CCC"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Height" Value="32"/>
+            <Setter Property="SnapsToDevicePixels" Value="True"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="TextBox">
+                        <Border x:Name="bd" Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                CornerRadius="6">
+
+                            <Border.Effect>
+                                <DropShadowEffect Color="#000000"
+                                                  BlurRadius="14"
+                                                  ShadowDepth="2"
+                                                  Opacity="0.18"/>
+                            </Border.Effect>
+
+                            <ScrollViewer x:Name="PART_ContentHost"/>
+                        </Border>
+
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="bd" Property="BorderBrush" Value="#999"/>
+                            </Trigger>
+                            <Trigger Property="IsKeyboardFocusWithin" Value="True">
+                                <Setter TargetName="bd" Property="BorderBrush" Value="#1976D2"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!-- ============================================================
+                ESTILO GENERAL PARA COMBOBOX (FORMULARIO + FILTRO)
+        ============================================================ -->
+        <Style x:Key="ComboFiltroStyle" TargetType="ComboBox">
+            <Setter Property="Foreground" Value="#222"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="Padding" Value="5"/>
+            <Setter Property="Background" Value="White"/>
+            <Setter Property="BorderBrush" Value="#CCC"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Height" Value="32"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ComboBox">
+
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition/>
+                                <ColumnDefinition Width="30"/>
+                            </Grid.ColumnDefinitions>
+
+                            <Border x:Name="bd"
+                                    Background="{TemplateBinding Background}"
+                                    CornerRadius="6"
+                                    BorderBrush="{TemplateBinding BorderBrush}"
+                                    BorderThickness="{TemplateBinding BorderThickness}">
+                                <Border.Effect>
+                                    <DropShadowEffect Color="#000000"
+                                                      BlurRadius="14"
+                                                      ShadowDepth="2"
+                                                      Opacity="0.18"/>
+                                </Border.Effect>
+                            </Border>
+
+                            <ContentPresenter Margin="10,0,34,0"
+                                              VerticalAlignment="Center"
+                                              Content="{TemplateBinding SelectionBoxItem}"
+                                              IsHitTestVisible="False"/>
+
+                            <ToggleButton x:Name="PART_ToggleButton"
+                                          Grid.Column="1"
+                                          Background="Transparent"
+                                          BorderThickness="0"
+                                          Focusable="False"
+                                          Width="30"
+                                          IsChecked="{Binding IsDropDownOpen,
+                                                     RelativeSource={RelativeSource TemplatedParent},
+                                                     Mode=TwoWay}">
+                                <Path Data="M0,0 L4,4 L8,0"
+                                      Stroke="#444" StrokeThickness="2"
+                                      HorizontalAlignment="Center"
+                                      VerticalAlignment="Center"/>
+                            </ToggleButton>
+
+                            <Popup x:Name="PART_Popup"
+                                   Placement="Bottom"
+                                   AllowsTransparency="True"
+                                   PopupAnimation="Slide"
+                                   StaysOpen="False"
+                                   IsOpen="{Binding IsDropDownOpen,
+                                           RelativeSource={RelativeSource TemplatedParent}}">
+
+                                <Border Background="White"
+                                        CornerRadius="6"
+                                        BorderBrush="#DDD"
+                                        BorderThickness="1"
+                                        Padding="4">
+
+                                    <Border.Effect>
+                                        <DropShadowEffect Color="#000000"
+                                                          BlurRadius="14"
+                                                          ShadowDepth="2"
+                                                          Opacity="0.18"/>
+                                    </Border.Effect>
+
+                                    <ScrollViewer MaxHeight="170">
+                                        <ItemsPresenter/>
+                                    </ScrollViewer>
+                                </Border>
+                            </Popup>
+                        </Grid>
+
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="bd" Property="Background" Value="#F2F2F2"/>
+                            </Trigger>
+                            <Trigger Property="IsKeyboardFocusWithin" Value="True">
+                                <Setter TargetName="bd" Property="BorderBrush" Value="#1976D2"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!-- ITEMSTYLE PARA LOS COMBOBOX -->
+        <Style TargetType="ContextMenu">
+            <Setter Property="OverridesDefaultStyle" Value="True"/>
+            <Setter Property="SnapsToDevicePixels" Value="True"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ContextMenu">
+                        <Border Background="White"
+                        CornerRadius="8"
+                        Padding="5"
+                        BorderBrush="#DDD"
+                        BorderThickness="1"
+                        SnapsToDevicePixels="True"
+                        MinWidth="150"
+                        Effect="{DynamicResource DropShadow}">
+                            <StackPanel IsItemsHost="True"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!-- SOMBRA GENERAL -->
+        <DropShadowEffect x:Key="DropShadow"
+                  BlurRadius="12"
+                  ShadowDepth="2"
+                  Opacity="0.25"/>
+
+        <Style TargetType="MenuItem">
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="FontFamily" Value="Segoe UI"/>
+            <Setter Property="Foreground" Value="#222"/>
+            <Setter Property="Padding" Value="10 6"/>
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="MenuItem">
+                        <Border x:Name="bd"
+                        Background="{TemplateBinding Background}"
+                        CornerRadius="6"
+                        Padding="5">
+                            <ContentPresenter ContentSource="Header"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="bd" Property="Background" Value="#F2F2F2"/>
+                            </Trigger>
+                            <Trigger Property="IsChecked" Value="True">
+                                <Setter TargetName="bd" Property="Background" Value="#D0E8FF"/>
+                                <Setter Property="Foreground" Value="#0066CC"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <ContextMenu x:Key="MenuFiltroTemplate">
+            <MenuItem Header="Nombre" Click="FiltroMenu_Click"/>
+            <MenuItem Header="Precio Venta" Click="FiltroMenu_Click"/>
+            <MenuItem Header="Disponible" Click="FiltroMenu_Click"/>
+        </ContextMenu>
+
+        <!-- ============================================================
+                    BOTÓN BUSCAR
+        ============================================================ -->
+        <Style x:Key="BotonBuscarStyle" TargetType="Button">
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="Background" Value="#1976D2"/>
+            <Setter Property="BorderBrush" Value="#1976D2"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}"
+                                CornerRadius="6" Padding="5"
+                                Height="32" Width="40">
+                            <Border.Effect>
+                                <DropShadowEffect Color="#000000"
+                                                  BlurRadius="14"
+                                                  ShadowDepth="2"
+                                                  Opacity="0.18"/>
+                            </Border.Effect>
+
+                            <ContentPresenter HorizontalAlignment="Center"
+                                              VerticalAlignment="Center"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!-- ============================================================
+                    MENÚ FILTRO
+        ============================================================ -->
+        <Style x:Key="MenuFiltroStyle" TargetType="ContextMenu">
+            <Setter Property="Background" Value="White"/>
+            <Setter Property="BorderBrush" Value="#DDD"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Padding" Value="4"/>
+            <Setter Property="OverridesDefaultStyle" Value="True"/>
+            <Setter Property="HasDropShadow" Value="True"/>
+        </Style>
+
+        <!-- ============================================================
+                    ESTILO DEL DATAGRID (FOTO 2)
+        ============================================================ -->
+        <!-- ========================
+     ESTILO DEL DATAGRID
+========================== -->
+        <Style TargetType="DataGrid">
+            <Setter Property="GridLinesVisibility" Value="None"/>
+            <Setter Property="HeadersVisibility" Value="Column"/>
+            <Setter Property="RowHeight" Value="32"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="BorderBrush" Value="#DDDDDD"/>
+            <Setter Property="BorderThickness" Value="1"/>
+        </Style>
+
+        <!-- ENCABEZADO AZUL -->
+        <Style TargetType="DataGridColumnHeader">
+            <Setter Property="Background" Value="#007BFF"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="Padding" Value="10"/>
+        </Style>
+
+        <Style TargetType="DataGridCell">
+            <Setter Property="Padding" Value="8"/>
+            <Setter Property="Background" Value="White"/>
+            <Setter Property="Foreground" Value="#222"/>
+            <Setter Property="BorderThickness" Value="0"/>
+        </Style>
+
+    </UserControl.Resources>
+
+    <!-- ============================================================
+                        INTERFAZ COMPLETA
+    ============================================================ -->
+
+    <Grid Margin="10">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="350"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <!-- ======================================================
+                PANEL IZQUIERDO — FORMULARIO
+        ====================================================== -->
+        <Border Background="White" Margin="0,0,10,0">
+            <StackPanel Margin="15">
+
+                <TextBlock Text="Detalle Producto"
+                           FontSize="22"
+                           FontWeight="Bold"
+                           Margin="0,0,0,20"/>
+
+                <TextBlock Text="Nombre:"/>
+                <TextBox x:Name="txtNombre" Height="28" Margin="0,5,0,15"/>
+
+                <TextBlock Text="Categoría:"/>
+                <ComboBox x:Name="cbCategoria" Style="{StaticResource ComboFiltroStyle}"
+                          Margin="0,5,0,15">
+                    <ComboBoxItem Content="Verduras"/>
+                    <ComboBoxItem Content="Frutas"/>
+                    <ComboBoxItem Content="Otros"/>
+                </ComboBox>
+
+                <TextBlock Text="Precio Venta:"/>
+                <TextBox x:Name="txtPrecioVenta" Height="28" Margin="0,5,0,15"/>
+
+                <TextBlock Text="Precio Compra:"/>
+                <TextBox x:Name="txtPrecioCompra" Height="28" Margin="0,5,0,15"/>
+
+                <TextBlock Text="Unidad:"/>
+                <ComboBox x:Name="cbUnidad" Style="{StaticResource ComboFiltroStyle}"
+                          Margin="0,5,0,15">
+                    <ComboBoxItem Content="Kg"/>
+                    <ComboBoxItem Content="Gramos"/>
+                </ComboBox>
+
+                <TextBlock Text="Stock:"/>
+                <TextBox x:Name="txtStock" Height="28" Margin="0,5,0,15"/>
+
+                <TextBlock Text="Disponible:"/>
+                <ComboBox x:Name="cbDisponible" Style="{StaticResource ComboFiltroStyle}"
+                          Margin="0,5,0,20">
+                    <ComboBoxItem Content="Disponible"/>
+                    <ComboBoxItem Content="No Disponible"/>
+                </ComboBox>
+
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                    <Button Content="Guardar" Height="30" Width="80"
+                            Margin="5" Background="#28A745" Foreground="White" Click="Button_Click"/>
+                    <Button Content="Modificar" Width="80" Height="30"
+                            Margin="5" Background="#007BFF" Foreground="White" Click="Button_Click_1"/>
+                    <Button Content="Eliminar" Width="80" Height="30"
+                            Margin="5" Background="#DC3545" Foreground="White" Click="Button_Click_2"/>
+                </StackPanel>
+
+            </StackPanel>
+        </Border>
+
+        <!-- ======================================================
+                PANEL DERECHO — BUSCADOR + TABLA
+        ====================================================== -->
+        <Border Grid.Column="1" Background="White">
+            <Grid Margin="15">
+
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="70"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+
+                <!-- =============== NUEVO BUSCADOR (FOTO 2 REAL) =============== -->
+                <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+
+                    <TextBox x:Name="txtBuscar"
+                             Width="350"
+                             Style="{StaticResource TextBoxFiltroStyle}" KeyDown="txtBuscar_KeyDown"/>
+
+                    <Button Content="🔍"
+                            Width="40"
+                            Style="{StaticResource BotonBuscarStyle}"
+                            Margin="10,0,0,0" Click="Button_Click_3"/>
+
+                    <Button x:Name="btnFiltro"
+                            Width="35" Height="35"
+                            Background="Transparent"
+                            BorderBrush="Transparent"
+                            Click="btnFiltro_Click"
+                            ContextMenu="{StaticResource MenuFiltroTemplate}">
+                        <Image Source="/Iconos/filter_icon_155401.png" Width="22" Height="22"/>
+                    </Button>
+                </StackPanel>
+
+                <!-- =============== TABLA =============== -->
+                <DataGrid x:Name="TablaProductos"
+                          Grid.Row="1"
+                          AutoGenerateColumns="False"
+                          CanUserAddRows="False"
+                          IsReadOnly="True"
+                          HeadersVisibility="Column"
+                          Margin="0,10,0,0"
+                          RowHeight="32"
+                          BorderBrush="#CCCCCC"
+                          BorderThickness="1" SelectionChanged="TablaProductos_SelectionChanged">
+
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="Id_Producto" Width="120" Binding="{Binding IdProducto}"/>
+                        <DataGridTextColumn Header="Nombre" Width="140" Binding="{Binding Nombre}"/>
+                        <DataGridTextColumn Header="Categoría" Width="140" Binding="{Binding Categoria}"/>
+                        <DataGridTextColumn Header="Unidad" Width="120" Binding="{Binding Unidad}"/>
+                        <DataGridTextColumn Header="Stock" Width="80" Binding="{Binding Stock}"/>
+                        <DataGridTextColumn Header="Precio Venta" Width="120" Binding="{Binding PrecioVenta}"/>
+                        <DataGridTextColumn Header="Precio Compra" Width="120" Binding="{Binding PrecioCompra}"/>
+                        <DataGridTextColumn Header="Disponible" Width="120" Binding="{Binding Disponible}"/>
+                    </DataGrid.Columns>
+                </DataGrid>
+
+            </Grid>
+        </Border>
+
+    </Grid>
+</UserControl>

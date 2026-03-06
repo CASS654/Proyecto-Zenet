@@ -1,0 +1,330 @@
+<Window 
+    x:Class="SistemaDeVenta.LoginPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    Title="ModernPOS - Login"
+    Height="720"
+    Width="1280"
+    WindowStartupLocation="CenterScreen"
+    ResizeMode="NoResize"
+    WindowStyle="None"
+    AllowsTransparency="True"
+    Background="Transparent">
+
+    <Window.Resources>
+
+        <!-- Elimina focus azul en botones -->
+        <!-- Botón Ojo sin borde azul -->
+        <Style x:Key="EyeButtonStyle" TargetType="Button">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+            <Setter Property="Padding" Value="0"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}">
+                            <ContentPresenter
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Center"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+
+        <!-- TextBox sin borde azul -->
+        <Style TargetType="TextBox">
+            <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="SelectionBrush" Value="#40EC1337"/>
+            <Setter Property="CaretBrush" Value="White"/>
+        </Style>
+
+        <!-- PasswordBox sin borde azul -->
+        <Style TargetType="PasswordBox">
+            <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="CaretBrush" Value="White"/>
+        </Style>
+
+    </Window.Resources>
+
+
+
+
+    <!-- ============ MAIN CONTAINER ============ -->
+    <Border Background="#0E090A"
+            CornerRadius="18"
+            BorderBrush="#1f0c0f"
+            BorderThickness="1">
+
+        <Grid>
+
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition Width="511.2"/>
+            </Grid.ColumnDefinitions>
+
+            <!-- ============ BACKGROUND ============ -->
+            <Grid Grid.ColumnSpan="2">
+
+                <Grid.Background>
+                    <LinearGradientBrush StartPoint="0,0" EndPoint="1,0">
+                        <GradientStop Color="#2A1216" Offset="0"/>
+                        <GradientStop Color="#12090A" Offset="0.45"/>
+                        <GradientStop Color="#0B0607" Offset="1"/>
+                    </LinearGradientBrush>
+                </Grid.Background>
+
+                <!-- Glow -->
+                <Ellipse Width="900"
+                         Height="900"
+                         Fill="#40EC1337"
+                         HorizontalAlignment="Left"
+                         VerticalAlignment="Top"
+                         Margin="-350,-350,0,0"
+                         Opacity="0.2"/>
+
+            </Grid>
+
+            <!-- ============ LEFT ============ -->
+            <Grid Grid.Column="0">
+
+                <StackPanel Margin="90,70">
+
+                    <!-- Logo -->
+                    <StackPanel Orientation="Horizontal">
+
+                        <Border Background="#EC1337"
+                                Width="42"
+                                Height="42"
+                                CornerRadius="8">
+
+                            <TextBlock Text="▣"
+                                       Foreground="White"
+                                       FontSize="22"
+                                       FontWeight="Bold"
+                                       VerticalAlignment="Center"
+                                       HorizontalAlignment="Center"/>
+
+                        </Border>
+
+                        <TextBlock Margin="12,0,0,0"
+                                   FontSize="22"
+                                   FontWeight="Black"
+                                   Foreground="White">
+
+                            
+                            <Run Foreground="#EC1337">POS</Run>
+
+                        </TextBlock>
+
+                    </StackPanel>
+
+                    <!-- Headline -->
+
+                </StackPanel>
+
+            </Grid>
+
+            <!-- ============ RIGHT ============ -->
+            <Grid Grid.Column="1">
+
+                <Border Width="420"
+                        Background="#12090A"
+                        CornerRadius="18"
+                        Padding="45"
+                        VerticalAlignment="Center"
+                        HorizontalAlignment="Center">
+
+                    <Border.Effect>
+                        <DropShadowEffect Color="#000000"
+                                          BlurRadius="40"
+                                          ShadowDepth="0"
+                                          Opacity="0.8"/>
+                    </Border.Effect>
+
+                    <StackPanel>
+
+                        <!-- Title -->
+                        <TextBlock Text="Welcome Back"
+                                   FontSize="32"
+                                   FontWeight="Bold"
+                                   Foreground="White"/>
+
+                        <TextBlock Text="Please enter your credentials"
+                                   Foreground="#7A7F87"
+                                   Margin="0,8,0,40"/>
+
+                        <!-- USER -->
+                        <TextBlock Text="Username"
+                                   Foreground="#9CA3AF"
+                                   FontSize="12"/>
+
+                        <Border Margin="0,6,0,22"
+                                Background="#0C0607"
+                                BorderBrush="#EC1337"
+                                BorderThickness="1"
+                                CornerRadius="12">
+
+                            <Grid Height="54">
+
+                                <TextBlock Text="👤"
+                                           Foreground="#6B7280"
+                                           VerticalAlignment="Center"
+                                           Margin="14,0,0,0"/>
+
+                                <TextBox x:Name="UsernameTextBox"
+                                         Background="Transparent"
+                                         BorderThickness="0"
+                                         Foreground="White"
+                                         Margin="40,0,12,0"
+                                         VerticalContentAlignment="Center"
+                                         FontSize="14" TextChanged="UsernameTexBox_TextChanged"/>
+
+                            </Grid>
+
+                        </Border>
+
+                        <!-- PASSWORD -->
+                        <!-- PASSWORD -->
+                        <TextBlock Text="PasswordBox"
+                           Foreground="#9CA3AF"
+                           FontSize="12"/>
+
+                        <Border Margin="0,6,0,10"
+                            Background="#0C0607"
+                            BorderBrush="#EC1337"
+                            BorderThickness="1"
+                            CornerRadius="12">
+
+                            <Grid Height="54">
+
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="40"/>
+                                    <ColumnDefinition/>
+                                    <ColumnDefinition Width="40"/>
+                                </Grid.ColumnDefinitions>
+
+                                <!-- Icono -->
+                                <TextBlock Grid.Column="0"
+                                     Text="🔒"
+                                     Foreground="#6B7280"
+                                     VerticalAlignment="Center"
+                                     HorizontalAlignment="Center"/>
+
+                                <!-- Password oculto -->
+                                <PasswordBox x:Name="PasswordHidden"
+                                     Grid.Column="1"
+                                     Foreground="White"
+                                     FontSize="14"
+                                     VerticalContentAlignment="Center"/>
+
+                                <!-- Password visible -->
+                                <TextBox x:Name="PasswordVisible"
+                                     Grid.Column="1"
+                                     Foreground="White"
+                                     FontSize="14"
+                                     VerticalContentAlignment="Center"
+                                     Visibility="Collapsed"/>
+
+                                <!-- Botón ojo -->
+                                <Button Grid.Column="2"
+                                    Content="👁"
+                                    Foreground="#6B7280"
+                                    Cursor="Hand"
+                                    Click="TogglePassword_Click"
+                                    Height="54"
+                                    Style="{StaticResource EyeButtonStyle}"/>
+
+
+                            </Grid>
+
+                        </Border>
+
+
+                        <!-- Forgot -->
+                        <TextBlock Text="Forgot Password?"
+                                   Foreground="#4B5563"
+                                   FontSize="11"
+                                   HorizontalAlignment="Right"
+                                   Margin="0,0,0,26"/>
+
+                        <!-- BUTTON -->
+                        <Button Height="56"
+                            Background="#EC1337"
+                            BorderThickness="0"
+                            Cursor="Hand"
+                            Margin="0,20,0,0"
+                            FocusVisualStyle="{x:Null}" Click="Button_Click_1">
+
+                            <Button.Template>
+
+                                <ControlTemplate TargetType="Button">
+
+                                    <Border Background="{TemplateBinding Background}" CornerRadius="14">
+
+                                        <Grid Margin="20,0">
+
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition/>
+                                                <ColumnDefinition Width="Auto"/>
+                                                <ColumnDefinition Width="Auto"/>
+                                            </Grid.ColumnDefinitions>
+
+                                            <!-- Texto -->
+                                            <TextBlock Text="Login to Terminal"
+                                               Grid.Column="0"
+                                               Foreground="White"
+                                               FontSize="15"
+                                               FontWeight="Bold"
+                                               VerticalAlignment="Center"
+                                               HorizontalAlignment="Center"/>
+
+                                            <!-- ENTER -->
+                                            <Border Grid.Column="1"
+                                                Background="#40FFFFFF"
+                                                Padding="7,3"
+                                                CornerRadius="4"
+                                                Margin="0,0,12,0"
+                                                VerticalAlignment="Center">
+
+                                                <TextBlock Text="ENTER"
+                                                   FontSize="9"
+                                                   FontWeight="Black"
+                                                   Foreground="White"/>
+
+                                            </Border>
+
+                                            <!-- Flecha -->
+                                            <TextBlock Grid.Column="2"
+                                               Text="→"
+                                               FontSize="18"
+                                               Foreground="White"
+                                               VerticalAlignment="Center"/>
+
+                                        </Grid>
+
+                                    </Border>
+
+                                </ControlTemplate>
+
+                            </Button.Template>
+
+                        </Button>
+
+                    </StackPanel>
+
+                </Border>
+
+            </Grid>
+
+        </Grid>
+
+    </Border>
+
+</Window>
