@@ -139,7 +139,7 @@
                         CornerRadius="18"
                         Padding="45"
                         VerticalAlignment="Center"
-                        HorizontalAlignment="Center">
+                        HorizontalAlignment="Left" Margin="-294,0,0,0">
 
                     <Border.Effect>
                         <DropShadowEffect Color="#000000"
