@@ -133,13 +133,17 @@
 
             <!-- ============ RIGHT ============ -->
             <Grid Grid.Column="1">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="497*"/>
+                    <RowDefinition Height="221*"/>
+                </Grid.RowDefinitions>
 
                 <Border Width="420"
                         Background="#12090A"
                         CornerRadius="18"
                         Padding="45"
-                        VerticalAlignment="Center"
-                        HorizontalAlignment="Center">
+                        VerticalAlignment="Top"
+                        HorizontalAlignment="Center" Margin="0,108,0,0" Grid.RowSpan="2">
 
                     <Border.Effect>
                         <DropShadowEffect Color="#000000"

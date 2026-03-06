@@ -10,6 +10,7 @@ using System.Windows;
 
 namespace Sistema_Bancario
 {
+    //cambio prueba
     public class ClassConexion
     {
         public string vServidor { get; set; }
