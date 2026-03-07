@@ -120,6 +120,7 @@ namespace SistemaDeVenta
         private void Button_Click_1(object sender, RoutedEventArgs e)
         {
             ExpandSidebar();
+
         }
     }
 }
