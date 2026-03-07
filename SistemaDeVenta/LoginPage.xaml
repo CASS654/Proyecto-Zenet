@@ -184,7 +184,7 @@
                                          Foreground="White"
                                          Margin="40,0,12,0"
                                          VerticalContentAlignment="Center"
-                                         FontSize="14" TextChanged="UsernameTexBox_TextChanged"/>
+                                         FontSize="14" KeyDown="UsernameTextBox_KeyDown_1"/>
 
                             </Grid>
 
@@ -222,7 +222,7 @@
                                      Grid.Column="1"
                                      Foreground="White"
                                      FontSize="14"
-                                     VerticalContentAlignment="Center"/>
+                                     VerticalContentAlignment="Center" KeyDown="PasswordHidden_KeyDown_1"/>
 
                                 <!-- Password visible -->
                                 <TextBox x:Name="PasswordVisible"
@@ -252,7 +252,7 @@
                                    Foreground="#4B5563"
                                    FontSize="11"
                                    HorizontalAlignment="Right"
-                                   Margin="0,0,0,26"/>
+                                   Margin="0,0,0,26" MouseLeftButtonDown="TextBlock_MouseLeftButtonDown"/>
 
                         <!-- BUTTON -->
                         <Button Height="56"

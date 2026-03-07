@@ -97,7 +97,7 @@
         <!-- ================= SIDEBAR ================= -->
 
         <Border x:Name="Sidebar"
-                Grid.Column="0"
+                Grid.Column="0"     
                 Background="{StaticResource Dark2}">
 
             <DockPanel Margin="12">
@@ -194,8 +194,8 @@
                                 Foreground="White"
                                 BorderThickness="0"
                                 Cursor="Hand"
-                                HorizontalAlignment="Right"
-                                VerticalAlignment="Center"
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="Bottom"
                                 Click="ToggleSidebar_Click"/>
 
                         <!-- Botón menú abajo (Modo Colapsado) -->
@@ -220,7 +220,7 @@
 
                     <!-- BOTONES -->
 
-                    <Button Style="{StaticResource MenuButton}">
+                    <Button Style="{StaticResource MenuButton}" Click="Button_Click_1">
                         <StackPanel Orientation="Horizontal">
                             <TextBlock Text="📊" FontSize="18" Width="30" TextAlignment="Center"/>
                             <TextBlock x:Name="TxtDashboard" Text="Dashboard" Margin="10,0,0,0"/>
@@ -230,49 +230,35 @@
                     <Button Style="{StaticResource MenuButton}">
                         <StackPanel Orientation="Horizontal">
                             <TextBlock Text="🛒" FontSize="18" Width="30" TextAlignment="Center"/>
-                            <TextBlock x:Name="TxtSales" Text="Sales" Margin="10,0,0,0"/>
-                        </StackPanel>
-                    </Button>
-
-                    <Button Style="{StaticResource MenuButton}">
-                        <StackPanel Orientation="Horizontal">
-                            <TextBlock Text="📋" FontSize="18" Width="30" TextAlignment="Center"/>
-                            <TextBlock x:Name="TxtHistory" Text="History" Margin="10,0,0,0"/>
+                            <TextBlock x:Name="TxtSales" Text="Ventas" Margin="10,0,0,0"/>
                         </StackPanel>
                     </Button>
 
                     <Button Style="{StaticResource MenuButton}">
                         <StackPanel Orientation="Horizontal">
                             <TextBlock Text="📦" FontSize="18" Width="30" TextAlignment="Center"/>
-                            <TextBlock x:Name="TxtInventory" Text="Inventory" Margin="10,0,0,0"/>
-                        </StackPanel>
-                    </Button>
-
-                    <Button Style="{StaticResource MenuButton}">
-                        <StackPanel Orientation="Horizontal">
-                            <TextBlock Text="📈" FontSize="18" Width="30" TextAlignment="Center"/>
-                            <TextBlock x:Name="TxtReports" Text="Reports" Margin="10,0,0,0"/>
+                            <TextBlock x:Name="TxtInventory" Text="Inventario" Margin="10,0,0,0"/>
                         </StackPanel>
                     </Button>
 
                     <Button Style="{StaticResource MenuButton}">
                         <StackPanel Orientation="Horizontal">
                             <TextBlock Text="👥" FontSize="18" Width="30" TextAlignment="Center"/>
-                            <TextBlock x:Name="TxtEmployees" Text="Employees" Margin="10,0,0,0"/>
+                            <TextBlock x:Name="TxtEmployees" Text="Usuarios" Margin="10,0,0,0"/>
                         </StackPanel>
                     </Button>
 
                     <Button Style="{StaticResource MenuButton}">
                         <StackPanel Orientation="Horizontal">
                             <TextBlock Text="👤" FontSize="18" Width="30" TextAlignment="Center"/>
-                            <TextBlock x:Name="TxtCustomers" Text="Customers" Margin="10,0,0,0"/>
+                            <TextBlock x:Name="TxtCustomers" Text="Provedores" Margin="10,0,0,0"/>
                         </StackPanel>
                     </Button>
 
                     <Button Style="{StaticResource MenuButton}">
                         <StackPanel Orientation="Horizontal">
                             <TextBlock Text="🚚" FontSize="18" Width="30" TextAlignment="Center"/>
-                            <TextBlock x:Name="TxtSuppliers" Text="Suppliers" Margin="10,0,0,0"/>
+                            <TextBlock x:Name="TxtSuppliers" Text="Suministros" Margin="10,0,0,0"/>
                         </StackPanel>
                     </Button>
 
@@ -322,7 +308,7 @@
                     <TextBlock Text="Inicio"
                        Foreground="White"
                        FontSize="26"
-                       VerticalAlignment="Center" MouseLeftButtonDown="TextBlock_MouseLeftButtonDown"/>
+                       VerticalAlignment="Bottom" MouseLeftButtonDown="TextBlock_MouseLeftButtonDown" Margin="0,0,0,3"/>
 
 
                     <StackPanel Grid.Column="1"
@@ -348,7 +334,7 @@
                            Margin="0,0,14,0"/>
 
 
-                        <Button Style="{StaticResource PrimaryBtn}">
+                        <Button Style="{StaticResource PrimaryBtn}" Click="Button_Click">
                             🛒 New Sale
                         </Button>
 

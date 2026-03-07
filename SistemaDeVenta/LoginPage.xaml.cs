@@ -97,16 +97,6 @@ namespace SistemaDeVenta
             }
         }
 
-        private void LoginButton_Click(object sender, RoutedEventArgs e)
-        {
-
-        }
-
-        private void UsernameTexBox_TextChanged(object sender, TextChangedEventArgs e)
-        {
-
-        }
-
         private void Button_Click_1(object sender, RoutedEventArgs e)
         {
             // 1. Obtener usuario
@@ -166,7 +156,7 @@ namespace SistemaDeVenta
                         //                MessageBoxButton.OK,
                         //                MessageBoxImage.Information);
 
-                        ventana.Show();
+                        admin.Show();
                         this.Close();
                         break;
 
@@ -229,7 +219,7 @@ namespace SistemaDeVenta
             }
         }
 
-        private void UsernameTextBox_KeyDown(object sender, System.Windows.Input.KeyEventArgs e)
+        private void UsernameTextBox_KeyDown_1(object sender, KeyEventArgs e)
         {
             if (e.Key == System.Windows.Input.Key.Enter)
             {
@@ -245,12 +235,18 @@ namespace SistemaDeVenta
             }
         }
 
-        private void PasswordHidden_KeyDown(object sender, System.Windows.Input.KeyEventArgs e)
+        private void PasswordHidden_KeyDown_1(object sender, KeyEventArgs e)
         {
             if (e.Key == Key.Enter)
             {
                 Button_Click_1(sender, e);  // llama al botón aceptar
             }
+        }
+
+        private void TextBlock_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            MessageBox.Show("¡Recuperación de contraseña no implementada aún!", "Información",
+                MessageBoxButton.OK, MessageBoxImage.Information);
         }
     }
 }
