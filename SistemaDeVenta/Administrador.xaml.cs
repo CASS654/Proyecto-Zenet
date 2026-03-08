@@ -2,6 +2,7 @@
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media.Animation;
+using SistemaVentas.Views;
 
 namespace SistemaDeVenta
 {
@@ -121,6 +122,11 @@ namespace SistemaDeVenta
         {
             ExpandSidebar();
 
+        }
+
+        private void Button_Click_2(object sender, RoutedEventArgs e)
+        {
+            MainContent.Content = new UsuariosView();
         }
     }
 }
