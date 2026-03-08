@@ -21,50 +21,67 @@ namespace SistemaDeVenta
             public bool Activo { get; set; } // 1 = Activo, 0 = Inactivo
 
             // INSERTAR USUARIO
+            // INSERTAR USUARIO CORREGIDO
             public int InsertarUsuario(ClassUsuarios obj)
             {
                 int resultado = 1;
 
-                using (MySqlConnection connection = new MySqlConnection(
-                    "Database=" + globales.vBaseDeDatosConnect_Global +
-                    "; Data Source=" + globales.vServidorConnect_Global +
-                    "; User Id=" + globales.vUsuarioINIConnect_Global +
-                    "; Password=" + globales.vPassUsuarioINIConnect_Global +
-                    ";CharSet=utf8;"))
-                {
-                    connection.Open();
-                    MySqlTransaction trans = null;
+                // Cadena de conexión usando tus variables globales
+                string connectionString = "Database=" + globales.vBaseDeDatosConnect_Global +
+                                          "; Data Source=" + globales.vServidorConnect_Global +
+                                          "; User Id=" + globales.vUsuarioINIConnect_Global +
+                                          "; Password=" + globales.vPassUsuarioINIConnect_Global +
+                                          ";CharSet=utf8;";
 
+                using (MySqlConnection connection = new MySqlConnection(connectionString))
+                {
                     try
                     {
-                        trans = connection.BeginTransaction();
+                        connection.Open();
+                        using (MySqlTransaction trans = connection.BeginTransaction())
+                        {
+                            using (MySqlCommand cmd = new MySqlCommand())
+                            {
+                                cmd.Transaction = trans;
+                                cmd.Connection = connection;
 
-                        MySqlCommand cmd = new MySqlCommand();
-                        cmd.Transaction = trans;
-                        cmd.Connection = connection;
+                                cmd.CommandText =
+                                    "INSERT INTO usuarios (Nombre_Completo, usser, password, rol, activo) " +
+                                    "VALUES (@nombre, @usser, @password, @rol, @activo)";
 
-                        cmd.CommandText =
-                            "INSERT INTO usuarios (Nombre_Completo, usser, password, rol, activo) " +
-                            "VALUES (@nombre, @usser, @password, @rol, @activo)";
+                                // Limpiamos parámetros por seguridad
+                                cmd.Parameters.Clear();
+                                cmd.Parameters.AddWithValue("@nombre", obj.Nombre_Completo);
+                                cmd.Parameters.AddWithValue("@usser", obj.Usser);
+                                cmd.Parameters.AddWithValue("@password", obj.Password);
+                                cmd.Parameters.AddWithValue("@rol", obj.Rol);
 
-                        cmd.Parameters.AddWithValue("@nombre", obj.Nombre_Completo);
-                        cmd.Parameters.AddWithValue("@usser", obj.Usser);
-                        cmd.Parameters.AddWithValue("@password", obj.Password);
-                        cmd.Parameters.AddWithValue("@rol", obj.Rol);
-                        cmd.Parameters.AddWithValue("@activo", obj.Activo);
+                                // CORRECCIÓN CLAVE: Convertir bool a int para MySQL (1 o 0)
+                                cmd.Parameters.AddWithValue("@activo", obj.Activo ? 1 : 0);
 
-                        cmd.ExecuteNonQuery();
-                        trans.Commit();
+                                cmd.ExecuteNonQuery();
+                                trans.Commit();
 
-                        resultado = 0;
+                                resultado = 0; // Éxito
+                            }
+                        }
                     }
-                    catch (Exception)
+                    catch (MySqlException ex)
                     {
-                        trans?.Rollback();
+                        // Esto te dirá si el error es por usuario duplicado, 
+                        // falta de permisos o campos nulos en la DB.
+                        System.Windows.MessageBox.Show("Error de Base de Datos: " + ex.Message);
+                        resultado = 1;
+                    }
+                    catch (Exception ex)
+                    {
+                        System.Windows.MessageBox.Show("Error General: " + ex.Message);
+                        resultado = 1;
                     }
                     finally
                     {
-                        connection.Close();
+                        if (connection.State == ConnectionState.Open)
+                            connection.Close();
                     }
                 }
 

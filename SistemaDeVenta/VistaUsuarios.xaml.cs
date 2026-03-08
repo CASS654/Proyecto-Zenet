@@ -102,43 +102,41 @@ namespace SistemaVentas.Views
         // 2. LÓGICA DE GUARDAR (INSERTAR O EDITAR)
         private void Guardar_Click(object sender, RoutedEventArgs e)
         {
-            if (string.IsNullOrEmpty(txtNombre.Text) || cbRol.SelectedItem == null)
+            // Aseguramos que los combos tengan selección
+            if (cbRol.SelectedIndex == -1 || cbEstado.SelectedIndex == -1)
             {
-                MessageBox.Show("Por favor complete los campos obligatorios.");
+                MessageBox.Show("Seleccione Rol y Estado");
                 return;
             }
 
             ClassUsuarios u = new ClassUsuarios();
-            u.IdUsuario = IdSeleccionado; // Si es 0 insertar, si > 0 editar
-            u.Nombre_Completo = txtNombre.Text;
-            u.Usser = txtUsuario.Text;
-            u.Password = txtClave.Password;
-            u.Rol = (cbRol.SelectedItem as ComboBoxItem)?.Content.ToString();
-            u.Activo = ((cbEstado.SelectedItem as ComboBoxItem)?.Content.ToString() == "Activo");
+            u.IdUsuario = IdSeleccionado;
+            u.Nombre_Completo = txtNombre.Text.Trim();
+            u.Usser = txtUsuario.Text.Trim();
+            u.Password = txtClave.Password; // Verifica si tu CLASE encripta esto o si debes hacerlo aquí
+
+            // Forma más segura de obtener el texto del combo
+            u.Rol = ((ComboBoxItem)cbRol.SelectedItem).Content.ToString();
+            u.Activo = ((ComboBoxItem)cbEstado.SelectedItem).Content.ToString() == "Activo";
 
             ClassUsuarios db = new ClassUsuarios();
-            int resp;
-
-            if (IdSeleccionado == 0)
-            {
-                resp = db.InsertarUsuario(u);
-            }
-            else
-            {
-                resp = db.EditarUsuario(u);
-            }
+            // Aquí es donde se ejecuta la lógica que dices que está bien
+            int resp = (IdSeleccionado == 0) ? db.InsertarUsuario(u) : db.EditarUsuario(u);
 
             if (resp == 0)
             {
-                MessageBox.Show("Operación exitosa");
-                Limpiar();
+                MessageBox.Show("¡Éxito!");
                 CargarUsuarios();
+                Limpiar();
             }
             else
             {
-                MessageBox.Show("Error al procesar la solicitud");
+                // Si entra aquí, la CLASE devolvió error aunque digas que está bien. 
+                // Revisa que los nombres de los parámetros en la clase coincidan con 'u.Nombre_Completo', etc.
+                MessageBox.Show("Error al ejecutar en la base de datos.");
             }
         }
+
         private void Cancelar_Click(object sender, RoutedEventArgs e)
         {
             Limpiar(); // Al cancelar, simplemente reseteamos todo
