@@ -92,6 +92,9 @@
     <Compile Include="Administrador.xaml.cs">
       <DependentUpon>Administrador.xaml</DependentUpon>
     </Compile>
+    <Compile Include="BusquedaProducto.xaml.cs">
+      <DependentUpon>BusquedaProducto.xaml</DependentUpon>
+    </Compile>
     <Compile Include="ClassProducto.cs" />
     <Compile Include="ClassProveedores.cs" />
     <Compile Include="Compras.xaml.cs">
@@ -122,8 +125,17 @@
     <Compile Include="Usuarios.xaml.cs">
       <DependentUpon>Usuarios.xaml</DependentUpon>
     </Compile>
+    <Compile Include="VentanaFiltro.xaml.cs">
+      <DependentUpon>VentanaFiltro.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="VentanaPago.xaml.cs">
+      <DependentUpon>VentanaPago.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Ventas.xaml.cs">
       <DependentUpon>Ventas.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="VetanaCobro.xaml.cs">
+      <DependentUpon>VetanaCobro.xaml</DependentUpon>
     </Compile>
     <Compile Include="VistaUsuarios.xaml.cs">
       <DependentUpon>VistaUsuarios.xaml</DependentUpon>
@@ -134,6 +146,10 @@
     <Page Include="Administrador.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="BusquedaProducto.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="Compras.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -206,7 +222,19 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="VentanaFiltro.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="VentanaPago.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Ventas.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="VetanaCobro.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

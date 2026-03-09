@@ -1,0 +1,110 @@
+﻿<Window x:Class="SistemaDeVentaPrueba.VentanaPago"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="VentanaPago" 
+        Height="750" Width="450"
+        WindowStyle="None"
+        AllowsTransparency="True"
+        Background="Transparent"
+        WindowStartupLocation="CenterScreen">
+
+    <Window.Resources>
+        <SolidColorBrush x:Key="PanelDark" Color="#1C2132"/>
+        <SolidColorBrush x:Key="BgVeryDark" Color="#121624"/>
+        <SolidColorBrush x:Key="AccentRed" Color="#FF334D"/>
+        <SolidColorBrush x:Key="TextSecondary" Color="#8B92A5"/>
+        <SolidColorBrush x:Key="SuccessGreen" Color="#2ECC71"/>
+    </Window.Resources>
+
+    <Border Background="{StaticResource BgVeryDark}" 
+            BorderBrush="{StaticResource AccentRed}" 
+            BorderThickness="1" 
+            CornerRadius="25" 
+            Margin="20">
+        <Grid Margin="25">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+
+            <StackPanel Grid.Row="0" HorizontalAlignment="Center" Margin="0,10,0,30">
+                <TextBlock Text="TOTAL BALANCE DUE" Foreground="{StaticResource TextSecondary}" 
+                           FontSize="12" FontWeight="Bold" HorizontalAlignment="Center"/>
+                <TextBlock Text="$1,245.50" Foreground="White" FontSize="48" FontWeight="Bold"/>
+            </StackPanel>
+
+            <UniformGrid Grid.Row="1" Columns="2" Margin="0,0,0,30">
+                <Border Background="#25FF334D" BorderBrush="{StaticResource AccentRed}" 
+                        BorderThickness="2" CornerRadius="12" Padding="15" Margin="0,0,8,0">
+                    <StackPanel HorizontalAlignment="Center">
+                        <TextBlock Text="💵" FontSize="20" HorizontalAlignment="Center" Margin="0,0,0,5"/>
+                        <TextBlock Text="CASH [F1]" Foreground="White" FontWeight="Bold" FontSize="12"/>
+                    </StackPanel>
+                </Border>
+                <Border Background="{StaticResource PanelDark}" CornerRadius="12" Padding="15" Margin="8,0,0,0">
+                    <StackPanel HorizontalAlignment="Center">
+                        <TextBlock Text="💳" FontSize="20" HorizontalAlignment="Center" Margin="0,0,0,5"/>
+                        <TextBlock Text="CARD [F2]" Foreground="{StaticResource TextSecondary}" FontWeight="Bold" FontSize="12"/>
+                    </StackPanel>
+                </Border>
+            </UniformGrid>
+
+            <StackPanel Grid.Row="2" Margin="0,0,0,25">
+                <TextBlock Text="AMOUNT RECEIVED" Foreground="{StaticResource TextSecondary}" 
+                           FontSize="11" FontWeight="Bold" Margin="5,0,0,8"/>
+                <Border BorderBrush="{StaticResource AccentRed}" BorderThickness="1.5" 
+                        CornerRadius="10" Padding="15,12" Background="{StaticResource BgVeryDark}">
+                    <Grid>
+                        <TextBlock Text="$" Foreground="{StaticResource AccentRed}" FontSize="22" VerticalAlignment="Center"/>
+                        <TextBox Text="1300.00" Background="Transparent" BorderThickness="0" 
+                                 Foreground="White" FontSize="22" FontWeight="Bold" Margin="25,0,0,0" CaretBrush="White"/>
+                    </Grid>
+                </Border>
+            </StackPanel>
+
+            <StackPanel Grid.Row="3" Margin="0,0,0,30">
+                <TextBlock Text="CHANGE DUE" Foreground="{StaticResource TextSecondary}" 
+                           FontSize="11" FontWeight="Bold" Margin="5,0,0,8"/>
+                <Border Background="{StaticResource PanelDark}" CornerRadius="10" Padding="15,18">
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="$" Foreground="{StaticResource SuccessGreen}" FontSize="24" FontWeight="Bold"/>
+                        <TextBlock Text="54.50" Foreground="{StaticResource SuccessGreen}" FontSize="24" FontWeight="Bold" Margin="10,0,0,0"/>
+                    </StackPanel>
+                </Border>
+            </StackPanel>
+
+            <StackPanel Grid.Row="4" Margin="5,0">
+                <Grid Margin="0,0,0,12">
+                    <TextBlock Text="Subtotal (14 items)" Foreground="{StaticResource TextSecondary}" FontSize="14"/>
+                    <TextBlock Text="$1,150.00" Foreground="White" HorizontalAlignment="Right" FontSize="14"/>
+                </Grid>
+                <Grid>
+                    <TextBlock Text="FINAL AMOUNT" Foreground="{StaticResource TextSecondary}" FontWeight="Bold" FontSize="14"/>
+                    <TextBlock Text="$1,245.50" Foreground="White" HorizontalAlignment="Right" FontWeight="Bold" FontSize="14"/>
+                </Grid>
+                <Separator Background="{StaticResource PanelDark}" Margin="0,20,0,0"/>
+            </StackPanel>
+
+            <StackPanel Grid.Row="6">
+                <Border Background="{StaticResource AccentRed}" CornerRadius="12" Padding="20" Margin="0,0,0,12">
+                    <Grid>
+                        <TextBlock Text="COMPLETE SALE" Foreground="White" FontWeight="Bold" 
+                                   FontSize="18" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        <Border Background="#40FFFFFF" CornerRadius="4" Padding="6,2" HorizontalAlignment="Right">
+                            <TextBlock Text="ENTER" Foreground="White" FontSize="10" FontWeight="Bold"/>
+                        </Border>
+                    </Grid>
+                </Border>
+                <Border BorderBrush="{StaticResource PanelDark}" BorderThickness="1" CornerRadius="12" Padding="15">
+                    <TextBlock Text="BACK TO REGISTER [ESC]" Foreground="{StaticResource TextSecondary}" 
+                               FontWeight="Bold" HorizontalAlignment="Center"/>
+                </Border>
+            </StackPanel>
+        </Grid>
+    </Border>
+</Window>
