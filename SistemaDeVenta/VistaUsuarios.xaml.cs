@@ -7,7 +7,7 @@ using System.Windows.Controls;
 using System.Windows.Media;
 using static SistemaDeVenta.Classusuarios;
 
-namespace SistemaVentas.Views
+namespace SistemaDeVentas.Views
 {
     public partial class UsuariosView : UserControl
     {

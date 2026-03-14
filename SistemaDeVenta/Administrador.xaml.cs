@@ -1,8 +1,10 @@
-﻿using System;
+﻿using SistemaDeVenta.Views;
+using SistemaDeVentas.Views;
+using SistemaDeVentas.Views;
+using System;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media.Animation;
-using SistemaVentas.Views;
 
 namespace SistemaDeVenta
 {
@@ -127,6 +129,11 @@ namespace SistemaDeVenta
         private void Button_Click_2(object sender, RoutedEventArgs e)
         {
             MainContent.Content = new UsuariosView();
+        }
+
+        private void Button_Click_3(object sender, RoutedEventArgs e)
+        {
+            MainContent.Content = new ProveedoresNUEVO();
         }
     }
 }
