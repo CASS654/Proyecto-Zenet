@@ -30,17 +30,25 @@ namespace SistemaDeVentaPrueba
             {
                 listaOriginal.Clear();
                 ClassTest db = new ClassTest();
-                string sql = "SELECT IdProducto, Nombre, PrecioVenta, Stock FROM Inventario WHERE Disponible = 1";
+
+                // Usamos INNER JOIN para traer el Nombre y Precio de 'Productos' 
+                // y el Stock de 'Inventario'
+                string sql = @"SELECT p.IdProducto, p.Nombre, p.PrecioVenta, i.Stock 
+                       FROM Productos p 
+                       INNER JOIN Inventario i ON p.IdProducto = i.IdProducto 
+                       WHERE p.Disponible = TRUE";
+
                 DataTable dt = db.ListarRegistros(sql);
 
                 foreach (DataRow row in dt.Rows)
                 {
                     listaOriginal.Add(new ProductoBusqueda
                     {
+                        // Importante: Asegúrate de que los nombres coincidan con el SELECT
                         Id = Convert.ToInt32(row["IdProducto"]),
                         Nombre = row["Nombre"].ToString(),
                         Precio = Convert.ToDecimal(row["PrecioVenta"]),
-                        Stock = Convert.ToInt32(row["Stock"])
+                        Stock = Convert.ToInt32(Convert.ToDecimal(row["Stock"])) // Convertimos a decimal primero por si el stock tiene decimales en la BD
                     });
                 }
                 dgProductos.ItemsSource = null;
@@ -130,6 +138,6 @@ namespace SistemaDeVentaPrueba
         public int Id { get; set; }
         public string Nombre { get; set; }
         public decimal Precio { get; set; }
-        public int Stock { get; set; }
+        public decimal Stock { get; set; } // Cambiado de int a decimal para soportar Kilos
     }
 }
