@@ -96,84 +96,65 @@ namespace SistemaDeVenta
             else
                 clave = PasswordVisible.Text;
 
-            // 🔴 CAMPOS VACÍOS
-            if (string.IsNullOrWhiteSpace(usuario))
+            // 1. Validar campos vacíos
+            if (string.IsNullOrWhiteSpace(usuario) || string.IsNullOrWhiteSpace(clave))
             {
-                MessageBox.Show("Ingrese el usuario", "Error",
-                    MessageBoxButton.OK, MessageBoxImage.Warning);
-
-                LimpiarCampos(); // 🔥 limpiar siempre
+                MessageBox.Show("Ingrese usuario y contraseña", "Error", MessageBoxButton.OK, MessageBoxImage.Warning);
+                LimpiarCampos();
                 return;
             }
 
-            if (string.IsNullOrWhiteSpace(clave))
-            {
-                MessageBox.Show("Ingrese la contraseña", "Error",
-                    MessageBoxButton.OK, MessageBoxImage.Warning);
-
-                LimpiarCampos(); // 🔥 limpiar siempre
-                return;
-            }
-
-            // 4. Conectar BD
+            // 2. Conectar BD
             if (!ConectarDB("localhost", "Fruteria", "root", "Cesar654"))
             {
-                MessageBox.Show("No se pudo conectar a la base de datos",
-                    "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-
-                LimpiarCampos(); // 🔥 limpiar siempre
+                MessageBox.Show("No se pudo conectar a la base de datos", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                 return;
             }
 
+            // 3. Validar Usuario
             string resultado = ValidarUsuario(usuario, clave);
 
-            // 🔴 USUARIO NO EXISTE
             if (resultado == "NO_EXISTE")
             {
-                MessageBox.Show("Usuario o contraseña incorrectos",
-                                "Error",
-                                MessageBoxButton.OK,
-                                MessageBoxImage.Warning);
-
-                LimpiarCampos(); // 🔥 limpiar siempre
+                MessageBox.Show("Usuario o contraseña incorrectos", "Error", MessageBoxButton.OK, MessageBoxImage.Warning);
+                LimpiarCampos();
                 return;
             }
 
-            // 🔴 USUARIO INACTIVO
             if (resultado == "INACTIVO")
             {
-                // Obtener rol
-                rol = ResultadoLogin(usuario, clave);
+                MessageBox.Show("El usuario está desactivado. Contacte al administrador.", "Aviso", MessageBoxButton.OK, MessageBoxImage.Stop);
+                LimpiarCampos();
+                return;
+            }
 
-            MenuVendedor menuVendedor = new MenuVendedor();
-            MenuGerente menuGerente = new MenuGerente();
-            AdministradorWindow admin = new AdministradorWindow();
-            VetanaCobro cobro = new VetanaCobro();
+            // 4. Si llegamos aquí, el login es exitoso y 'resultado' contiene el ROL
+            rol = resultado;
 
+            // Instanciar ventanas
             switch (rol)
             {
                 case "Admin":
+                    AdministradorWindow admin = new AdministradorWindow();
                     admin.Show();
-                    this.Close();
+                    Window.GetWindow(this).Close(); // Forma segura de cerrar la ventana actual en WPF
                     break;
 
                 case "Cajero":
+                    VetanaCobro cobro = new VetanaCobro();
                     cobro.Show();
-                    this.Close();
+                    Window.GetWindow(this).Close();
                     break;
 
                 case "Gerente":
+                    MenuGerente menuGerente = new MenuGerente();
                     menuGerente.Show();
-                    this.Close();
+                    Window.GetWindow(this).Close();
                     break;
 
                 default:
-                    MessageBox.Show("Rol no reconocido",
-                                    "Error",
-                                    MessageBoxButton.OK,
-                                    MessageBoxImage.Warning);
-
-                    LimpiarCampos(); // 🔥 por seguridad también aquí
+                    MessageBox.Show("Rol no reconocido: " + rol, "Error", MessageBoxButton.OK, MessageBoxImage.Warning);
+                    LimpiarCampos();
                     break;
             }
         }
