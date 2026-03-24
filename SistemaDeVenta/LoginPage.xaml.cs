@@ -115,7 +115,7 @@ namespace SistemaDeVenta
                 return;
             }
 
-            // 🔴 CONEXIÓN
+            // 4. Conectar BD
             if (!ConectarDB("localhost", "Fruteria", "root", "Cesar654"))
             {
                 MessageBox.Show("No se pudo conectar a la base de datos",
@@ -142,17 +142,8 @@ namespace SistemaDeVenta
             // 🔴 USUARIO INACTIVO
             if (resultado == "INACTIVO")
             {
-                MessageBox.Show("La cuenta está inactiva. Contacte al administrador.",
-                                "Acceso denegado",
-                                MessageBoxButton.OK,
-                                MessageBoxImage.Warning);
-
-                LimpiarCampos(); // 🔥 limpiar siempre
-                return;
-            }
-
-            // ✅ LOGIN CORRECTO
-            rol = resultado;
+                // Obtener rol
+                rol = ResultadoLogin(usuario, clave);
 
             MenuVendedor menuVendedor = new MenuVendedor();
             MenuGerente menuGerente = new MenuGerente();
