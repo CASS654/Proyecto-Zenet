@@ -12,13 +12,16 @@ namespace SistemaDeVentaPrueba
     public partial class BusquedaProducto : Window
     {
         private List<ProductoBusqueda> listaOriginal = new List<ProductoBusqueda>();
-        public int ProductoSeleccionadoId { get; private set; } = -1;
+        public ProductoPOS ProductoSeleccionado { get; set; }
 
         public BusquedaProducto()
         {
             InitializeComponent();
             CargarDatos();
             txtBuscar.Focus();
+
+            // Esto asegura que la ventana escuche las teclas antes que los controles
+            this.PreviewKeyDown += BusquedaProducto_PreviewKeyDown;
         }
 
         private void CargarDatos()
@@ -27,7 +30,6 @@ namespace SistemaDeVentaPrueba
             {
                 listaOriginal.Clear();
                 ClassTest db = new ClassTest();
-
                 string sql = "SELECT IdProducto, Nombre, PrecioVenta, Stock FROM Inventario WHERE Disponible = 1";
                 DataTable dt = db.ListarRegistros(sql);
 
@@ -41,7 +43,6 @@ namespace SistemaDeVentaPrueba
                         Stock = Convert.ToInt32(row["Stock"])
                     });
                 }
-
                 dgProductos.ItemsSource = null;
                 dgProductos.ItemsSource = listaOriginal;
             }
@@ -51,87 +52,77 @@ namespace SistemaDeVentaPrueba
             }
         }
 
+        private void SeleccionarYSalir()
+        {
+            // Verificamos que haya algo seleccionado en la tabla
+            if (dgProductos.SelectedItem is ProductoBusqueda seleccionado)
+            {
+                ProductoSeleccionado = new ProductoPOS
+                {
+                    Id = seleccionado.Id.ToString(),
+                    Name = seleccionado.Nombre,
+                    UnitPrice = seleccionado.Precio,
+                    Description = "Stock: " + seleccionado.Stock,
+                    Unit = "PZ"
+                };
+
+                this.DialogResult = true; // Indica éxito a la ventana de Cobro
+                this.Close();
+            }
+            else
+            {
+                MessageBox.Show("Por favor, selecciona un producto de la lista.");
+            }
+        }
+
         private void AplicarFiltroManual()
         {
             string filtro = txtBuscar.Text.Trim();
-
-            if (string.IsNullOrEmpty(filtro))
-            {
-                dgProductos.ItemsSource = null;
-                dgProductos.ItemsSource = listaOriginal;
-                return;
-            }
-
-            var listaFiltrada = listaOriginal.Where(p =>
-                p.Nombre.IndexOf(filtro, StringComparison.OrdinalIgnoreCase) >= 0 ||
-                p.Id.ToString() == filtro
-            ).ToList();
+            var listaFiltrada = string.IsNullOrEmpty(filtro) ?
+                listaOriginal :
+                listaOriginal.Where(p => p.Nombre.IndexOf(filtro, StringComparison.OrdinalIgnoreCase) >= 0 || p.Id.ToString() == filtro).ToList();
 
             dgProductos.ItemsSource = null;
             dgProductos.ItemsSource = listaFiltrada;
-
-            // 🔥 SOLO cambiar foco si NO estás escribiendo
-            if (!txtBuscar.IsFocused && listaFiltrada.Count > 0)
-            {
-                dgProductos.SelectedIndex = 0;
-                dgProductos.Focus();
-            }
         }
 
-        private void SeleccionarYSalir()
+        // --- EVENTOS CORREGIDOS ---
+
+        private void BusquedaProducto_PreviewKeyDown(object sender, KeyEventArgs e)
         {
-            if (dgProductos.SelectedItem is ProductoBusqueda seleccionado)
+            // Cierra con ESC desde cualquier lado
+            if (e.Key == Key.Escape)
             {
-                ProductoSeleccionadoId = seleccionado.Id;
-                this.DialogResult = true;
+                this.DialogResult = false;
                 this.Close();
             }
+
+            // Si presiona ENTER
+            if (e.Key == Key.Enter)
+            {
+                // Si el foco no está en el buscador, intentamos agregar
+                if (!txtBuscar.IsFocused)
+                {
+                    SeleccionarYSalir();
+                    e.Handled = true;
+                }
+                else
+                {
+                    // Si está en el buscador, aplica el filtro
+                    AplicarFiltroManual();
+                }
+            }
         }
 
-        // 🔵 BOTÓN BUSCAR (CLICK)
-        private void btnBuscar_Click(object sender, RoutedEventArgs e)
-        {
-            AplicarFiltroManual();
-        }
-
-        // 🔵 DOBLE CLICK EN LA TABLA
-        private void dgProductos_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        // Este es el botón "AGREGAR" de tu interfaz
+        private void Button_Click(object sender, RoutedEventArgs e)
         {
             SeleccionarYSalir();
         }
 
-        // 🔵 CONTROL DE TECLAS
-        private void Border_KeyDown(object sender, KeyEventArgs e)
-        {
-            if (e.Key == Key.Escape)
-                this.Close();
-
-            if (e.Key == Key.Enter)
-            {
-                e.Handled = true;
-
-                if (txtBuscar.IsFocused)
-                {
-                    // ENTER en el textbox → FILTRAR
-                    AplicarFiltroManual();
-                }
-                else
-                {
-                    // ENTER en la tabla → SELECCIONAR
-                    SeleccionarYSalir();
-                }
-            }
-
-            if (e.Key == Key.Down || e.Key == Key.Up)
-            {
-                dgProductos.Focus();
-            }
-        }
-
-        private void txtBuscar_TextChanged(object sender, TextChangedEventArgs e)
-        {
-            AplicarFiltroManual();
-        }
+        private void btnBuscar_Click(object sender, RoutedEventArgs e) => AplicarFiltroManual();
+        private void dgProductos_MouseDoubleClick(object sender, MouseButtonEventArgs e) => SeleccionarYSalir();
+        private void txtBuscar_TextChanged(object sender, TextChangedEventArgs e) => AplicarFiltroManual();
     }
 
     public class ProductoBusqueda

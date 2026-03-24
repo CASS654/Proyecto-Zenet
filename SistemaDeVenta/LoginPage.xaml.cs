@@ -1,5 +1,6 @@
 using MySql.Data.MySqlClient;
 using Sistema_Bancario;
+using SistemaDeVentaPrueba;
 using System;
 using System.Windows;
 using System.Windows.Controls;
@@ -156,6 +157,7 @@ namespace SistemaDeVenta
             MenuVendedor menuVendedor = new MenuVendedor();
             MenuGerente menuGerente = new MenuGerente();
             AdministradorWindow admin = new AdministradorWindow();
+            VetanaCobro cobro = new VetanaCobro();
 
             switch (rol)
             {
@@ -165,7 +167,7 @@ namespace SistemaDeVenta
                     break;
 
                 case "Cajero":
-                    admin.Show();
+                    cobro.Show();
                     this.Close();
                     break;
 

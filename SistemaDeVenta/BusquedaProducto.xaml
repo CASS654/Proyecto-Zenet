@@ -1,9 +1,15 @@
 ﻿<Window x:Class="SistemaDeVentaPrueba.BusquedaProducto"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        
         Title="Product Search"
         Height="700" Width="1050"
-        Background="#070B14" 
+
+        WindowStyle="None"
+        ResizeMode="NoResize"
+        AllowsTransparency="True"
+        Background="Transparent"
+
         WindowStartupLocation="CenterScreen"
         FontFamily="Segoe UI">
 
@@ -65,8 +71,13 @@
         </Style>
     </Window.Resources>
 
-    <Grid Margin="20">
-        <Border Background="#0F172A" CornerRadius="12" BorderBrush="#1E293B" BorderThickness="1">
+    <Grid>
+        <Border Background="#0F172A"
+            CornerRadius="12"
+            BorderBrush="#1E293B"
+            BorderThickness="1"
+            Margin="20"
+            ClipToBounds="True">
             <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto"/>
@@ -98,7 +109,7 @@
                             </StackPanel>
                         </Button>
 
-                        <Border Background="#070B14" BorderBrush="#334155" BorderThickness="0,1,1,1" CornerRadius="0,8,8,0" Width="849" Padding="12,6" Height="34" KeyDown="Border_KeyDown">
+                        <Border Background="#070B14" BorderBrush="#334155" BorderThickness="0,1,1,1" CornerRadius="0,8,8,0" Width="849" Padding="12,6" Height="34" Cursor="" >
                             <Grid>
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="Auto"/>
@@ -190,7 +201,12 @@
                     </DataGrid.Columns>
                 </DataGrid>
 
-                <Border Grid.Row="3" Background="#0F172A" BorderBrush="#1E293B" BorderThickness="0,1,0,0" Padding="25">
+                <Border Grid.Row="2"
+        Background="#0F172A"
+        BorderBrush="#1E293B"
+        BorderThickness="0,1,0,0"
+        Padding="25"
+        CornerRadius="0,0,12,12" HorizontalAlignment="Left" Margin="0,441,0,0" Grid.RowSpan="2" Width="1008">
                     <DockPanel>
                         <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
                             <Border Style="{StaticResource KbdBadge}">
@@ -202,7 +218,7 @@
                             </Border>
                             <TextBlock Text="Close" Foreground="#64748B" FontSize="12"/>
                         </StackPanel>
-                        <Button Style="{StaticResource ModernButtonStyle}" Content="ADD SELECTED" DockPanel.Dock="Right" HorizontalAlignment="Right" FontWeight="Bold"/>
+                        <Button Style="{StaticResource ModernButtonStyle}" Content="ADD SELECTED" DockPanel.Dock="Right" HorizontalAlignment="Right" FontWeight="Bold" Click="Button_Click"/>
                     </DockPanel>
                 </Border>
             </Grid>

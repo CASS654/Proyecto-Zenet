@@ -14,7 +14,6 @@ namespace SistemaDeVenta
             public string Nombre { get; set; }
             public decimal PrecioVenta { get; set; }
             public decimal PrecioCompra { get; set; }
-            public string Imagen { get; set; } // ruta de imagen
         }
 
     }

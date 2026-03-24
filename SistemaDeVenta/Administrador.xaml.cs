@@ -133,19 +133,40 @@ namespace SistemaDeVenta
 
         private void Button_Click_1(object sender, RoutedEventArgs e)
         {
-            ExpandSidebar();
+            if (_isSidebarExpanded)
+            {
+                CollapseSidebar();
+            }
+            else
+            {
+                ExpandSidebar();
+            }
 
         }
 
         private void Button_Click_2(object sender, RoutedEventArgs e)
         {
-            ExpandSidebar();
+            if (_isSidebarExpanded)
+            {
+                CollapseSidebar();
+            }
+            else
+            {
+                ExpandSidebar();
+            }
             MainContent.Content = new UsuariosView();
         }
 
         private void Button_Click_3(object sender, RoutedEventArgs e)
         {
-            ExpandSidebar();
+            if (_isSidebarExpanded)
+            {
+                CollapseSidebar();
+            }
+            else
+            {
+                ExpandSidebar();
+            }
             MainContent.Content = new ProveedoresNUEVO();
         }
     }
