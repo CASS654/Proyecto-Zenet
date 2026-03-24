@@ -1,4 +1,5 @@
 ﻿using SistemaDeVenta.Views;
+using SistemaDeVentaPrueba;
 using SistemaDeVentas.Views;
 using SistemaDeVentas.Views;
 using System;
@@ -111,28 +112,61 @@ namespace SistemaDeVenta
 
         private void TextBlock_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
-            Application.Current.Shutdown();
+            //Application.Current.Shutdown();
+            BusquedaProducto ventanaBusqueda = new BusquedaProducto();
+
+            // ShowDialog hace que la ventana sea modal
+            ventanaBusqueda.ShowDialog();
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            MessageBox.Show("Funcionalidad en desarrollo", "Información",
-                MessageBoxButton.OK, MessageBoxImage.Information);
+            // 1. Instanciamos la ventana de búsqueda
+    BusquedaProducto ventanaBusqueda = new BusquedaProducto();
+
+            // 2. Establecemos quién es la ventana "padre" para que aparezca centrada sobre el Administrador
+            ventanaBusqueda.Owner = this;
+
+            // 3. La abrimos como Modal (bloquea el fondo hasta que se cierre)
+            ventanaBusqueda.ShowDialog();
         }
 
         private void Button_Click_1(object sender, RoutedEventArgs e)
         {
-            ExpandSidebar();
+            if (_isSidebarExpanded)
+            {
+                CollapseSidebar();
+            }
+            else
+            {
+                ExpandSidebar();
+            }
 
         }
 
         private void Button_Click_2(object sender, RoutedEventArgs e)
         {
+            if (_isSidebarExpanded)
+            {
+                CollapseSidebar();
+            }
+            else
+            {
+                ExpandSidebar();
+            }
             MainContent.Content = new UsuariosView();
         }
 
         private void Button_Click_3(object sender, RoutedEventArgs e)
         {
+            if (_isSidebarExpanded)
+            {
+                CollapseSidebar();
+            }
+            else
+            {
+                ExpandSidebar();
+            }
             MainContent.Content = new ProveedoresNUEVO();
         }
     }

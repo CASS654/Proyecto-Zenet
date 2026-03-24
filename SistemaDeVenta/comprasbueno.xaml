@@ -1,0 +1,261 @@
+﻿<Window x:Class="SistemaDeVenta.comprasbueno"
+            xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+            xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+            xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+            xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+            xmlns:local="clr-namespace:SistemaDeVenta"
+            mc:Ignorable="d"
+            Title="Módulo de Compras" Height="900" Width="1400"
+            WindowStartupLocation="CenterScreen"
+            Background="#121420" FontFamily="Segoe UI">
+
+    <Window.Resources>
+        <SolidColorBrush x:Key="Primary" Color="#ff2d46"/>
+        <SolidColorBrush x:Key="PrimaryHover" Color="#e6283f"/>
+        <SolidColorBrush x:Key="PrimaryLight" Color="#1Aff2d46"/>
+        <SolidColorBrush x:Key="BgDark" Color="#121420"/>
+        <SolidColorBrush x:Key="SurfaceDark" Color="#1a1d2e"/>
+        <SolidColorBrush x:Key="BorderDark" Color="#2a2f45"/>
+        <SolidColorBrush x:Key="TextWhite" Color="#ffffff"/>
+        <SolidColorBrush x:Key="TextMuted" Color="#94a3b8"/>
+        <SolidColorBrush x:Key="TextMutedDark" Color="#64748b"/>
+        <SolidColorBrush x:Key="SuccessGreen" Color="#10b981"/>
+
+        <Style TargetType="TextBox">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="CaretBrush" Value="{StaticResource Primary}"/>
+        </Style>
+    </Window.Resources>
+
+    <Grid Margin="24">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="380"/>
+        </Grid.ColumnDefinitions>
+
+        <Grid Grid.Column="0" Margin="0,0,24,0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+
+            <Border Grid.Row="0" Background="{StaticResource SurfaceDark}" BorderBrush="#33ff2d46" BorderThickness="2" CornerRadius="12" Padding="16" Height="70">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+
+                    <TextBlock Grid.Column="0" Text="🔍" Foreground="{StaticResource Primary}" FontSize="20" VerticalAlignment="Center" Margin="0,0,12,0"/>
+                    <TextBox Grid.Column="1" Text="4*" FontSize="20" FontWeight="SemiBold" VerticalAlignment="Center" FocusVisualStyle="{x:Null}"/>
+
+                    <Border Grid.Column="2" Background="{StaticResource Primary}" CornerRadius="8" Padding="16,8" Cursor="Hand">
+                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                            <Border Background="#33ffffff" CornerRadius="4" Padding="4,2" Margin="0,0,8,0">
+                                <TextBlock Text="ENTER" Foreground="White" FontSize="10" FontWeight="Black"/>
+                            </Border>
+                            <TextBlock Text="ADD" Foreground="White" FontWeight="Bold" FontSize="14"/>
+                        </StackPanel>
+                    </Border>
+                </Grid>
+            </Border>
+
+            <Border Grid.Row="1" Background="{StaticResource SurfaceDark}" BorderBrush="{StaticResource BorderDark}" BorderThickness="1" CornerRadius="12" Margin="0,24,0,0">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+
+                    <Grid Grid.Row="0" Background="#0Affffff">
+                        <Border BorderBrush="{StaticResource BorderDark}" BorderThickness="0,0,0,1">
+                            <Grid Margin="24,16">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="3*"/>
+                                    <ColumnDefinition Width="1.5*"/>
+                                    <ColumnDefinition Width="1.5*"/>
+                                    <ColumnDefinition Width="1.5*"/>
+                                    <ColumnDefinition Width="1*"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Grid.Column="0" Text="PRODUCT DETAILS" Foreground="{StaticResource TextMuted}" FontSize="12" FontWeight="Bold"/>
+                                <TextBlock Grid.Column="1" Text="QTY" Foreground="{StaticResource TextMuted}" FontSize="12" FontWeight="Bold" HorizontalAlignment="Center"/>
+                                <TextBlock Grid.Column="2" Text="COSTO COMPRA" Foreground="{StaticResource TextMuted}" FontSize="12" FontWeight="Bold" HorizontalAlignment="Right"/>
+                                <TextBlock Grid.Column="3" Text="TOTAL" Foreground="{StaticResource TextMuted}" FontSize="12" FontWeight="Bold" HorizontalAlignment="Right"/>
+                                <TextBlock Grid.Column="4" Text="ACTIONS" Foreground="{StaticResource TextMuted}" FontSize="12" FontWeight="Bold" HorizontalAlignment="Center"/>
+                            </Grid>
+                        </Border>
+                    </Grid>
+
+                    <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
+                        <ItemsControl x:Name="ItemsCompra">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <Border BorderBrush="#1Affffff" BorderThickness="0,0,0,1">
+                                        <Grid Margin="24,16">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="3*"/>
+                                                <ColumnDefinition Width="1.5*"/>
+                                                <ColumnDefinition Width="1.5*"/>
+                                                <ColumnDefinition Width="1.5*"/>
+                                                <ColumnDefinition Width="1*"/>
+                                            </Grid.ColumnDefinitions>
+
+                                            <StackPanel Grid.Column="0">
+                                                <TextBlock Text="{Binding Nombre}" Foreground="White" FontWeight="SemiBold"/>
+                                                <TextBlock Text="{Binding SKU}" Foreground="{StaticResource TextMuted}" FontSize="10" Margin="0,4,0,0"/>
+                                            </StackPanel>
+
+                                            <StackPanel Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Center">
+                                                <Border Width="24" Height="24" Background="{StaticResource BorderDark}" CornerRadius="4" Cursor="Hand">
+                                                    <TextBlock Text="-" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                                </Border>
+                                                <TextBlock Text="{Binding Cantidad}" Foreground="White" FontWeight="Bold" Width="30" TextAlignment="Center" VerticalAlignment="Center"/>
+                                                <Border Width="24" Height="24" Background="{StaticResource BorderDark}" CornerRadius="4" Cursor="Hand">
+                                                    <TextBlock Text="+" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                                </Border>
+                                            </StackPanel>
+
+                                            <TextBlock Grid.Column="2" Text="{Binding Costo, StringFormat={}{0:C}}" Foreground="White" HorizontalAlignment="Right" VerticalAlignment="Center"/>
+                                            <TextBlock Grid.Column="3" Text="{Binding Total, StringFormat={}{0:C}}" Foreground="White" FontWeight="Bold" HorizontalAlignment="Right" VerticalAlignment="Center"/>
+                                            <TextBlock Grid.Column="4" Text="🗑" Foreground="{StaticResource TextMuted}" FontSize="16" HorizontalAlignment="Center" VerticalAlignment="Center" Cursor="Hand"/>
+                                        </Grid>
+                                    </Border>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                    </ScrollViewer>
+
+                    <Border Grid.Row="2" Background="#0Affffff" BorderBrush="{StaticResource BorderDark}" BorderThickness="0,1,0,0" Padding="16">
+                        <Grid>
+                            <StackPanel Orientation="Horizontal">
+                                <StackPanel Orientation="Horizontal" Margin="0,0,16,0">
+                                    <Border Background="{StaticResource Primary}" CornerRadius="2" Padding="6,2">
+                                        <TextBlock Text="F3" Foreground="White" FontSize="10" FontWeight="Bold"/>
+                                    </Border>
+                                    <TextBlock Text="SELECCIONAR PROVEEDOR" Foreground="{StaticResource TextMuted}" FontSize="10" FontWeight="Bold" Margin="8,0,0,0" VerticalAlignment="Center"/>
+                                </StackPanel>
+                                <StackPanel Orientation="Horizontal" Margin="0,0,16,0">
+                                    <Border BorderBrush="#33ffffff" BorderThickness="1" CornerRadius="2" Padding="6,2">
+                                        <TextBlock Text="F6" Foreground="White" FontSize="10" FontWeight="Bold"/>
+                                    </Border>
+                                    <TextBlock Text="EDITAR CANTIDAD" Foreground="{StaticResource TextMuted}" FontSize="10" FontWeight="Bold" Margin="8,0,0,0" VerticalAlignment="Center"/>
+                                </StackPanel>
+                            </StackPanel>
+                            <TextBlock x:Name="txtContadorItems" Text="ITEMS EN CARRITO: 0" Foreground="{StaticResource TextMuted}" FontSize="10" FontWeight="Bold" HorizontalAlignment="Right" VerticalAlignment="Center"/>
+                        </Grid>
+                    </Border>
+                </Grid>
+            </Border>
+        </Grid>
+
+        <Grid Grid.Column="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+
+            <Border Grid.Row="0" Background="{StaticResource SurfaceDark}" BorderBrush="#1Affffff" BorderThickness="1" CornerRadius="12" Padding="24">
+                <StackPanel>
+                    <TextBlock Text="PROVEEDOR SELECCIONADO" Foreground="{StaticResource TextMuted}" FontSize="10" FontWeight="Bold" Margin="0,0,0,12"/>
+                    <Border Background="{StaticResource BgDark}" BorderBrush="{StaticResource BorderDark}" BorderThickness="1" CornerRadius="8" Padding="12,8" Margin="0,0,0,16">
+                        <Grid>
+                            <TextBlock Text="🔍" Foreground="{StaticResource Primary}" VerticalAlignment="Center"/>
+                            <TextBox Margin="24,0,30,0" Text="Buscar proveedor..." Foreground="{StaticResource TextMutedDark}"/>
+                            <Border HorizontalAlignment="Right" Background="{StaticResource PrimaryLight}" BorderBrush="#4Dff2d46" BorderThickness="1" CornerRadius="4" Padding="4,2">
+                                <TextBlock Text="F3" Foreground="{StaticResource Primary}" FontSize="10" FontWeight="Black"/>
+                            </Border>
+                        </Grid>
+                    </Border>
+
+                    <Border Background="{StaticResource PrimaryLight}" BorderBrush="#33ff2d46" BorderThickness="1" CornerRadius="8" Padding="12">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            <Border Grid.Column="0" Width="40" Height="40" Background="{StaticResource Primary}" CornerRadius="20">
+                                <TextBlock Text="🏪" Foreground="White" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                            </Border>
+                            <StackPanel Grid.Column="1" Margin="12,0,0,0" VerticalAlignment="Center">
+                                <TextBlock Text="ACTIVO" Foreground="{StaticResource Primary}" Opacity="0.7" FontSize="10" FontWeight="Bold"/>
+                                <TextBlock Text="DISTRIBUIDORA DE CAFE..." Foreground="White" FontWeight="Black" FontSize="12" TextTrimming="CharacterEllipsis"/>
+                            </StackPanel>
+                            <TextBlock Grid.Column="2" Text="✕" Foreground="{StaticResource TextMuted}" FontSize="16" VerticalAlignment="Center" Cursor="Hand"/>
+                        </Grid>
+                    </Border>
+
+                    <Border Height="1" Background="{StaticResource BorderDark}" Margin="0,24"/>
+
+                    <StackPanel Orientation="Horizontal" Margin="0,0,0,16">
+                        <TextBlock Text="🛒" Foreground="{StaticResource TextMuted}" Margin="0,0,8,0"/>
+                        <TextBlock Text="RESUMEN" Foreground="{StaticResource TextMuted}" FontSize="12" FontWeight="Bold"/>
+                    </StackPanel>
+
+                    <Grid Margin="0,0,0,12">
+                        <TextBlock Text="Subtotal Bruto" Foreground="{StaticResource TextMuted}"/>
+                        <TextBlock Text="$36.50" Foreground="White" FontWeight="SemiBold" HorizontalAlignment="Right"/>
+                    </Grid>
+                    <Grid Margin="0,0,0,24">
+                        <TextBlock Text="Impuestos (8.5%)" Foreground="{StaticResource TextMuted}"/>
+                        <TextBlock Text="$3.10" Foreground="White" FontWeight="SemiBold" HorizontalAlignment="Right"/>
+                    </Grid>
+
+                    <Border BorderBrush="{StaticResource BorderDark}" BorderThickness="0,1,0,0" Padding="0,16,0,0">
+                        <StackPanel>
+                            <TextBlock Text="TOTAL A PAGAR" Foreground="{StaticResource TextMuted}" FontSize="10" FontWeight="Bold"/>
+                            <TextBlock Margin="0,4,0,0">
+                                <Run Text="$39" Foreground="White" FontSize="56" FontWeight="Black"/>
+                                <Run Text=".60" Foreground="{StaticResource Primary}" FontSize="56" FontWeight="Black"/>
+                            </TextBlock>
+                        </StackPanel>
+                    </Border>
+                </StackPanel>
+            </Border>
+
+            <StackPanel Grid.Row="1" VerticalAlignment="Bottom">
+                <Border Background="#0Affffff" BorderBrush="{StaticResource BorderDark}" BorderThickness="1" CornerRadius="8" Padding="16" Margin="0,0,0,16">
+                    <StackPanel>
+                        <Grid Margin="0,0,0,4">
+                            <TextBlock Text="MONTO RECIBIDO" Foreground="{StaticResource TextMuted}" FontSize="10" FontWeight="Bold"/>
+                            <Border HorizontalAlignment="Right" Background="{StaticResource PrimaryLight}" CornerRadius="4" Padding="4,2">
+                                <TextBlock Text="AUTO" Foreground="{StaticResource Primary}" FontSize="10" FontWeight="Black"/>
+                            </Border>
+                        </Grid>
+                        <TextBlock Text="$50.00" Foreground="White" FontSize="24" FontWeight="Black"/>
+                    </StackPanel>
+                </Border>
+
+                <Grid Margin="16,0,16,16">
+                    <TextBlock Text="CAMBIO" Foreground="{StaticResource TextMutedDark}" FontSize="12" FontWeight="Bold" VerticalAlignment="Center"/>
+                    <TextBlock Text="$10.40" Foreground="{StaticResource SuccessGreen}" FontSize="24" FontWeight="Black" HorizontalAlignment="Right"/>
+                </Grid>
+
+                <Button BorderThickness="0" Cursor="Hand">
+                    <Button.Template>
+                        <ControlTemplate TargetType="Button">
+                            <Border Background="{StaticResource Primary}" CornerRadius="12" Padding="24">
+                                <Grid>
+                                    <StackPanel VerticalAlignment="Center">
+                                        <TextBlock Text="FINALIZAR" Foreground="White" Opacity="0.7" FontSize="10" FontWeight="Black"/>
+                                        <TextBlock Text="COMPRA" Foreground="White" FontSize="24" FontWeight="Black"/>
+                                    </StackPanel>
+                                    <StackPanel HorizontalAlignment="Right" VerticalAlignment="Center">
+                                        <Border Background="#33ffffff" CornerRadius="4" Padding="8,4" Margin="0,0,0,8" HorizontalAlignment="Right">
+                                            <TextBlock Text="ENTER" Foreground="White" FontSize="10" FontWeight="Black"/>
+                                        </Border>
+                                        <TextBlock Text="🧾" Foreground="White" FontSize="32" HorizontalAlignment="Right"/>
+                                    </StackPanel>
+                                </Grid>
+                            </Border>
+                        </ControlTemplate>
+                    </Button.Template>
+                </Button>
+            </StackPanel>
+        </Grid>
+    </Grid>
+</Window>

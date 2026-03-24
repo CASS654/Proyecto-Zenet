@@ -1,5 +1,6 @@
 using MySql.Data.MySqlClient;
 using Sistema_Bancario;
+using SistemaDeVentaPrueba;
 using System;
 using System.Windows;
 using System.Windows.Controls;
@@ -15,7 +16,6 @@ namespace SistemaDeVenta
         string usuario = "";
         string clave = "";
         string rol = "";
-
 
         public LoginPage()
         {
@@ -35,6 +35,7 @@ namespace SistemaDeVenta
                 isUsernamePlaceholder = false;
             }
         }
+
         private bool ConectarDB(string server, string database, string user, string password)
         {
             ClassConexion objConexion = new ClassConexion();
@@ -44,15 +45,13 @@ namespace SistemaDeVenta
             objConexion.vPassword = password;
 
             int resultadoConexion = objConexion.ABRIR_CONEXION_DB_MYSQL(objConexion);
-            return resultadoConexion == 0; // True si conecta
+            return resultadoConexion == 0;
         }
 
-        // =========================
-        //  VALIDAR USUARIO EN BD
-        // =========================
-        private bool ValidarUsuario(string usuario, string clave)
+        // 🔥 VALIDACIÓN COMPLETA (usuario + password + activo + rol)
+        private string ValidarUsuario(string usuario, string clave)
         {
-            string query = "SELECT * FROM Usuarios WHERE usser = @user AND password = @pass";
+            string query = "SELECT Rol, activo FROM Usuarios WHERE usser = @user AND password = @pass";
 
             using (MySqlCommand cmd = new MySqlCommand(query, ClassConexion.SQLConnection))
             {
@@ -61,32 +60,23 @@ namespace SistemaDeVenta
 
                 using (MySqlDataReader reader = cmd.ExecuteReader())
                 {
-                    return reader.HasRows; // Existe → Login válido
-                }
-            }
-        }
-        private string ResultadoLogin(string usuario, string clave)
-        {
-            string query = "SELECT Rol FROM Usuarios WHERE usser = @user AND password = @pass";
-
-            using (MySqlCommand cmd = new MySqlCommand(query, ClassConexion.SQLConnection))
-            {
-                cmd.Parameters.AddWithValue("@user", usuario);
-                cmd.Parameters.AddWithValue("@pass", clave);
-
-                using (MySqlDataReader reader = cmd.ExecuteReader())
-                {
-                    if (reader.Read())  // existe
+                    if (reader.Read())
                     {
+                        bool activo = Convert.ToBoolean(reader["activo"]);
+
+                        if (!activo)
                         {
-                            return rol = reader["Rol"].ToString();
+                            return "INACTIVO";
                         }
-                        ;
+
+                        return reader["Rol"].ToString();
                     }
                 }
             }
-            return ""; // No existe
+
+            return "NO_EXISTE";
         }
+
         private void UsernameTextBox_LostFocus(object sender, RoutedEventArgs e)
         {
             if (string.IsNullOrWhiteSpace(UsernameTextBox.Text))
@@ -99,24 +89,20 @@ namespace SistemaDeVenta
 
         private void Button_Click_1(object sender, RoutedEventArgs e)
         {
-            // 1. Obtener usuario
             usuario = UsernameTextBox.Text.Trim();
 
-            // 2. Obtener password según modo
             if (PasswordHidden.Visibility == Visibility.Visible)
-            {
                 clave = PasswordHidden.Password;
-            }
             else
-            {
                 clave = PasswordVisible.Text;
-            }
 
-            // 3. Validar campos vacíos
+            // 🔴 CAMPOS VACÍOS
             if (string.IsNullOrWhiteSpace(usuario))
             {
                 MessageBox.Show("Ingrese el usuario", "Error",
                     MessageBoxButton.OK, MessageBoxImage.Warning);
+
+                LimpiarCampos(); // 🔥 limpiar siempre
                 return;
             }
 
@@ -124,82 +110,73 @@ namespace SistemaDeVenta
             {
                 MessageBox.Show("Ingrese la contraseña", "Error",
                     MessageBoxButton.OK, MessageBoxImage.Warning);
+
+                LimpiarCampos(); // 🔥 limpiar siempre
                 return;
             }
 
             // 4. Conectar BD
-            if (!ConectarDB("localhost", "Fruteria", "root", "felixeduardo200605#"))
+            if (!ConectarDB("localhost", "Fruteria", "root", "Cesar654"))
             {
                 MessageBox.Show("No se pudo conectar a la base de datos",
                     "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+
+                LimpiarCampos(); // 🔥 limpiar siempre
                 return;
             }
 
-            // 5. Validar usuario
-            if (ValidarUsuario(usuario, clave))
-            {
-                // Obtener rol
-                rol = ResultadoLogin(usuario, clave);
+            string resultado = ValidarUsuario(usuario, clave);
 
-                // Crear ventanas
-                Menu ventana = new Menu();
-                MenuVendedor menuVendedor = new MenuVendedor();
-                MenuGerente menuGerente = new MenuGerente();
-                AdministradorWindow admin = new AdministradorWindow();
-                // 6. Abrir según rol
-                switch (rol)
-                {
-                    case "Admin":
-
-                        //MessageBox.Show("Bienvenido Administrador: " + usuario,
-                        //                "Acceso Permitido",
-                        //                MessageBoxButton.OK,
-                        //                MessageBoxImage.Information);
-
-                        admin.Show();
-                        this.Close();
-                        break;
-
-
-                    case "Cajero":
-
-                        admin.Show();
-                        this.Close();
-                        break;
-
-
-                    case "Gerente":
-
-                        menuGerente.Show();
-                        this.Close();
-                        break;
-
-
-                    default:
-
-                        MessageBox.Show("Rol no reconocido",
-                                        "Error",
-                                        MessageBoxButton.OK,
-                                        MessageBoxImage.Warning);
-                        break;
-                }
-            }
-            else
+            // 🔴 USUARIO NO EXISTE
+            if (resultado == "NO_EXISTE")
             {
                 MessageBox.Show("Usuario o contraseña incorrectos",
                                 "Error",
                                 MessageBoxButton.OK,
                                 MessageBoxImage.Warning);
 
-                UsernameTextBox.Clear();
-                PasswordHidden.Clear();
-                PasswordVisible.Clear();
+                LimpiarCampos(); // 🔥 limpiar siempre
+                return;
+            }
 
-                UsernameTextBox.Focus();
+            // 🔴 USUARIO INACTIVO
+            if (resultado == "INACTIVO")
+            {
+                // Obtener rol
+                rol = ResultadoLogin(usuario, clave);
+
+            MenuVendedor menuVendedor = new MenuVendedor();
+            MenuGerente menuGerente = new MenuGerente();
+            AdministradorWindow admin = new AdministradorWindow();
+            VetanaCobro cobro = new VetanaCobro();
+
+            switch (rol)
+            {
+                case "Admin":
+                    admin.Show();
+                    this.Close();
+                    break;
+
+                case "Cajero":
+                    cobro.Show();
+                    this.Close();
+                    break;
+
+                case "Gerente":
+                    menuGerente.Show();
+                    this.Close();
+                    break;
+
+                default:
+                    MessageBox.Show("Rol no reconocido",
+                                    "Error",
+                                    MessageBoxButton.OK,
+                                    MessageBoxImage.Warning);
+
+                    LimpiarCampos(); // 🔥 por seguridad también aquí
+                    break;
             }
         }
-
-
 
         private void TogglePassword_Click(object sender, RoutedEventArgs e)
         {
@@ -221,17 +198,12 @@ namespace SistemaDeVenta
 
         private void UsernameTextBox_KeyDown_1(object sender, KeyEventArgs e)
         {
-            if (e.Key == System.Windows.Input.Key.Enter)
+            if (e.Key == Key.Enter)
             {
-                // Si está oculto el password
                 if (PasswordHidden.Visibility == Visibility.Visible)
-                {
                     PasswordHidden.Focus();
-                }
                 else
-                {
                     PasswordVisible.Focus();
-                }
             }
         }
 
@@ -239,7 +211,7 @@ namespace SistemaDeVenta
         {
             if (e.Key == Key.Enter)
             {
-                Button_Click_1(sender, e);  // llama al botón aceptar
+                Button_Click_1(sender, e);
             }
         }
 
@@ -247,6 +219,13 @@ namespace SistemaDeVenta
         {
             MessageBox.Show("¡Recuperación de contraseña no implementada aún!", "Información",
                 MessageBoxButton.OK, MessageBoxImage.Information);
+        }
+        private void LimpiarCampos()
+        {
+            UsernameTextBox.Clear();
+            PasswordHidden.Clear();
+            PasswordVisible.Clear();
+            UsernameTextBox.Focus();
         }
     }
 }
