@@ -11,7 +11,7 @@ namespace SistemaDeVentaPrueba
         private bool modoCantidad = false;
         private string bufferCantidad = "";
         private int cantidadActual = 1;
-
+        //K
         public ObservableCollection<ProductoPOS> carrito { get; set; } = new ObservableCollection<ProductoPOS>();
 
         public VetanaCobro()
