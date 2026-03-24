@@ -100,6 +100,9 @@
     <Compile Include="Compras.xaml.cs">
       <DependentUpon>Compras.xaml</DependentUpon>
     </Compile>
+    <Compile Include="comprasbueno.xaml.cs">
+      <DependentUpon>comprasbueno.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Inventario.xaml.cs">
       <DependentUpon>Inventario.xaml</DependentUpon>
     </Compile>
@@ -157,6 +160,10 @@
     <Page Include="Compras.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="comprasbueno.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="HistorialVenta.xaml">
       <Generator>MSBuild:Compile</Generator>
