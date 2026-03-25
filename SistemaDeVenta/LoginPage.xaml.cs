@@ -17,6 +17,7 @@ namespace SistemaDeVenta
         string clave = "";
         string rol = "";
 
+        //bacab es mongol 
         public LoginPage()
         {
             if (System.ComponentModel.DesignerProperties.GetIsInDesignMode(this))
