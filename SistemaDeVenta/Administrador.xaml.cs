@@ -169,5 +169,19 @@ namespace SistemaDeVenta
             }
             MainContent.Content = new ProveedoresNUEVO();
         }
+
+        private void Button_Click_4(object sender, RoutedEventArgs e)
+        {
+            if (_isSidebarExpanded)
+            {
+                CollapseSidebar();
+            }
+            else
+            {
+                ExpandSidebar();
+            }
+
+            MainContent.Content = new VentanaInventario();
+        }
     }
 }

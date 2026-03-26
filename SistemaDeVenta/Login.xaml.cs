@@ -91,7 +91,7 @@ namespace SistemaDeVenta
             MenuGerente menuGerente = new MenuGerente();
 
             // 1. Conectar a BD
-            if (!ConectarDB("localhost", "Fruteria", "root", "Cesar654"))  // <-- AJUSTA TUS DATOS
+            if (!ConectarDB("localhost", "fruteria2", "root", "felixeduardo200605#"))  // <-- AJUSTA TUS DATOS
             {
                 MessageBox.Show("No se pudo conectar con la base de datos.");
                 return;

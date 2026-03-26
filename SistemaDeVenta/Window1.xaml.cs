@@ -64,6 +64,7 @@ namespace SistemaDeVenta
         public int IdProducto { get; set; }
         public string Nombre { get; set; }
         public decimal PrecioVenta { get; set; }
+       
     }
 }
 

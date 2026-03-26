@@ -106,6 +106,8 @@
     <Compile Include="Inventario.xaml.cs">
       <DependentUpon>Inventario.xaml</DependentUpon>
     </Compile>
+    <Compile Include="InventarioDAO.cs" />
+    <Compile Include="InventarioView.cs" />
     <Compile Include="LoginPage.xaml.cs">
       <DependentUpon>LoginPage.xaml</DependentUpon>
     </Compile>
@@ -128,8 +130,17 @@
     <Compile Include="Usuarios.xaml.cs">
       <DependentUpon>Usuarios.xaml</DependentUpon>
     </Compile>
+    <Compile Include="VentanaEditarProducto.xaml.cs">
+      <DependentUpon>VentanaEditarProducto.xaml</DependentUpon>
+    </Compile>
     <Compile Include="VentanaFiltro.xaml.cs">
       <DependentUpon>VentanaFiltro.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="VentanaInventario.xaml.cs">
+      <DependentUpon>VentanaInventario.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="VentanaMerma.xaml.cs">
+      <DependentUpon>VentanaMerma.xaml</DependentUpon>
     </Compile>
     <Compile Include="VentanaPago.xaml.cs">
       <DependentUpon>VentanaPago.xaml</DependentUpon>
@@ -232,9 +243,21 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="VentanaEditarProducto.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="VentanaFiltro.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="VentanaInventario.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="VentanaMerma.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="VentanaPago.xaml">
       <Generator>MSBuild:Compile</Generator>

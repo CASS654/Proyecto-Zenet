@@ -63,5 +63,14 @@ namespace Sistema_Bancario
 
             return vResultado;
         }
+        public static MySqlConnection ObtenerConexion()
+        {
+            if (SQLConnection.State != System.Data.ConnectionState.Open)
+            {
+                SQLConnection.Open();
+            }
+
+            return SQLConnection;
+        }
     }
 }

@@ -17,7 +17,7 @@ namespace SistemaDeVenta
         string clave = "";
         string rol = "";
 
-        //bacab es mongol 
+        
         public LoginPage()
         {
             if (System.ComponentModel.DesignerProperties.GetIsInDesignMode(this))
@@ -52,7 +52,7 @@ namespace SistemaDeVenta
         // 🔥 VALIDACIÓN COMPLETA (usuario + password + activo + rol)
         private string ValidarUsuario(string usuario, string clave)
         {
-            string query = "SELECT Rol, activo FROM Usuarios WHERE usser = @user AND password = @pass";
+            string query = "SELECT IdUsuario, Rol, activo FROM Usuarios WHERE usser = @user AND password = @pass";
 
             using (MySqlCommand cmd = new MySqlCommand(query, ClassConexion.SQLConnection))
             {
@@ -69,6 +69,9 @@ namespace SistemaDeVenta
                         {
                             return "INACTIVO";
                         }
+
+                        // 🔥 AQUÍ GUARDAMOS EL ID DEL USUARIO
+                        globales.IdUsuarioGlobal = Convert.ToInt32(reader["IdUsuario"]);
 
                         return reader["Rol"].ToString();
                     }
@@ -106,7 +109,7 @@ namespace SistemaDeVenta
             }
 
             // 2. Conectar BD
-            if (!ConectarDB("localhost", "Fruteria2", "root", "Cesar654"))
+            if (!ConectarDB("localhost", "Fruteria2", "root", "felixeduardo200605#"))
             {
                 MessageBox.Show("No se pudo conectar a la base de datos", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                 return;
