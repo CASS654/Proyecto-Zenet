@@ -17,42 +17,42 @@ namespace SistemaDeVenta
 
             try
             {
-                MySqlConnection conn = ClassConexion.ObtenerConexion();
-
-                // 🔥 ABRIR CONEXIÓN SI ESTÁ CERRADA
-                if (conn.State != System.Data.ConnectionState.Open)
+                using (MySqlConnection conn = ClassConexion.ObtenerConexion())
                 {
-                    conn.Open();
-                }
-
-                string query = @"SELECT p.IdProducto, p.Nombre, p.Categoria,
-                         p.PrecioCompra, p.PrecioVenta,
-                         i.Stock, p.Disponible
-                         FROM Productos p
-                         INNER JOIN Inventario i 
-                         ON p.IdProducto = i.IdProducto";
-
-                using (MySqlCommand cmd = new MySqlCommand(query, conn))
-                using (MySqlDataReader reader = cmd.ExecuteReader())
-                {
-                    while (reader.Read())
+                    if (conn.State != System.Data.ConnectionState.Open)
                     {
-                        lista.Add(new InventarioView
-                        {
-                            IdProducto = reader.GetInt32("IdProducto"),
-                            Nombre = reader.GetString("Nombre"),
-                            Categoria = reader.GetString("Categoria"),
-                            PrecioCompra = reader.GetDecimal("PrecioCompra"),
-                            PrecioVenta = reader.GetDecimal("PrecioVenta"),
-                            Stock = reader.GetDecimal("Stock"),
-                            Disponible = reader.GetBoolean("Disponible")
-                        });
+                        conn.Open();
                     }
-                }
+
+                    string query = @"SELECT p.IdProducto, p.Nombre, p.Categoria,
+                     p.PrecioCompra, p.PrecioVenta,
+                     i.Stock, p.Disponible
+                     FROM Productos p
+                     INNER JOIN Inventario i 
+                     ON p.IdProducto = i.IdProducto";
+
+                    using (MySqlCommand cmd = new MySqlCommand(query, conn))
+                    using (MySqlDataReader reader = cmd.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            lista.Add(new InventarioView
+                            {
+                                IdProducto = reader.GetInt32("IdProducto"),
+                                Nombre = reader.GetString("Nombre"),
+                                Categoria = reader.GetString("Categoria"),
+                                PrecioCompra = reader.GetDecimal("PrecioCompra"),
+                                PrecioVenta = reader.GetDecimal("PrecioVenta"),
+                                Stock = reader.GetDecimal("Stock"),
+                                Disponible = reader.GetBoolean("Disponible")
+                            });
+                        }
+                    }
+                } // 🔥 AQUÍ SE CIERRA AUTOMÁTICAMENTE
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Error al cargar inventario: " + ex.ToString());
+                MessageBox.Show("Error al cargar inventario: " + ex.Message);
             }
 
             return lista;

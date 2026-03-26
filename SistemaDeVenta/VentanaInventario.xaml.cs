@@ -1,4 +1,6 @@
-﻿using System;
+﻿using MySql.Data.MySqlClient;
+using Sistema_Bancario;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -72,12 +74,57 @@ namespace SistemaDeVenta
                 ventana.ShowDialog();
                 CargarInventario();
             };
-
             // OPCIÓN DISPONIBILIDAD
             MenuItem disponibilidad = new MenuItem { Header = "Cambiar Disponibilidad" };
             disponibilidad.Click += (s, ev) =>
             {
-                MessageBox.Show("Aquí irá la lógica de disponibilidad");
+                if (producto == null)
+                {
+                    MessageBox.Show("Producto no válido");
+                    return;
+                }
+
+                bool nuevoEstado = !producto.Disponible;
+
+                string mensaje = nuevoEstado
+                    ? "¿Deseas ACTIVAR este producto?"
+                    : "¿Deseas DESACTIVAR este producto?";
+
+                var confirm = MessageBox.Show(
+                    mensaje,
+                    "Confirmar",
+                    MessageBoxButton.YesNo,
+                    MessageBoxImage.Question
+                );
+
+                if (confirm != MessageBoxResult.Yes)
+                    return;
+
+                try
+                {
+                    var conn = ClassConexion.SQLConnection;
+
+                    if (conn.State != System.Data.ConnectionState.Open)
+                        conn.Open();
+
+                    string query = @"UPDATE Productos 
+                         SET Disponible = @Disponible
+                         WHERE IdProducto = @Id";
+
+                    MySqlCommand cmd = new MySqlCommand(query, conn);
+                    cmd.Parameters.AddWithValue("@Disponible", nuevoEstado);
+                    cmd.Parameters.AddWithValue("@Id", producto.IdProducto);
+
+                    cmd.ExecuteNonQuery();
+
+                    MessageBox.Show("Disponibilidad actualizada correctamente");
+
+                    CargarInventario(); // 🔥 refresca la tabla
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Error: " + ex.Message);
+                }
             };
 
             // AGREGAR AL MENÚ
@@ -89,5 +136,7 @@ namespace SistemaDeVenta
             btn.ContextMenu = menu;
             menu.IsOpen = true;
         }
+
+
     }
 }

@@ -1,7 +1,6 @@
 ﻿using SistemaDeVenta.Views;
 using SistemaDeVentaPrueba;
 using SistemaDeVentas.Views;
-using SistemaDeVentas.Views;
 using System;
 using System.Windows;
 using System.Windows.Input;
@@ -141,7 +140,16 @@ namespace SistemaDeVenta
             {
                 ExpandSidebar();
             }
+            if (_isSidebarExpanded)
+            {
+                CollapseSidebar();
+            }
+            else
+            {
+                ExpandSidebar();
+            }
 
+            MainContent.Content = new DashboardControl();
         }
 
         private void Button_Click_2(object sender, RoutedEventArgs e)
