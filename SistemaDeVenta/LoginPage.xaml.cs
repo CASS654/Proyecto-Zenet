@@ -109,7 +109,7 @@ namespace SistemaDeVenta
             }
 
             // 2. Conectar BD
-            if (!ConectarDB("localhost", "Fruteria2", "root", "53559"))
+            if (!ConectarDB("localhost", "Fruteria2", "root", "Cesar654"))
             {
                 MessageBox.Show("No se pudo conectar a la base de datos", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                 return;
