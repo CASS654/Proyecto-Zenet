@@ -114,8 +114,9 @@ namespace SistemaDeVenta
             //Application.Current.Shutdown();
             BusquedaProducto ventanaBusqueda = new BusquedaProducto();
 
-            // ShowDialog hace que la ventana sea modal
-            ventanaBusqueda.ShowDialog();
+                        // ShowDialog hace que la ventana sea modal
+            // salir
+            Application.Current.Shutdown();
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
@@ -132,14 +133,6 @@ namespace SistemaDeVenta
 
         private void Button_Click_1(object sender, RoutedEventArgs e)
         {
-            if (_isSidebarExpanded)
-            {
-                CollapseSidebar();
-            }
-            else
-            {
-                ExpandSidebar();
-            }
             if (_isSidebarExpanded)
             {
                 CollapseSidebar();
