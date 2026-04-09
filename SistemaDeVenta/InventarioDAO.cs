@@ -56,6 +56,20 @@ namespace SistemaDeVenta
             }
 
             return lista;
+
+        }
+
+        public (int total, int bajos, int agotados) ObtenerResumen()
+        {
+            var lista = ObtenerInventario();
+
+            int total = lista.Count;
+
+            int bajos = lista.Count(p => p.Stock > 0 && p.Stock <= 20);
+
+            int agotados = lista.Count(p => p.Stock == 0);
+
+            return (total, bajos, agotados);
         }
     }
 }

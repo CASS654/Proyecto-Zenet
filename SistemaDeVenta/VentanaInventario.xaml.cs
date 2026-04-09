@@ -26,6 +26,9 @@ namespace SistemaDeVenta
         {
             InitializeComponent();
             CargarInventario();
+            CargarResumen();
+            PlaceholderBuscar.Visibility = Visibility.Visible;
+
         }
 
         private void CargarInventario()
@@ -135,6 +138,44 @@ namespace SistemaDeVenta
             // MOSTRAR MENÚ
             btn.ContextMenu = menu;
             menu.IsOpen = true;
+        }
+
+        private void CargarResumen()
+        {
+            InventarioDAO dao = new InventarioDAO();
+            var data = dao.ObtenerResumen();
+
+            TxtTotalProductos.Text = data.total.ToString();
+            TxtStockBajo.Text = data.bajos.ToString();
+            TxtAgotados.Text = data.agotados.ToString();
+        }
+        private void TxtBuscar_GotFocus(object sender, RoutedEventArgs e)
+        {
+            PlaceholderBuscar.Visibility = Visibility.Collapsed;
+        }
+
+        private void TxtBuscar_LostFocus(object sender, RoutedEventArgs e)
+        {
+            if (string.IsNullOrWhiteSpace(TxtBuscar.Text))
+            {
+                PlaceholderBuscar.Visibility = Visibility.Visible;
+            }
+        }
+        private void TxtBuscar_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            string texto = (sender as TextBox).Text.ToLower();
+
+            InventarioDAO dao = new InventarioDAO();
+            var lista = dao.ObtenerInventario();
+
+            var filtrada = lista.Where(p =>
+                p.Nombre.ToLower().Contains(texto) ||
+                p.Categoria.ToLower().Contains(texto) ||
+                p.IdProducto.ToString().Contains(texto)
+            ).ToList();
+
+            ItemsProductos.ItemsSource = null;
+            ItemsProductos.ItemsSource = filtrada;
         }
 
 

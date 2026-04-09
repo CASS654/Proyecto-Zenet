@@ -24,7 +24,7 @@ namespace SistemaDeVenta
                 if (Stock == 0)
                     return "SIN STOCK";
 
-                if (Stock <= 10)
+                if (Stock <= 20)
                     return "BAJO";
 
                 return "DISPONIBLE";
@@ -38,7 +38,7 @@ namespace SistemaDeVenta
                 if (Stock == 0)
                     return Brushes.Red;
 
-                if (Stock <= 10)
+                if (Stock <= 20)
                     return Brushes.Orange;
 
                 return Brushes.Green;
