@@ -110,6 +110,7 @@
                             <ColumnDefinition Width="220"/>
                             <ColumnDefinition Width="150"/>
                             <ColumnDefinition Width="150"/>
+                            <ColumnDefinition Width="120"/>
                             <ColumnDefinition Width="90"/>
                         </Grid.ColumnDefinitions>
                         <TextBlock Grid.Column="0" Text="ID" Foreground="{StaticResource TextSecondary}" FontWeight="Bold"/>
@@ -118,7 +119,8 @@
                         <TextBlock Grid.Column="3" Text="Cantidad del Producto" Foreground="{StaticResource TextSecondary}" FontWeight="Bold"/>
                         <TextBlock Grid.Column="4" Text="Precio de Compra" Foreground="{StaticResource TextSecondary}" FontWeight="Bold"/>
                         <TextBlock Grid.Column="5" Text="Precio de Venta" Foreground="{StaticResource TextSecondary}" FontWeight="Bold"/>
-                        <TextBlock Grid.Column="6" Text="Acciones" Foreground="{StaticResource TextSecondary}" FontWeight="Bold" HorizontalAlignment="Right"/>
+                        <TextBlock Grid.Column="6" Text="Disponibilidad" Foreground="#8B92A5"/>
+                        <TextBlock Grid.Column="7" Text="Acciones" Foreground="{StaticResource TextSecondary}" FontWeight="Bold" HorizontalAlignment="Right"/>
                     </Grid>
 
                     <Separator Grid.Row="0" VerticalAlignment="Bottom" Background="{StaticResource BorderDark}" Margin="0"/>
@@ -134,6 +136,7 @@
                                         <ColumnDefinition Width="220"/>
                                         <ColumnDefinition Width="150"/>
                                         <ColumnDefinition Width="150"/>
+                                        <ColumnDefinition Width="120"/>
                                         <ColumnDefinition Width="80"/>
                                     </Grid.ColumnDefinitions>
 
@@ -172,8 +175,22 @@
                                     <TextBlock Grid.Column="5" 
                            Text="{Binding PrecioVenta}" 
                            Foreground="White"/>
+                                    <TextBlock Grid.Column="6" FontWeight="Bold">
+                                        <TextBlock.Style>
+                                            <Style TargetType="TextBlock">
+                                                <Setter Property="Text" Value="Disponible"/>
+                                                <Setter Property="Foreground" Value="Green"/>
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding Disponible}" Value="False">
+                                                        <Setter Property="Text" Value="No disponible"/>
+                                                        <Setter Property="Foreground" Value="Red"/>
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </TextBlock.Style>
+                                    </TextBlock>
 
-                                    <Button Grid.Column="6"
+                                    <Button Grid.Column="7"
                                             Content="⋮"
                                             Click="BtnAcciones_Click"
                                             Tag="{Binding}"
