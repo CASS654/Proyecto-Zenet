@@ -66,14 +66,6 @@
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
 
-            <TextBlock Grid.Row="0" 
-                       Text="BIENVENIDO AL SISTEMA DE VENTAS" 
-                       Foreground="White" 
-                       FontSize="28" 
-                       FontWeight="ExtraBold" 
-                       Margin="10,0,0,25" 
-                       HorizontalAlignment="Left"/>
-
             <UniformGrid Grid.Row="1" Columns="4" Margin="0,0,0,10">
                 <Border Background="{StaticResource ColorPanel}" CornerRadius="12" Margin="8" Padding="15">
                     <Grid>

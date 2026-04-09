@@ -1,0 +1,23 @@
+[33mdfbff6a[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmaster[m[33m, [m[1;31morigin/master[m[33m, [m[1;31morigin/HEAD[m[33m)[m HEAD@{0}: pull --progress --no-edit --no-stat --recurse-submodules=no origin: Fast-forward
+[33m348522a[m HEAD@{1}: commit: modificaciones del apartado de dashboard
+[33ma0dd80a[m HEAD@{2}: pull --progress --no-edit --no-stat --recurse-submodules=no origin: Fast-forward
+[33m0f856d1[m HEAD@{3}: pull --progress --no-edit --no-stat --recurse-submodules=no origin: Fast-forward
+[33m744917d[m HEAD@{4}: commit: baccab mongol
+[33mb88eef0[m HEAD@{5}: commit: modificacion de cambios login y cambios
+[33m5a1d5b6[m HEAD@{6}: commit: MODIFICACIONES
+[33m31b6737[m HEAD@{7}: pull --progress --no-edit --no-stat --recurse-submodules=no origin: Merge made by the 'ort' strategy.
+[33m9470d0b[m HEAD@{8}: commit: CAMBIO OPCIONAL
+[33mb810e4f[m HEAD@{9}: commit: modificacion en el apartado de ventas
+[33m88c5c03[m HEAD@{10}: commit: cambios y modificaciones en la parte de busqueda la parte de login y administrador
+[33mdcdf78f[m HEAD@{11}: pull --progress --no-edit --no-stat --recurse-submodules=no origin: Fast-forward
+[33m5c0ef3c[m HEAD@{12}: pull --progress --no-edit --no-stat --recurse-submodules=no origin: Fast-forward
+[33m99821df[m HEAD@{13}: pull --progress --no-edit --no-stat --recurse-submodules=no origin: Fast-forward
+[33m6365e65[m HEAD@{14}: commit: cambio de posicion inicio de seccion
+[33mf9d0f7f[m HEAD@{15}: pull --progress --no-edit --no-stat --recurse-submodules=no origin: Merge made by the 'ort' strategy.
+[33m06940a2[m HEAD@{16}: commit: fgggfgf
+[33m45e39d2[m HEAD@{17}: pull --progress --no-edit --no-stat --recurse-submodules=no origin: Fast-forward
+[33m5e8cdf2[m HEAD@{18}: checkout: moving from prueba to master
+[33m75b556f[m[33m ([m[1;32mprueba[m[33m)[m HEAD@{19}: commit: hola 1
+[33m5e8cdf2[m HEAD@{20}: checkout: moving from master to prueba
+[33m5e8cdf2[m HEAD@{21}: commit: Agregar archivos de proyecto.
+[33mda90d73[m HEAD@{22}: commit (initial): Agregar .gitattributes y .gitignore.
