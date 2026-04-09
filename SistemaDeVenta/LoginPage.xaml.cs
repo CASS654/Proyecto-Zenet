@@ -9,6 +9,7 @@ using System.Windows.Media;
 
 namespace SistemaDeVenta
 {
+    //hdsa
     public partial class LoginPage
     {
         private bool isUsernamePlaceholder = true;
@@ -108,12 +109,21 @@ namespace SistemaDeVenta
                 return;
             }
 
-            // 2. Conectar BD
-            if (!ConectarDB("localhost", "Fruteria2", "root", "Cesar654"))
-            if (!ConectarDB("localhost", "Fruteria2", "root", "53559"))
-=========
-            if (!ConectarDB("localhost", "Fruteria2", "root", "felixeduardo200605#"))
->>>>>>>>> Temporary merge branch 2
+            // 2. Conectar BD con múltiples contraseñas
+            bool conectado = false;
+
+            string[] passwords = { "Cesar654", "53559", "felixeduardo200605#" };
+
+            foreach (string pass in passwords)
+            {
+                if (ConectarDB("localhost", "Fruteria2", "root", pass))
+                {
+                    conectado = true;
+                    break;
+                }
+            }
+
+            if (!conectado)
             {
                 MessageBox.Show("No se pudo conectar a la base de datos", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                 return;
@@ -136,16 +146,15 @@ namespace SistemaDeVenta
                 return;
             }
 
-            // 4. Si llegamos aquí, el login es exitoso y 'resultado' contiene el ROL
+            // 4. Login exitoso
             rol = resultado;
 
-            // Instanciar ventanas
             switch (rol)
             {
                 case "Admin":
                     AdministradorWindow admin = new AdministradorWindow();
                     admin.Show();
-                    Window.GetWindow(this).Close(); // Forma segura de cerrar la ventana actual en WPF
+                    Window.GetWindow(this).Close();
                     break;
 
                 case "Cajero":
