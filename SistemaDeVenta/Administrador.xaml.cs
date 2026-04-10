@@ -184,5 +184,16 @@ namespace SistemaDeVenta
 
             MainContent.Content = new VentanaInventario();
         }
+
+        public void CargarUsuario(string nombre)
+        {
+            TxtNombreUsuario.Text = nombre;
+
+            if (!string.IsNullOrEmpty(nombre))
+            {
+                TxtInicial.Text = nombre.Substring(0, 1).ToUpper();
+            }
+           
+        }
     }
 }

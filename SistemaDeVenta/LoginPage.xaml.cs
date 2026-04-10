@@ -17,8 +17,9 @@ namespace SistemaDeVenta
         string usuario = "";
         string clave = "";
         string rol = "";
+        string nombreUsuario = "";
 
-        
+
         public LoginPage()
         {
             if (System.ComponentModel.DesignerProperties.GetIsInDesignMode(this))
@@ -53,7 +54,7 @@ namespace SistemaDeVenta
         // 🔥 VALIDACIÓN COMPLETA (usuario + password + activo + rol)
         private string ValidarUsuario(string usuario, string clave)
         {
-            string query = "SELECT IdUsuario, Rol, activo FROM Usuarios WHERE usser = @user AND password = @pass";
+            string query = "SELECT IdUsuario,Nombre_Completo, Rol, activo FROM Usuarios WHERE usser = @user AND password = @pass";
 
             using (MySqlCommand cmd = new MySqlCommand(query, ClassConexion.SQLConnection))
             {
@@ -62,6 +63,7 @@ namespace SistemaDeVenta
 
                 using (MySqlDataReader reader = cmd.ExecuteReader())
                 {
+                    
                     if (reader.Read())
                     {
                         bool activo = Convert.ToBoolean(reader["activo"]);
@@ -71,8 +73,10 @@ namespace SistemaDeVenta
                             return "INACTIVO";
                         }
 
-                        // 🔥 AQUÍ GUARDAMOS EL ID DEL USUARIO
                         globales.IdUsuarioGlobal = Convert.ToInt32(reader["IdUsuario"]);
+
+                        // 🔥 GUARDAR NOMBRE
+                        nombreUsuario = reader["Nombre_Completo"].ToString();
 
                         return reader["Rol"].ToString();
                     }
@@ -153,6 +157,7 @@ namespace SistemaDeVenta
             {
                 case "Admin":
                     AdministradorWindow admin = new AdministradorWindow();
+                    admin.CargarUsuario(nombreUsuario);
                     admin.Show();
                     Window.GetWindow(this).Close();
                     break;
