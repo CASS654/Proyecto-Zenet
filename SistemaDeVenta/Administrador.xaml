@@ -6,7 +6,8 @@
             Background="#0B0F14"
             ResizeMode="NoResize"
             WindowStyle="None"
-            WindowState="Maximized">
+            WindowState="Maximized"
+            Focusable="True">
 
     <!-- ================= RECURSOS ================= -->
 
@@ -350,7 +351,8 @@
                     </Grid.ColumnDefinitions>
 
 
-                    <TextBlock Text="Inicio"
+                    <TextBlock x:Name="TxtTitulo"
+                           Text="Inicio"
                            Foreground="White"
                            FontSize="26"
                            VerticalAlignment="Bottom" MouseLeftButtonDown="TextBlock_MouseLeftButtonDown" Margin="0,0,0,3"/>
@@ -382,7 +384,7 @@
                                />
 
 
-                        <Border BorderBrush="{StaticResource AccentRed}" BorderThickness="1" Background="#20FF334D" CornerRadius="8" Padding="15,8">
+                        <Border BorderBrush="{StaticResource AccentRed}" BorderThickness="1" Background="#20FF334D" CornerRadius="8" Padding="15,8"  MouseLeftButtonDown="Logout_Click"  Cursor="Hand">
                             <StackPanel Orientation="Horizontal">
                                 <Border Background="{StaticResource AccentRed}" CornerRadius="4" Padding="4,1" Margin="0,0,8,0">
                                     <TextBlock Text="ESC" Foreground="White" FontSize="10" FontWeight="Bold"/>

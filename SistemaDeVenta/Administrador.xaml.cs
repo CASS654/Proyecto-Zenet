@@ -18,6 +18,8 @@ namespace SistemaDeVenta
         public AdministradorWindow()
         {
             InitializeComponent();
+            this.PreviewKeyDown += AdministradorWindow_KeyDown;
+
         }
 
         private void AnimateSidebar(double from, double to)
@@ -48,7 +50,7 @@ namespace SistemaDeVenta
 
             this.BeginAnimation(WidthProperty, animation);
         }
-        
+
 
         private void ToggleSidebar_Click(object sender, RoutedEventArgs e)
         {
@@ -111,7 +113,7 @@ namespace SistemaDeVenta
             //Application.Current.Shutdown();
             BusquedaProducto ventanaBusqueda = new BusquedaProducto();
 
-                        // ShowDialog hace que la ventana sea modal
+            // ShowDialog hace que la ventana sea modal
             // salir
             Application.Current.Shutdown();
         }
@@ -119,7 +121,7 @@ namespace SistemaDeVenta
         private void Button_Click(object sender, RoutedEventArgs e)
         {
             // 1. Instanciamos la ventana de búsqueda
-    BusquedaProducto ventanaBusqueda = new BusquedaProducto();
+            BusquedaProducto ventanaBusqueda = new BusquedaProducto();
 
             // 2. Establecemos quién es la ventana "padre" para que aparezca centrada sobre el Administrador
             ventanaBusqueda.Owner = this;
@@ -140,6 +142,7 @@ namespace SistemaDeVenta
             }
 
             MainContent.Content = new DashboardControl();
+            TxtTitulo.Text = "Dashboard";
         }
 
         private void Button_Click_2(object sender, RoutedEventArgs e)
@@ -153,6 +156,7 @@ namespace SistemaDeVenta
                 ExpandSidebar();
             }
             MainContent.Content = new UsuariosView();
+            TxtTitulo.Text = "Usuarios";
         }
 
         private void Button_Click_3(object sender, RoutedEventArgs e)
@@ -166,6 +170,7 @@ namespace SistemaDeVenta
                 ExpandSidebar();
             }
             MainContent.Content = new ProveedoresNUEVO();
+            TxtTitulo.Text = "Proveedores";
         }
 
         private void Button_Click_4(object sender, RoutedEventArgs e)
@@ -180,6 +185,7 @@ namespace SistemaDeVenta
             }
 
             MainContent.Content = new VentanaInventario();
+            TxtTitulo.Text = "Inventario";
         }
 
         public void CargarUsuario(string nombre)
@@ -190,7 +196,7 @@ namespace SistemaDeVenta
             {
                 TxtInicial.Text = nombre.Substring(0, 1).ToUpper();
             }
-           
+
         }
 
         private void Button_Click_5(object sender, RoutedEventArgs e)
@@ -205,6 +211,30 @@ namespace SistemaDeVenta
             }
 
             MainContent.Content = new comprasbueno();
+            TxtTitulo.Text = "Compras";
+        }
+
+        private void CerrarSesion()
+        {
+            // Abrir login
+            LoginPage login = new LoginPage();
+            login.Show();
+
+            // Cerrar ventana actual
+            this.Close();
+        }
+
+        private void Logout_Click(object sender, MouseButtonEventArgs e)
+        {
+            CerrarSesion();
+        }
+
+        private void AdministradorWindow_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Escape)
+            {
+                CerrarSesion();
+            }
         }
     }
 }
