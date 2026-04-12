@@ -98,12 +98,17 @@
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="Auto"/>
-                        <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="751*"/>
+                        <ColumnDefinition Width="125*"/>
                     </Grid.ColumnDefinitions>
 
                     <!-- SOLO MODIFICADO -->
-                    <StackPanel x:Name="PanelQty" Orientation="Horizontal" VerticalAlignment="Center" Visibility="Collapsed" Margin="0,0,10,0">
+                    <StackPanel x:Name="PanelQty"
+                            Grid.Column="0"
+                            Orientation="Horizontal"
+                            VerticalAlignment="Center"
+                            Visibility="Collapsed"
+                            Margin="0,0,10,0">
                         <TextBlock Text="|||" Foreground="{StaticResource AccentRed}" FontWeight="Bold" FontSize="20" Margin="0,0,10,0">
                             <TextBlock.LayoutTransform>
                                 <RotateTransform Angle="90"/>
@@ -116,15 +121,16 @@
                     </StackPanel>
 
                     <!-- SOLO MODIFICADO -->
-                    <TextBox x:Name="TxtBusqueda" 
-                     Background="Transparent"
-                     Foreground="White"
-                     BorderThickness="0"
-                     FontSize="16"
-                     VerticalContentAlignment="Center"
-                     MinWidth="300"
-                     KeyDown="TxtBusqueda_KeyDown"
-                     PreviewTextInput="TxtBusqueda_PreviewTextInput"/>
+                    <TextBox x:Name="TxtBusqueda"
+                         Grid.Column="1"
+                         Background="Transparent"
+                         Foreground="White"
+                         BorderThickness="0"
+                         FontSize="16"
+                         VerticalContentAlignment="Center"
+                         MinWidth="300"
+                         KeyDown="TxtBusqueda_KeyDown"
+                         PreviewTextInput="TxtBusqueda_PreviewTextInput"/>
 
                     <TextBlock IsHitTestVisible="False"
                        Text="Escriba el producto o presione [F2] para buscar..."

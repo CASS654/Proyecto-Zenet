@@ -256,7 +256,7 @@
                         <PasswordBox x:Name="txtClave" Margin="0,5,0,10" Height="36" Background="#0A0A0C" Foreground="White" BorderBrush="{StaticResource BorderBrushDark}" BorderThickness="1" Padding="8,2"/>
 
                         <TextBlock Text="Rol" Foreground="{StaticResource SoftTextBrush}"/>
-                        <ComboBox x:Name="cbRol" Style="{StaticResource ComboBoxDark}" ItemContainerStyle="{StaticResource ComboBoxItemModern}" Margin="0,5,0,10">
+                        <ComboBox x:Name="cbRol" Style="{StaticResource ComboBoxDark}" ItemContainerStyle="{StaticResource ComboBoxItemModern}" Margin="0,5,0,10" SelectionChanged="cbRol_SelectionChanged">
                             <ComboBoxItem Content="Admin"/>
                             <ComboBoxItem Content="Cajero"/>
                             <ComboBoxItem Content="Gerente"/>

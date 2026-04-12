@@ -83,7 +83,6 @@ namespace SistemaDeVenta
                 TxtEmployees.Visibility = Visibility.Visible;
                 TxtCustomers.Visibility = Visibility.Visible;
                 TxtSuppliers.Visibility = Visibility.Visible;
-                TxtAllData.Visibility = Visibility.Visible;
             }
         }
         private void CollapseSidebar()
@@ -96,7 +95,6 @@ namespace SistemaDeVenta
             LogoCollapsed.Visibility = Visibility.Visible;
             LogoText.Visibility = Visibility.Collapsed;
             MenuToggleButton.Visibility = Visibility.Collapsed;
-            MenuToggleButtonCollapsed.Visibility = Visibility.Visible;
             ProfileFull.Visibility = Visibility.Collapsed;
             ProfileAvatar.Visibility = Visibility.Visible;
 
@@ -106,7 +104,6 @@ namespace SistemaDeVenta
             TxtEmployees.Visibility = Visibility.Collapsed;
             TxtCustomers.Visibility = Visibility.Collapsed;
             TxtSuppliers.Visibility = Visibility.Collapsed;
-            TxtAllData.Visibility = Visibility.Collapsed;
         }
 
         private void TextBlock_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
@@ -194,6 +191,20 @@ namespace SistemaDeVenta
                 TxtInicial.Text = nombre.Substring(0, 1).ToUpper();
             }
            
+        }
+
+        private void Button_Click_5(object sender, RoutedEventArgs e)
+        {
+            if (_isSidebarExpanded)
+            {
+                CollapseSidebar();
+            }
+            else
+            {
+                ExpandSidebar();
+            }
+
+            MainContent.Content = new comprasbueno();
         }
     }
 }

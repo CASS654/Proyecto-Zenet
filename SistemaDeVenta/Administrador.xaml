@@ -17,6 +17,7 @@
         <SolidColorBrush x:Key="Dark3" Color="#1C232D"/>
         <SolidColorBrush x:Key="Border" Color="#2B3442"/>
         <SolidColorBrush x:Key="TextGray" Color="#8A94A6"/>
+        <SolidColorBrush x:Key="AccentRed" Color="#FF334D"/>
 
         <Style x:Key="MenuButton" TargetType="Button">
             <Setter Property="Background" Value="Transparent"/>
@@ -306,18 +307,10 @@
                         </StackPanel>
                     </Button>
 
-                    <Button Style="{StaticResource MenuButton}">
+                    <Button Style="{StaticResource MenuButton}" Click="Button_Click_5">
                         <StackPanel Orientation="Horizontal">
                             <TextBlock Text="🚚" FontSize="18" Width="30" TextAlignment="Center"/>
                             <TextBlock x:Name="TxtSuppliers" Text="Suministros" Margin="10,0,0,0"/>
-                        </StackPanel>
-                    </Button>
-
-
-                    <Button Style="{StaticResource MenuButton}">
-                        <StackPanel Orientation="Horizontal">
-                            <TextBlock Text="💾" FontSize="18" Width="30" TextAlignment="Center"/>
-                            <TextBlock x:Name="TxtAllData" Text="All Data" Margin="10,0,0,0"/>
                         </StackPanel>
                     </Button>
 
@@ -389,9 +382,14 @@
                                />
 
 
-                        <Button Style="{StaticResource PrimaryBtn}" Click="Button_Click" Width="75">
-                            🛒 New Sale
-                        </Button>
+                        <Border BorderBrush="{StaticResource AccentRed}" BorderThickness="1" Background="#20FF334D" CornerRadius="8" Padding="15,8">
+                            <StackPanel Orientation="Horizontal">
+                                <Border Background="{StaticResource AccentRed}" CornerRadius="4" Padding="4,1" Margin="0,0,8,0">
+                                    <TextBlock Text="ESC" Foreground="White" FontSize="10" FontWeight="Bold"/>
+                                </Border>
+                                <TextBlock Text="LOGOUT ➔" Foreground="White" FontWeight="Bold" VerticalAlignment="Center"/>
+                            </StackPanel>
+                        </Border>
 
                     </StackPanel>
 

@@ -173,5 +173,10 @@ namespace SistemaDeVentas.Views
                 MessageBox.Show("Error al eliminar usuario.");
             }
         }
+
+        private void cbRol_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+
+        }
     }
 }

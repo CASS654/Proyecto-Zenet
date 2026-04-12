@@ -10,13 +10,7 @@ namespace SistemaDeVenta
 {
     internal class ClassProveedores
     {
-        public class Proveedores1
-        {
-            public int IdProveedor { get; set; }
-            public string Nombre { get; set; }
-            public string Telefono { get; set; }
-            public string Direccion { get; set; }
-        }
+        
         public int InsertarProveedor(Proveedores1 p)
         {
             try
@@ -83,5 +77,13 @@ namespace SistemaDeVenta
             }
         }
 
+    }
+
+    public class Proveedores1
+    {
+        public int IdProveedor { get; set; }
+        public string Nombre { get; set; }
+        public string Telefono { get; set; }
+        public string Direccion { get; set; }
     }
 }
