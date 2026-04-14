@@ -6,7 +6,7 @@
         WindowStartupLocation="CenterScreen"
         ResizeMode="NoResize"
         WindowStyle="None"
-        WindowState="Maximized">
+        WindowState="Maximized" KeyDown="Window_KeyDown">
     
 
     <Window.Resources>
@@ -94,7 +94,7 @@
                 </StackPanel>
                 <Ellipse Width="40" Height="40" Fill="#2B3442" Margin="0,0,20,0"/>
                 <Border BorderBrush="{StaticResource AccentRed}" BorderThickness="1"
-                        Background="#204A90E2" CornerRadius="8" Padding="15,8">
+                        Background="#204A90E2" CornerRadius="8" Padding="15,8" MouseDown="Border_MouseDown_2">
                     <StackPanel Orientation="Horizontal">
                         <Border Background="{StaticResource AccentRed}"
                                 CornerRadius="4" Padding="4,1" Margin="0,0,8,0">

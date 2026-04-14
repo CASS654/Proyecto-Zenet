@@ -188,5 +188,28 @@ namespace SistemaDeVenta
 
             }
         }
+
+        private void CerrarSesion()
+        {
+            // Abrir login
+            LoginPage login = new LoginPage();
+            login.Show();
+
+            // Cerrar ventana actual
+            this.Close();
+        }
+
+        private void Window_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Escape)
+            {
+                CerrarSesion();
+            }
+        }
+
+        private void Border_MouseDown_2(object sender, MouseButtonEventArgs e)
+        {
+            CerrarSesion();
+        }
     }
 }
