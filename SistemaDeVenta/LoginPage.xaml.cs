@@ -163,14 +163,12 @@ namespace SistemaDeVenta
                     break;
 
                 case "Cajero":
-                    VetanaCobro cobro = new VetanaCobro();
+                    VetanaCobrousuario cobro = new VetanaCobrousuario();
                     cobro.Show();
                     Window.GetWindow(this).Close();
                     break;
 
                 case "Gerente":
-                    MenuGerente menuGerente = new MenuGerente();
-                    menuGerente.Show();
                     Window.GetWindow(this).Close();
                     break;
 

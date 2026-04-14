@@ -7,7 +7,7 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using Sistema_Bancario;
 
-namespace SistemaDeVentaPrueba
+namespace SistemaDeVenta
 {
     public partial class BusquedaProducto : Window
     {

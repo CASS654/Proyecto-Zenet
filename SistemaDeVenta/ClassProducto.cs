@@ -6,15 +6,15 @@ using System.Threading.Tasks;
 
 namespace SistemaDeVenta
 {
-    internal class ClassProducto
-    {
-        public class Producto
+        public class ProductoPOS
         {
-            public int IdProducto { get; set; }
-            public string Nombre { get; set; }
-            public decimal PrecioVenta { get; set; }
-            public decimal PrecioCompra { get; set; }
+            public string Id { get; set; }
+            public string Name { get; set; }
+            public string Description { get; set; }
+            public decimal UnitPrice { get; set; }
+            public int Quantity { get; set; }
+            public string Unit { get; set; }
+            public decimal Total => UnitPrice * Quantity;
         }
 
-    }
 }

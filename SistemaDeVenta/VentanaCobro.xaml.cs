@@ -4,13 +4,14 @@ using System.Collections.Specialized;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Input;
 
 namespace SistemaDeVenta
 {
-    public partial class VetanaCobrousuario : Window
+    public partial class VentanaCobro : UserControl
     {
-        private const decimal TasaImpuesto = 0.08m;
+        private const decimal TasaImpuesto = 0.08m; // 8% — cámbialo aquí si necesitas otro %
 
         private bool modoCantidad = false;
         private string bufferCantidad = "";
@@ -19,15 +20,14 @@ namespace SistemaDeVenta
         public ObservableCollection<ProductoPOS> carrito { get; set; }
             = new ObservableCollection<ProductoPOS>();
 
-        public VetanaCobrousuario()
+
+        public VentanaCobro()
         {
             InitializeComponent();
             GridProductos.ItemsSource = carrito;
 
-            // Escuchar cuando se agrega o elimina un item
             carrito.CollectionChanged += Carrito_CollectionChanged;
         }
-
         private void Carrito_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
             ActualizarTotales();
@@ -53,12 +53,12 @@ namespace SistemaDeVenta
             {
                 existente.Quantity += qty;
                 GridProductos.Items.Refresh();
-                ActualizarTotales(); // cantidad de existente no dispara CollectionChanged
+                ActualizarTotales(); // ← cuando cambia cantidad de existente (no dispara CollectionChanged)
             }
             else
             {
                 producto.Quantity = qty;
-                carrito.Add(producto); // esto sí dispara CollectionChanged
+                carrito.Add(producto); // ← esto sí dispara CollectionChanged
             }
         }
 
@@ -68,59 +68,75 @@ namespace SistemaDeVenta
             decimal impuesto = subtotal * TasaImpuesto;
             decimal total = subtotal + impuesto;
 
+            // Subtotal y Tax
             TxtSubtotal.Text = subtotal.ToString("C");
             TxtTax.Text = impuesto.ToString("C");
 
-            string totalStr = total.ToString("F2");
+            // Total separado en entero y decimales para el efecto visual grande
+            string totalStr = total.ToString("F2");          // ej: "456.82"
             string[] partes = totalStr.Split('.');
-            TxtTotalEntero.Text = "$" + partes[0];
-            TxtTotalDecimal.Text = "." + (partes.Length > 1 ? partes[1] : "00");
+            TxtTotalEntero.Text = "$" + partes[0];               // "$456"
+            TxtTotalDecimal.Text = "." + (partes.Length > 1 ? partes[1] : "00"); // ".82"
 
+            // Contador de items en el footer
             int totalItems = carrito.Sum(p => p.Quantity);
             TxtTotalItems.Text = $"TOTAL ITEMS: {totalItems}";
         }
 
         private void TxtBusqueda_KeyDown(object sender, KeyEventArgs e)
         {
+            // 1. Activar modo cantidad con la tecla X
             if (e.Key == Key.X)
             {
                 modoCantidad = true;
                 bufferCantidad = "";
                 cantidadActual = 1;
+
                 if (PanelQty != null) PanelQty.Visibility = Visibility.Visible;
                 if (TxtQty != null) TxtQty.Text = "1";
-                e.Handled = true;
+
+                e.Handled = true; // Evita que la 'x' se escriba en el buscador
                 return;
             }
 
+            // 2. Abrir buscador con F2 o ENTER
             if (e.Key == Key.F2 || e.Key == Key.Enter)
             {
+                // Si el modo cantidad está activo y hay un número en el buffer, lo aseguramos
                 if (modoCantidad && !string.IsNullOrEmpty(bufferCantidad))
+                {
                     int.TryParse(bufferCantidad, out cantidadActual);
+                }
 
                 AbrirBuscador();
                 e.Handled = true;
             }
 
+            // 3. Cancelar modo cantidad con ESC
             if (e.Key == Key.Escape)
+            {
                 ResetCantidad();
+            }
         }
 
         private void TxtBusqueda_PreviewTextInput(object sender, TextCompositionEventArgs e)
         {
             if (modoCantidad)
             {
+                // Solo permitir números (Regex de 0 a 9)
                 Regex regex = new Regex("[^0-9]+");
                 if (!regex.IsMatch(e.Text))
                 {
                     bufferCantidad += e.Text;
+
                     if (int.TryParse(bufferCantidad, out int resultado))
                     {
                         cantidadActual = resultado;
                         if (TxtQty != null) TxtQty.Text = cantidadActual.ToString();
                     }
                 }
-                e.Handled = true;
+
+                e.Handled = true; // Bloquea la escritura en el TextBox principal mientras pones la cantidad
             }
         }
 
@@ -137,8 +153,11 @@ namespace SistemaDeVenta
 
         private void Border_MouseDown(object sender, MouseButtonEventArgs e)
         {
+            // Si el modo cantidad está activo y hay un número en el buffer, lo aseguramos
             if (modoCantidad && !string.IsNullOrEmpty(bufferCantidad))
+            {
                 int.TryParse(bufferCantidad, out cantidadActual);
+            }
 
             AbrirBuscador();
             e.Handled = true;

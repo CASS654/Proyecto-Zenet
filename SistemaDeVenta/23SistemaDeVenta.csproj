@@ -94,43 +94,25 @@
     <Compile Include="BusquedaProducto.xaml.cs">
       <DependentUpon>BusquedaProducto.xaml</DependentUpon>
     </Compile>
+    <Compile Include="ClassVentas.cs" />
     <Compile Include="ClassProducto.cs" />
     <Compile Include="ClassProveedores.cs" />
-    <Compile Include="Compras.xaml.cs">
-      <DependentUpon>Compras.xaml</DependentUpon>
-    </Compile>
     <Compile Include="comprasbueno.xaml.cs">
       <DependentUpon>comprasbueno.xaml</DependentUpon>
     </Compile>
     <Compile Include="DashboardControl.xaml.cs">
       <DependentUpon>DashboardControl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Inventario.xaml.cs">
-      <DependentUpon>Inventario.xaml</DependentUpon>
-    </Compile>
     <Compile Include="InventarioDAO.cs" />
     <Compile Include="InventarioView.cs" />
     <Compile Include="LoginPage.xaml.cs">
       <DependentUpon>LoginPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="MenuGerente.xaml.cs">
-      <DependentUpon>MenuGerente.xaml</DependentUpon>
+    <Compile Include="pagina prueba.xaml.cs">
+      <DependentUpon>pagina prueba.xaml</DependentUpon>
     </Compile>
-    <Compile Include="MenuVendedor.xaml.cs">
-      <DependentUpon>MenuVendedor.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="pagina prueba.xaml.cs" />
-    <Compile Include="Provedor.xaml.cs">
-      <DependentUpon>Provedor.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Proveedores.xaml.cs">
-      <DependentUpon>Proveedores.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="test.xaml.cs">
-      <DependentUpon>test.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Usuarios.xaml.cs">
-      <DependentUpon>Usuarios.xaml</DependentUpon>
+    <Compile Include="VentanaCobro.xaml.cs">
+      <DependentUpon>VentanaCobro.xaml</DependentUpon>
     </Compile>
     <Compile Include="VentanaEditarProducto.xaml.cs">
       <DependentUpon>VentanaEditarProducto.xaml</DependentUpon>
@@ -146,9 +128,6 @@
     </Compile>
     <Compile Include="VentanaPago.xaml.cs">
       <DependentUpon>VentanaPago.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Ventas.xaml.cs">
-      <DependentUpon>Ventas.xaml</DependentUpon>
     </Compile>
     <Compile Include="VetanaCobro.xaml.cs">
       <DependentUpon>VetanaCobro.xaml</DependentUpon>
@@ -170,10 +149,6 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Compras.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
     <Page Include="comprasbueno.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -182,23 +157,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="HistorialVenta.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Inventario.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Login.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="LoginPage.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Menu.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -211,41 +170,11 @@
     <Compile Include="ClassTest.cs" />
     <Compile Include="Classusuarios.cs" />
     <Compile Include="globales.cs" />
-    <Compile Include="HistorialVenta.xaml.cs">
-      <DependentUpon>HistorialVenta.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Login.xaml.cs">
-      <DependentUpon>Login.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Menu.xaml.cs">
-      <DependentUpon>Menu.xaml</DependentUpon>
-      <SubType>Code</SubType>
-    </Compile>
-    <Page Include="MenuGerente.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="MenuVendedor.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="pagina prueba.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Provedor.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Proveedores.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="test.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Usuarios.xaml">
+    <Page Include="VentanaCobro.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -266,10 +195,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="VentanaPago.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Ventas.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
