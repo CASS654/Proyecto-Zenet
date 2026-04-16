@@ -97,7 +97,7 @@
             string query = @"SELECT p.Nombre, i.Stock
                  FROM Inventario i
                  INNER JOIN Productos p ON p.IdProducto = i.IdProducto
-                 WHERE i.Stock <= 10
+                 WHERE i.Stock <= 20
                  ORDER BY i.Stock ASC";
 
             using (MySqlCommand cmd = new MySqlCommand(query, conn))

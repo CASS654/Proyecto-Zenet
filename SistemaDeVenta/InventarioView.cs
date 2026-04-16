@@ -31,6 +31,7 @@ namespace SistemaDeVenta
             }
         }
 
+
         public Brush ColorStock
         {
             get

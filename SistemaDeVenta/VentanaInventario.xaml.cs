@@ -15,6 +15,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
+
 namespace SistemaDeVenta
 {
     /// <summary>
@@ -22,6 +23,7 @@ namespace SistemaDeVenta
     /// </summary>
     public partial class VentanaInventario : UserControl
     {
+        private List<InventarioView> listaOriginal = new List<InventarioView>();
         public VentanaInventario()
         {
             InitializeComponent();
@@ -30,13 +32,18 @@ namespace SistemaDeVenta
             PlaceholderBuscar.Visibility = Visibility.Visible;
 
         }
+        private void BtnVolverInventario_Click(object sender, RoutedEventArgs e)
+        {
+            PanelReportes.Visibility = Visibility.Collapsed;
+            PanelInventario.Visibility = Visibility.Visible;
+        }
 
         private void CargarInventario()
         {
             InventarioDAO dao = new InventarioDAO();
-            var lista = dao.ObtenerInventario();
+            listaOriginal = dao.ObtenerInventario();
             ItemsProductos.ItemsSource = null;
-            ItemsProductos.ItemsSource = lista;
+            ItemsProductos.ItemsSource = listaOriginal;
         }
 
         private void BtnAcciones_Click(object sender, RoutedEventArgs e)
@@ -176,6 +183,180 @@ namespace SistemaDeVenta
 
             ItemsProductos.ItemsSource = null;
             ItemsProductos.ItemsSource = filtrada;
+        }
+
+        private void BtnFiltros_Click(object sender, MouseButtonEventArgs e)
+        {
+            ContextMenu menu = new ContextMenu();
+
+            // TODOS
+            MenuItem todos = new MenuItem { Header = "Todos"  };
+
+
+            todos.Click += (s, ev) =>
+            {
+                ItemsProductos.ItemsSource = listaOriginal;
+            };
+
+            // DISPONIBLES
+            MenuItem disponibles = new MenuItem { Header = "Disponibles" };
+            disponibles.Click += (s, ev) =>
+            {
+                var filtrado = listaOriginal.Where(p => p.Disponible).ToList();
+                ItemsProductos.ItemsSource = filtrado;
+            };
+
+            // NO DISPONIBLES
+            MenuItem noDisponibles = new MenuItem { Header = "No disponibles" };
+            noDisponibles.Click += (s, ev) =>
+            {
+                var filtrado = listaOriginal.Where(p => !p.Disponible).ToList();
+                ItemsProductos.ItemsSource = filtrado;
+            };
+
+            // STOCK BAJO (<20)
+            MenuItem bajo = new MenuItem { Header = "Stock bajo" };
+            bajo.Click += (s, ev) =>
+            {
+                var filtrado = listaOriginal.Where(p => p.Stock > 0 && p.Stock <= 20).ToList();
+                ItemsProductos.ItemsSource = filtrado;
+            };  
+
+            // AGOTADOS
+            MenuItem agotados = new MenuItem { Header = "Agotados" };
+            agotados.Click += (s, ev) =>
+            {
+                var filtrado = listaOriginal.Where(p => p.Stock == 0).ToList();
+                ItemsProductos.ItemsSource = filtrado;
+            };
+
+            // AGREGAR AL MENÚ
+            menu.Items.Add(todos);
+            menu.Items.Add(disponibles);
+            menu.Items.Add(noDisponibles);
+            menu.Items.Add(bajo);
+            menu.Items.Add(agotados);
+
+            // MOSTRAR
+            var border = sender as Border;
+            border.ContextMenu = menu;
+            menu.IsOpen = true;
+        }
+        private void BtnReportes_Click(object sender, RoutedEventArgs e)
+        {
+            ContextMenu menu = new ContextMenu
+            {
+                Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#1C2132")),
+                BorderBrush = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#2D3348")),
+                BorderThickness = new Thickness(1)
+            };
+
+            // 🔹 HISTORIAL DE VENTAS
+            MenuItem ventas = new MenuItem
+            {
+                Header = "Historial de Ventas",
+                Foreground = Brushes.White,
+                Background = Brushes.Transparent,
+                Padding = new Thickness(10)
+            };
+
+            ventas.Click += (s, ev) =>
+            {
+                MostrarReportes("Ventas");
+            };
+
+            // 🔹 HISTORIAL DE COMPRAS
+            MenuItem compras = new MenuItem
+            {
+                Header = "Historial de Compras",
+                Foreground = Brushes.White,
+                Background = Brushes.Transparent,
+                Padding = new Thickness(10)
+            };
+
+            compras.Click += (s, ev) =>
+            {
+                MostrarReportes("Compras");
+            };
+
+            // 🔹 HISTORIAL DE CAMBIOS / MERMA
+            MenuItem cambios = new MenuItem
+            {
+                Header = "Historial de Cambios",
+                Foreground = Brushes.White,
+                Background = Brushes.Transparent,
+                Padding = new Thickness(10)
+            };
+
+            cambios.Click += (s, ev) =>
+            {
+                MostrarReportes("Cambios");
+            };
+
+            // 🔹 HISTORIAL DE CAMBIOS / MERMA
+            MenuItem merma = new MenuItem
+            {
+                Header = "Merma",
+                Foreground = Brushes.White,
+                Background = Brushes.Transparent,
+                Padding = new Thickness(10)
+            };
+
+            merma.Click += (s, ev) =>
+            {
+                MostrarReportes("Merma");
+            };
+
+            // 🔥 EFECTO HOVER (igual al estilo anterior pero sin Resource)
+            void AplicarHover(MenuItem item)
+            {
+                item.MouseEnter += (s, ev) =>
+                {
+                    item.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#2D3348"));
+                };
+
+                item.MouseLeave += (s, ev) =>
+                {
+                    item.Background = Brushes.Transparent;
+                };
+            }
+
+            AplicarHover(ventas);
+            AplicarHover(compras);
+            AplicarHover(cambios);
+            AplicarHover(merma);
+
+            // AGREGAR ITEMS
+            menu.Items.Add(ventas);
+            menu.Items.Add(compras);
+            menu.Items.Add(cambios);
+            menu.Items.Add(merma);
+
+            // MOSTRAR
+            var btn = sender as Button;
+            btn.ContextMenu = menu;
+            menu.IsOpen = true;
+        }
+        private void MostrarReportes(string tipo)
+        {
+            PanelInventario.Visibility = Visibility.Collapsed;
+            PanelReportes.Visibility = Visibility.Visible;
+
+            TituloReporte.Text = "Historial de " + tipo;
+
+            ReportesDAO dao = new ReportesDAO();
+
+            if (tipo == "Ventas")
+                TablaReportes.ItemsSource = dao.ObtenerVentas();
+
+            else if (tipo == "Compras")
+                TablaReportes.ItemsSource = dao.ObtenerCompras();
+
+            else if (tipo == "Cambios")
+                TablaReportes.ItemsSource = dao.ObtenerCambios();
+
+            else if (tipo == "Merma")
+                TablaReportes.ItemsSource = dao.ObtenerMerma();
         }
 
 

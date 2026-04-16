@@ -111,6 +111,7 @@
     <Compile Include="pagina prueba.xaml.cs">
       <DependentUpon>pagina prueba.xaml</DependentUpon>
     </Compile>
+    <Compile Include="ReportesDAO.cs" />
     <Compile Include="VentanaCobro.xaml.cs">
       <DependentUpon>VentanaCobro.xaml</DependentUpon>
     </Compile>

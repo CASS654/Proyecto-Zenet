@@ -25,6 +25,7 @@
             <Setter Property="Padding" Value="20"/>
             <Setter Property="Margin" Value="10"/>
         </Style>
+
     </UserControl.Resources>
 
     <Grid Margin="30">
@@ -39,7 +40,7 @@
             <Border Style="{StaticResource SummaryCardStyle}">
                 <Grid>
                     <StackPanel>
-                        <TextBlock Text="Total Products" Foreground="{StaticResource TextSecondary}" FontSize="12" FontWeight="Bold"/>
+                        <TextBlock Text="Total Productos" Foreground="{StaticResource TextSecondary}" FontSize="12" FontWeight="Bold"/>
                         <TextBlock x:Name="TxtTotalProductos" Text="0" Foreground="{StaticResource TextPrimary}"  FontSize="40" FontWeight="Bold" Margin="0,10,0,0"/>
                     </StackPanel>
                     <StackPanel HorizontalAlignment="Right" VerticalAlignment="Center" Orientation="Horizontal">
@@ -51,7 +52,7 @@
             <Border Style="{StaticResource SummaryCardStyle}">
                 <Grid>
                     <StackPanel>
-                        <TextBlock Text="Low Stock Alerts" Foreground="{StaticResource TextSecondary}" FontSize="12" FontWeight="Bold"/>
+                        <TextBlock Text="Productos con poca existencia " Foreground="{StaticResource TextSecondary}" FontSize="12" FontWeight="Bold"/>
                         <TextBlock x:Name="TxtStockBajo" Text="0" Foreground="{StaticResource TextPrimary}" FontSize="40" FontWeight="Bold" Margin="0,10,0,0"/>
                     </StackPanel>
                     <StackPanel HorizontalAlignment="Right" VerticalAlignment="Center" Orientation="Horizontal">
@@ -63,7 +64,7 @@
             <Border Style="{StaticResource SummaryCardStyle}">
                 <Grid>
                     <StackPanel>
-                        <TextBlock Text="Out of Stock Items" Foreground="{StaticResource TextSecondary}" FontSize="12" FontWeight="Bold"/>
+                        <TextBlock Text="Productos Agotados" Foreground="{StaticResource TextSecondary}" FontSize="12" FontWeight="Bold"/>
                         <TextBlock x:Name="TxtAgotados" Text="0" Foreground="{StaticResource TextPrimary}" FontSize="40" FontWeight="Bold" Margin="0,10,0,0"/>
                     </StackPanel>
                     <StackPanel HorizontalAlignment="Right" VerticalAlignment="Center" Orientation="Horizontal">
@@ -92,19 +93,28 @@
                IsHitTestVisible="False"/>
                 </Grid>
                 <StackPanel Grid.Column="1" Orientation="Horizontal" Margin="20,0,0,0">
+                    
                     <Border BorderBrush="{StaticResource BorderDark}" BorderThickness="1" Background="{StaticResource PanelDark}"  CornerRadius="8" 
                        Padding="15,10" Margin="0,0,10,0" MouseLeftButtonDown="BtnFiltros_Click">
-
                         <TextBlock Text="Filters" Foreground="White" FontWeight="Bold"/>
                     </Border>
-                    <Border BorderBrush="{StaticResource BorderDark}" BorderThickness="1" Background="{StaticResource PanelDark}" CornerRadius="8" Padding="10">
-                        <TextBlock Text="🖨️" FontSize="16"/>
+                    <Border BorderBrush="{StaticResource BorderDark}" 
+        BorderThickness="1" 
+        Background="{StaticResource PanelDark}" 
+        CornerRadius="8" 
+        Padding="10">
+
+                        <Button Content="📊"
+            Click="BtnReportes_Click"
+            Background="Transparent"
+            BorderThickness="0"
+            Foreground="White"/>
                     </Border>
                 </StackPanel>
             </Grid>
         </Border>
 
-        <Border Grid.Row="2" Background="{StaticResource PanelDark}" BorderBrush="{StaticResource BorderDark}" BorderThickness="1" CornerRadius="10">
+        <Border x:Name="PanelInventario" Grid.Row="2" Background="{StaticResource PanelDark}" BorderBrush="{StaticResource BorderDark}" BorderThickness="1" CornerRadius="10">
             <ScrollViewer VerticalScrollBarVisibility="Auto">
                 <Grid>
                     <Grid.RowDefinitions>
@@ -129,7 +139,7 @@
                         <TextBlock Grid.Column="3" Text="Cantidad del Producto" Foreground="{StaticResource TextSecondary}" FontWeight="Bold"/>
                         <TextBlock Grid.Column="4" Text="Precio de Compra" Foreground="{StaticResource TextSecondary}" FontWeight="Bold"/>
                         <TextBlock Grid.Column="5" Text="Precio de Venta" Foreground="{StaticResource TextSecondary}" FontWeight="Bold"/>
-                        <TextBlock Grid.Column="6" Text="Disponibilidad" Foreground="#8B92A5"/>
+                        <TextBlock Grid.Column="6" Text="Disponibilidad" Foreground="{StaticResource TextSecondary}"/>
                         <TextBlock Grid.Column="7" Text="Acciones" Foreground="{StaticResource TextSecondary}" FontWeight="Bold" HorizontalAlignment="Right"/>
                     </Grid>
 
@@ -215,6 +225,107 @@
                     </ItemsControl>
                 </Grid>
             </ScrollViewer>
+        </Border>
+        <Border x:Name="PanelReportes" Grid.Row="2"
+        Background="{StaticResource PanelDark}"
+        BorderBrush="{StaticResource BorderDark}"
+        BorderThickness="1"
+        CornerRadius="10"
+        Visibility="Collapsed">
+
+            <Grid Margin="20">
+
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+
+                <!-- HEADER -->
+                <Grid Margin="0,0,0,10">
+                    <TextBlock x:Name="TituloReporte"
+                       Text="Historial"
+                       Foreground="White"
+                       FontSize="22"
+                       FontWeight="Bold"/>
+
+                    <Button Content="← Volver"
+                    Click="BtnVolverInventario_Click"
+                    HorizontalAlignment="Right"
+                    Background="Transparent"
+                    Foreground="White"
+                    BorderThickness="0"
+                    FontSize="14"
+                    Padding="10,5"/>
+                </Grid>
+
+                <!-- TABLA -->
+                <DataGrid x:Name="TablaReportes"
+                  Grid.Row="1"
+                  Margin="0,10,0,0"
+                  AutoGenerateColumns="True"
+                  Background="#1C2132"
+                  Foreground="White"
+                  BorderBrush="#2D3348"
+                  RowBackground="#1C2132"
+                  AlternatingRowBackground="#23293A"
+                  GridLinesVisibility="None"
+                  HeadersVisibility="Column"
+                  SelectionMode="Single"
+                  SelectionUnit="FullRow"
+                  FontSize="16"
+                  RowHeight="40"
+                  ColumnWidth="*">
+
+                    <!-- ENCABEZADOS -->
+                    <DataGrid.ColumnHeaderStyle>
+                        <Style TargetType="DataGridColumnHeader">
+                            <Setter Property="Background" Value="#2D3348"/>
+                            <Setter Property="Foreground" Value="White"/>
+                            <Setter Property="FontWeight" Value="Bold"/>
+                            <Setter Property="FontSize" Value="16"/>
+                            <Setter Property="Height" Value="45"/>
+                            <Setter Property="HorizontalContentAlignment" Value="Center"/>
+                            <Setter Property="BorderBrush" Value="#2D3348"/>
+                        </Style>
+                    </DataGrid.ColumnHeaderStyle>
+
+                    <!-- CELDAS -->
+                    <DataGrid.CellStyle>
+                        <Style TargetType="DataGridCell">
+                            <Setter Property="Foreground" Value="White"/>
+                            <Setter Property="Background" Value="Transparent"/>
+                            <Setter Property="BorderThickness" Value="0"/>
+                            <Setter Property="Padding" Value="10,5"/>
+                            <Setter Property="TextBlock.TextAlignment" Value="Center"/>
+                            <Setter Property="HorizontalContentAlignment" Value="Center"/>
+                        </Style>
+                    </DataGrid.CellStyle>
+
+                    <!-- FILAS -->
+                    <DataGrid.RowStyle>
+                        <Style TargetType="DataGridRow">
+                            <Setter Property="Foreground" Value="White"/>
+                            <Setter Property="Background" Value="#1C2132"/>
+                            <Style.Triggers>
+
+                                <!-- Hover -->
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter Property="Background" Value="#2A3145"/>
+                                </Trigger>
+
+                                <!-- Selección -->
+                                <Trigger Property="IsSelected" Value="True">
+                                    <Setter Property="Background" Value="#FF334D"/>
+                                    <Setter Property="Foreground" Value="White"/>
+                                </Trigger>
+
+                            </Style.Triggers>
+                        </Style>
+                    </DataGrid.RowStyle>
+
+                </DataGrid>
+
+            </Grid>
         </Border>
 
         <Border Grid.Row="3" Margin="0,15,0,0">
