@@ -92,7 +92,9 @@
                IsHitTestVisible="False"/>
                 </Grid>
                 <StackPanel Grid.Column="1" Orientation="Horizontal" Margin="20,0,0,0">
-                    <Border BorderBrush="{StaticResource BorderDark}" BorderThickness="1" Background="{StaticResource PanelDark}" CornerRadius="8" Padding="15,10" Margin="0,0,10,0">
+                    <Border BorderBrush="{StaticResource BorderDark}" BorderThickness="1" Background="{StaticResource PanelDark}"  CornerRadius="8" 
+                       Padding="15,10" Margin="0,0,10,0" MouseLeftButtonDown="BtnFiltros_Click">
+
                         <TextBlock Text="Filters" Foreground="White" FontWeight="Bold"/>
                     </Border>
                     <Border BorderBrush="{StaticResource BorderDark}" BorderThickness="1" Background="{StaticResource PanelDark}" CornerRadius="8" Padding="10">
