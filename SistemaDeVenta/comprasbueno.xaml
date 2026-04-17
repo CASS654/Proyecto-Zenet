@@ -12,8 +12,8 @@
     <UserControl.Resources>
 
         <!-- COLORES ALINEADOS CON EL DASHBOARD -->
-        <SolidColorBrush x:Key="Primary" Color="#4A90E2"/>
-        <SolidColorBrush x:Key="PrimaryHover" Color="#3A78C2"/>
+        <SolidColorBrush x:Key="Primary" Color="#EF1C3A"/>
+        <SolidColorBrush x:Key="PrimaryHover" Color="#FF334D"/>
         <SolidColorBrush x:Key="PrimaryLight" Color="#1A4A90E2"/>
 
         <SolidColorBrush x:Key="BgDark" Color="#0B0F14"/>

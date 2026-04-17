@@ -14,7 +14,7 @@
         <SolidColorBrush x:Key="ColorBackground" Color="#0B0F14"/>
         <SolidColorBrush x:Key="ColorPanel" Color="#141A22"/>
         <SolidColorBrush x:Key="ColorBorder" Color="#2B3442"/>
-        <SolidColorBrush x:Key="ColorPrimary" Color="#4A90E2"/>
+        <SolidColorBrush x:Key="ColorPrimary" Color="#EF1C3A"/>
         <SolidColorBrush x:Key="ColorTextSoft" Color="#8A94A6"/>
         <SolidColorBrush x:Key="TextPrimary" Color="#FFFFFF"/>
 
@@ -121,7 +121,7 @@
                             <ColumnDefinition Width="Auto"/>
                             <ColumnDefinition Width="*"/>
                         </Grid.ColumnDefinitions>
-                        <Border Background="#EF1C3A" CornerRadius="10" Width="45" Height="45" VerticalAlignment="Center">
+                        <Border Background="#FF334D" CornerRadius="10" Width="45" Height="45" VerticalAlignment="Center">
                             <TextBlock Text="⚠" FontSize="18" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                         </Border>
                         <StackPanel Grid.Column="1" Margin="12,0,0,0">

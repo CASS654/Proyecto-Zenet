@@ -10,7 +10,7 @@
         <Color x:Key="ColorPanel">#141A22</Color>
         <Color x:Key="ColorPanelSoft">#1C232D</Color>
         <Color x:Key="ColorBorder">#2B3442</Color>
-        <Color x:Key="ColorPrimary">#4A90E2</Color>
+        <Color x:Key="ColorPrimary">#EF1C3A</Color>
         <Color x:Key="ColorTextSoft">#8A94A6</Color>
 
         <SolidColorBrush x:Key="BackgroundBrush" Color="{StaticResource ColorBackground}"/>

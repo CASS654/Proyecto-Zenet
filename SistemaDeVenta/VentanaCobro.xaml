@@ -8,7 +8,7 @@
         <SolidColorBrush x:Key="BgDark"       Color="#0B0F14"/>
         <SolidColorBrush x:Key="PanelDark"    Color="#141A22"/>
         <SolidColorBrush x:Key="BorderDark"   Color="#2B3442"/>
-        <SolidColorBrush x:Key="AccentRed"    Color="#4A90E2"/>
+        <SolidColorBrush x:Key="AccentRed"    Color="#EF1C3A"/>
         <SolidColorBrush x:Key="TextPrimary"  Color="#FFFFFF"/>
         <SolidColorBrush x:Key="TextSecondary" Color="#8A94A6"/>
 
