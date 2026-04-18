@@ -170,5 +170,11 @@ namespace SistemaDeVenta.Views
             txtTelefonoProveedor.Text = proveedor.Telefono;
             txtDireccionProveedor.Text = proveedor.Direccion;
         }
+
+
+        private void TablaProveedores_SelectionChanged_1(object sender, SelectionChangedEventArgs e)
+        {
+
+        }
     }
 }

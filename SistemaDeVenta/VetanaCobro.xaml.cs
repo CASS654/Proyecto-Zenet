@@ -33,6 +33,19 @@ namespace SistemaDeVenta
             ActualizarTotales();
         }
 
+        public VetanaCobrousuario(string nombre)
+        {
+            InitializeComponent();
+
+            // Mostrar nombre completo
+            TxtNombreUsuario.Text = nombre;
+
+            // Obtener inicial
+            if (!string.IsNullOrEmpty(nombre))
+            {
+                TxtInicialUsuario.Text = nombre.Substring(0, 1).ToUpper();
+            }
+        }
         private void AbrirBuscador()
         {
             BusquedaProducto buscador = new BusquedaProducto();

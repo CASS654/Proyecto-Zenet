@@ -50,7 +50,7 @@
                 </Trigger>
                 <Trigger Property="IsSelected" Value="True">
                     <Setter Property="Background"  Value="#204A90E2"/>
-                    <Setter Property="BorderBrush" Value="#4A90E2"/>
+                    <Setter Property="BorderBrush" Value="#FF2D46"/>
                 </Trigger>
             </Style.Triggers>
         </Style>
@@ -103,7 +103,17 @@
                        FontSize="14"
                        HorizontalAlignment="Right"/>        
                 </StackPanel>
-                <Ellipse Width="40" Height="40" Fill="#2B3442" Margin="0,0,20,0"/>
+                <Grid Margin="0,0,20,0">
+                    <Ellipse Width="40" Height="40" Fill="#2B3442"/>
+
+                    <TextBlock x:Name="TxtInicialUsuario"
+               Text="U"
+               Foreground="White"
+               FontWeight="Bold"
+               FontSize="16"
+               HorizontalAlignment="Center"
+               VerticalAlignment="Center"/>
+                </Grid>
                 <Border BorderBrush="{StaticResource AccentRed}" BorderThickness="1"
                         Background="#204A90E2" CornerRadius="8" Padding="15,8" MouseDown="Border_MouseDown_2">
                     <StackPanel Orientation="Horizontal">

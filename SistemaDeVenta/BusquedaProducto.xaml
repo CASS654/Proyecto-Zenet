@@ -32,9 +32,9 @@
         </Style>
 
         <Style x:Key="FilterButtonStyle" TargetType="Button">
-            <Setter Property="Background" Value="#1E293B"/>
+            <Setter Property="Background" Value="#0B0F14"/>
             <Setter Property="Foreground" Value="#FF2D46"/>
-            <Setter Property="BorderBrush" Value="#334155"/>
+            <Setter Property="BorderBrush" Value="#0B0F14"/>
             <Setter Property="BorderThickness" Value="1"/>
             <Setter Property="Cursor" Value="Hand"/>
             <Setter Property="Template">
@@ -52,11 +52,11 @@
         </Style>
 
         <Style x:Key="KbdBadge" TargetType="Border">
-            <Setter Property="Background" Value="#1E293B"/>
+            <Setter Property="Background" Value="#0B0F14"/>
             <Setter Property="CornerRadius" Value="4"/>
             <Setter Property="Padding" Value="6,2"/>
             <Setter Property="Margin" Value="0,0,6,0"/>
-            <Setter Property="BorderBrush" Value="#334155"/>
+            <Setter Property="BorderBrush" Value="#0B0F14"/>
             <Setter Property="BorderThickness" Value="1"/>
         </Style>
         <Style TargetType="{x:Type DataGridColumnHeader}">
@@ -66,15 +66,15 @@
             <Setter Property="FontWeight" Value="Bold"/>
             <Setter Property="Padding" Value="15,10,10,10"/>
             <Setter Property="BorderThickness" Value="0,0,0,1"/>
-            <Setter Property="BorderBrush" Value="#1E293B"/>
+            <Setter Property="BorderBrush" Value="#0B0F14"/>
             <Setter Property="HorizontalContentAlignment" Value="Left"/>
         </Style>
     </Window.Resources>
 
     <Grid>
-        <Border Background="#0F172A"
+        <Border Background="#0B0F14"
             CornerRadius="12"
-            BorderBrush="#1E293B"
+            BorderBrush="#0B0F14"
             BorderThickness="1"
             Margin="20"
             ClipToBounds="True">
@@ -97,7 +97,7 @@
                     </DockPanel>
                 </Border>
 
-                <Border Grid.Row="1" Background="#131C2E" BorderBrush="#1E293B" BorderThickness="0,1" Padding="25,15">
+                <Border Grid.Row="1" Background="#141A22" BorderBrush="#141A22" BorderThickness="0,1" Padding="25,15">
                     <StackPanel Orientation="Horizontal">
 
                         <Button Style="{StaticResource FilterButtonStyle}" VerticalAlignment="Center">
@@ -109,7 +109,7 @@
                             </StackPanel>
                         </Button>
 
-                        <Border Background="#070B14" BorderBrush="#334155" BorderThickness="0,1,1,1" CornerRadius="0,8,8,0" Width="849" Padding="12,6" Height="34" Cursor="" >
+                        <Border Background="#2B3442" BorderBrush="#2B3442" BorderThickness="0,1,1,1" CornerRadius="0,8,8,0" Width="849" Padding="12,6" Height="34" Cursor="" >
                             <Grid>
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="Auto"/>
@@ -117,9 +117,9 @@
                                     <ColumnDefinition Width="Auto"/>
                                 </Grid.ColumnDefinitions>
                                 <Path Data="M15.5,14h-.79l-.28-.27C15.41,12.59,16,11.11,16,9.5,16,5.91,13.09,3,9.5,3S3,5.91,3,9.5,5.91,16,9.5,16c1.61,0,3.09-.59,4.23-1.57l.27.28v.79l5,4.99L20.49,19l-4.99-5zm-6,0C7.01,14,5,11.99,5,9.5S7.01,5,9.5,5,14,7.01,14,9.5,11.99,14,9.5,14z" 
-                                      Fill="#334155" Height="19" VerticalAlignment="Center" Margin="0,0,6,0" Stretch="Fill"/>
+                                      Fill="White" Height="19" VerticalAlignment="Center" Margin="0,0,6,0" Stretch="Fill"/>
                                 <TextBox x:Name="txtBuscar" Background="Transparent" Foreground="White" BorderThickness="0" FontSize="14" VerticalContentAlignment="Center" CaretBrush="#FF2D46" Grid.ColumnSpan="2" Margin="23,0,0,0" TextChanged="txtBuscar_TextChanged"/>
-                                <TextBlock Grid.Column="2" Text="F3 to filter" Foreground="#334155" FontStyle="Italic" VerticalAlignment="Center" FontSize="11" Margin="10,0,0,0"/>
+                                <TextBlock Grid.Column="2" Text="F3 to filter" Foreground="White" FontStyle="Italic" VerticalAlignment="Center" FontSize="11" Margin="10,0,0,0"/>
                             </Grid>
                         </Border>
                     </StackPanel>
@@ -146,7 +146,7 @@
                             <Setter Property="Foreground" Value="White"/>
                             <Style.Triggers>
                                 <Trigger Property="IsSelected" Value="True">
-                                    <Setter Property="Background" Value="#1E293B"/>
+                                    <Setter Property="Background" Value="#0B0F14"/>
                                     <Setter Property="Foreground" Value="#FF2D46"/>
                                 </Trigger>
                             </Style.Triggers>
@@ -202,8 +202,8 @@
                 </DataGrid>
 
                 <Border Grid.Row="2"
-        Background="#0F172A"
-        BorderBrush="#1E293B"
+        Background="#0B0F14"
+        BorderBrush="#0B0F14"
         BorderThickness="0,1,0,0"
         Padding="25"
         CornerRadius="0,0,12,12" HorizontalAlignment="Left" Margin="0,441,0,0" Grid.RowSpan="2" Width="1008">
