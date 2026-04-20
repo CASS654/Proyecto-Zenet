@@ -74,45 +74,82 @@
 
         <!-- ROW 0: Header -->
         <Grid Grid.Row="0" Margin="0,0,0,20">
-            <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Center">
-                <Border Background="{StaticResource AccentRed}" Width="30" Height="30"
-        CornerRadius="4" Margin="0,0,10,0" ClipToBounds="True">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
 
+            <!-- IZQUIERDA -->
+            <StackPanel Grid.Column="0"
+                Orientation="Horizontal"
+                VerticalAlignment="Center">
+
+                <Border Background="{StaticResource AccentRed}" Width="30" Height="30"
+                CornerRadius="4" Margin="0,0,10,0" ClipToBounds="True">
                     <Grid>
                         <Image Source="/SistemaDeVenta;component/Iconos/Logo/logoB.png"
-               Stretch="Uniform" Margin="2">
-                            <Image.Clip>
-                                <RectangleGeometry Rect="0,0,26,26" RadiusX="4" RadiusY="4"/>
-                            </Image.Clip>
-                        </Image>
+                       Stretch="Uniform" Margin="2"/>
                     </Grid>
-
                 </Border>
-                <TextBlock Text="ModernPOS" Foreground="{StaticResource TextPrimary}"
-                           FontSize="24" FontWeight="Bold"/>
-                <TextBlock Text=" v2.4" Foreground="{StaticResource TextSecondary}"
-                           FontSize="14" VerticalAlignment="Bottom" Margin="0,0,0,4"/>
+
+                <TextBlock Text="ModernPOS"
+                   Foreground="{StaticResource TextPrimary}"
+                   FontSize="24" FontWeight="Bold"/>
+
+                <TextBlock Text=" v2.4"
+                   Foreground="{StaticResource TextSecondary}"
+                   FontSize="14"
+                   VerticalAlignment="Bottom"
+                   Margin="0,0,0,4"/>
             </StackPanel>
 
-            <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="919,0,0,0">
-                <StackPanel VerticalAlignment="Center" Margin="0,0,15,0">
-                    <TextBlock x:Name="TxtNombreUsuario"
-                       Text="Usuario"
-                       Foreground="{StaticResource TextPrimary}"
+            <!-- DERECHA -->
+            <StackPanel Grid.Column="1"
+                Orientation="Horizontal"
+                VerticalAlignment="Center"
+                HorizontalAlignment="Right">
+
+                <TextBlock x:Name="TxtNombreUsuario"
+                   Text="Usuario"
+                   Foreground="{StaticResource TextPrimary}"
+                   FontWeight="Bold"
+                   FontSize="14"
+                   VerticalAlignment="Center"
+                   Margin="0,0,15,0"/>
+
+                <Grid Width="40" Height="40" Margin="0,0,20,0">
+
+                    <!-- CÍRCULO -->
+                    <Ellipse Fill="#EF1C3A"/>
+
+                    <!-- LETRA -->
+                    <TextBlock x:Name="TxtInicial"
+                       Text="U"
+                       Foreground="White"
                        FontWeight="Bold"
-                       FontSize="14"
-                       HorizontalAlignment="Right"/>        
-                </StackPanel>
-                <Ellipse Width="40" Height="40" Fill="#2B3442" Margin="0,0,20,0"/>
-                <Border BorderBrush="{StaticResource AccentRed}" BorderThickness="1"
-                        Background="#204A90E2" CornerRadius="8" Padding="15,8" MouseDown="Border_MouseDown_2">
+                       FontSize="16"
+                       HorizontalAlignment="Center"
+                       VerticalAlignment="Center"/>
+                </Grid>
+
+                <Border BorderBrush="{StaticResource AccentRed}"
+                BorderThickness="1"
+                Background="#204A90E2"
+                CornerRadius="8"
+                Padding="15,8"
+                MouseDown="Border_MouseDown_2">
                     <StackPanel Orientation="Horizontal">
                         <Border Background="{StaticResource AccentRed}"
-                                CornerRadius="4" Padding="4,1" Margin="0,0,8,0">
-                            <TextBlock Text="ESC" Foreground="White" FontSize="10" FontWeight="Bold"/>
+                        CornerRadius="4"
+                        Padding="4,1"
+                        Margin="0,0,8,0">
+                            <TextBlock Text="ESC" Foreground="White"
+                               FontSize="10" FontWeight="Bold"/>
                         </Border>
-                        <TextBlock Text="LOGOUT ➔" Foreground="White"
-                                   FontWeight="Bold" VerticalAlignment="Center"/>
+
+                        <TextBlock Text="LOGOUT ➔"
+                           Foreground="White"
+                           FontWeight="Bold"/>
                     </StackPanel>
                 </Border>
             </StackPanel>
@@ -149,6 +186,8 @@
                         </Border>
                     </StackPanel>
 
+                    
+
                     <TextBox x:Name="TxtBusqueda"
                              Grid.Column="1"
                              Background="Transparent"
@@ -157,28 +196,15 @@
                              FontSize="16"
                              VerticalContentAlignment="Center"
                              KeyDown="TxtBusqueda_KeyDown"
-                             PreviewTextInput="TxtBusqueda_PreviewTextInput"/>
+                             PreviewTextInput="TxtBusqueda_PreviewTextInput" TextChanged="TxtBusqueda_TextChanged"/>
 
-                    <TextBlock IsHitTestVisible="False"
-                               Text="Escriba el producto o presione [F2] para buscar..."
-                               VerticalAlignment="Center"
-                               Foreground="#505A6B"
-                               FontSize="16"
-                               FontStyle="Italic">
-                        <TextBlock.Style>
-                            <Style TargetType="TextBlock">
-                                <Setter Property="Visibility" Value="Collapsed"/>
-                                <Style.Triggers>
-                                    <DataTrigger Binding="{Binding Text, ElementName=TxtBusqueda}" Value="">
-                                        <Setter Property="Visibility" Value="Visible"/>
-                                    </DataTrigger>
-                                    <DataTrigger Binding="{Binding Visibility, ElementName=PanelQty}" Value="Visible">
-                                        <Setter Property="Visibility" Value="Collapsed"/>
-                                    </DataTrigger>
-                                </Style.Triggers>
-                            </Style>
-                        </TextBlock.Style>
-                    </TextBlock>
+                    <TextBlock x:Name="PlaceholderBusqueda"
+                       IsHitTestVisible="False"
+                       Text="Presione [F2] para buscar..."
+                       VerticalAlignment="Center"
+                       Foreground="#505A6B"
+                       FontSize="16"
+                       FontStyle="Italic"/>
 
                     <StackPanel Grid.Column="2" Orientation="Horizontal" VerticalAlignment="Center">
                         <Border Background="{StaticResource AccentRed}" CornerRadius="8"
