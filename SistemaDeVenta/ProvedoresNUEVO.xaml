@@ -242,7 +242,31 @@
                           RowHeight="45"
                           AutoGenerateColumns="False"
                           IsReadOnly="True">
+                    <DataGrid.RowStyle>
+                        <Style TargetType="DataGridRow">
+                            <Setter Property="Background" Value="Transparent"/>
+                            <Setter Property="Foreground" Value="White"/>
 
+                            <Style.Triggers>
+
+                                <!-- Hover -->
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter Property="Background" Value="#40EF1C3A"/>
+                                </Trigger>
+
+                                <!-- Seleccionado -->
+                                <Trigger Property="IsSelected" Value="True">
+                                    <Setter Property="Background" Value="#80EF1C3A"/>
+                                    <Setter Property="Foreground" Value="White"/>
+                                </Trigger>
+
+                            </Style.Triggers>
+                        </Style>
+                    </DataGrid.RowStyle>
+                    <DataGrid.Resources>
+                        <SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}" Color="#BFEF1C3A"/>
+                        <SolidColorBrush x:Key="{x:Static SystemColors.HighlightTextBrushKey}" Color="White"/>
+                    </DataGrid.Resources>
                     <DataGrid.Columns>
 
                         <DataGridTextColumn Header="NOMBRE"
@@ -274,7 +298,7 @@
 
                                             <TextBlock FontFamily="Segoe MDL2 Assets"
                                                        Text="&#xE70F;"
-                                                       Foreground="SkyBlue"
+                                                       Foreground="#80EF1C3A"
                                                        FontSize="16"/>
 
                                         </Button>
