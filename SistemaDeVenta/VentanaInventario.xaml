@@ -9,11 +9,11 @@
 
     <UserControl.Resources>
 
-        <SolidColorBrush x:Key="BgDark" Color="#0D1117"/>
+        <SolidColorBrush x:Key="BgDark" Color="#0B0F14"/>
         <!-- fondo general -->
-        <SolidColorBrush x:Key="PanelDark" Color="#161B22"/>
+        <SolidColorBrush x:Key="PanelDark" Color="#141A22"/>
         <!-- cards -->
-        <SolidColorBrush x:Key="BorderDark" Color="#30363D"/>
+        <SolidColorBrush x:Key="BorderDark" Color="#2B3442"/>
         <!-- bordes -->
         <SolidColorBrush x:Key="AccentRed" Color="#FF334D"/>
         <SolidColorBrush x:Key="SuccessGreen" Color="#2ECC71"/>
