@@ -14,7 +14,7 @@ namespace SistemaDeVenta
         private bool bloqueandoESC = false;
         private bool modoCantidad = false;
         private string bufferCantidad = "";
-        private int cantidadActual = 1;
+        private decimal cantidadActual = 1m ;
 
         // 🔥 CONTROL DEL PLACEHOLDER
         private bool mostrarPlaceholder = true;
@@ -94,7 +94,7 @@ namespace SistemaDeVenta
             }
         }
 
-        private void AgregarAlCarrito(ProductoPOS producto, int qty)
+        private void AgregarAlCarrito(ProductoPOS producto, decimal qty)
         {
             var existente = carrito.FirstOrDefault(p => p.Id == producto.Id);
             if (existente != null)
@@ -125,8 +125,8 @@ namespace SistemaDeVenta
             TxtTotalEntero.Text = "$" + partes[0];
             TxtTotalDecimal.Text = "." + (partes.Length > 1 ? partes[1] : "00");
 
-            int totalItems = carrito.Sum(p => p.Quantity);
-            TxtTotalItems.Text = $"TOTAL ITEMS: {totalItems}";
+            decimal totalItems = carrito.Sum(p => p.Quantity);
+            TxtTotalItems.Text = $"TOTAL ITEMS: {totalItems:0.###}";
         }
 
         private void TxtBusqueda_KeyDown(object sender, KeyEventArgs e)
@@ -156,8 +156,13 @@ namespace SistemaDeVenta
             {
                 if (productoPendiente != null)
                 {
+
+                    // DESPUÉS
                     if (modoCantidad && !string.IsNullOrEmpty(bufferCantidad))
-                        int.TryParse(bufferCantidad, out cantidadActual);
+                        decimal.TryParse(bufferCantidad,
+                            System.Globalization.NumberStyles.Any,
+                            System.Globalization.CultureInfo.InvariantCulture,
+                            out cantidadActual);
 
                     AgregarAlCarrito(productoPendiente, cantidadActual);
 
@@ -187,16 +192,22 @@ namespace SistemaDeVenta
         {
             if (modoCantidad)
             {
-                Regex regex = new Regex("[^0-9]+");
+                // Acepta dígitos, punto y coma (coma se convierte a punto)
+                string entrada = e.Text == "," ? "." : e.Text;
+                Regex regex = new Regex("[^0-9.]+");
 
-                if (!regex.IsMatch(e.Text))
+                // Evitar doble punto
+                if (!regex.IsMatch(entrada) && !(entrada == "." && bufferCantidad.Contains(".")))
                 {
-                    bufferCantidad += e.Text;
+                    bufferCantidad += entrada;
 
-                    if (int.TryParse(bufferCantidad, out int resultado))
+                    if (decimal.TryParse(bufferCantidad,
+                        System.Globalization.NumberStyles.Any,
+                        System.Globalization.CultureInfo.InvariantCulture,
+                        out decimal resultado))
                     {
                         cantidadActual = resultado;
-                        TxtQty.Text = cantidadActual.ToString();
+                        TxtQty.Text = cantidadActual.ToString("0.###");
                     }
                 }
 
@@ -208,7 +219,7 @@ namespace SistemaDeVenta
         {
             modoCantidad = false;
             bufferCantidad = "";
-            cantidadActual = 1;
+            cantidadActual = 1m;
 
             PanelQty.Visibility = Visibility.Collapsed;
             TxtQty.Text = "1";
@@ -222,7 +233,10 @@ namespace SistemaDeVenta
         private void Border_MouseDown(object sender, MouseButtonEventArgs e)
         {
             if (modoCantidad && !string.IsNullOrEmpty(bufferCantidad))
-                int.TryParse(bufferCantidad, out cantidadActual);
+                decimal.TryParse(bufferCantidad,
+                    System.Globalization.NumberStyles.Any,
+                    System.Globalization.CultureInfo.InvariantCulture,
+                    out cantidadActual);
             mostrarPlaceholder = false; // 🔥 ocultar placeholder
             ActualizarPlaceholder();
 

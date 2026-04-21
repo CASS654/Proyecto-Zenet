@@ -12,7 +12,7 @@ namespace SistemaDeVenta
             public string Name { get; set; }
             public string Description { get; set; }
             public decimal UnitPrice { get; set; }
-            public int Quantity { get; set; }
+            public decimal Quantity { get; set; }
             public string Unit { get; set; }
             public decimal Total => UnitPrice * Quantity;
         }
