@@ -94,6 +94,7 @@
     <Compile Include="BusquedaProducto.xaml.cs">
       <DependentUpon>BusquedaProducto.xaml</DependentUpon>
     </Compile>
+    <Compile Include="ClassCompras.cs" />
     <Compile Include="ClassVentas.cs" />
     <Compile Include="ClassProducto.cs" />
     <Compile Include="ClassProveedores.cs" />

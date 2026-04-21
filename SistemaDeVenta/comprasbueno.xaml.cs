@@ -291,6 +291,48 @@ namespace SistemaDeVenta
             txtImpuesto.Text = impuesto.ToString("C");
             txtTotal.Text = total.ToString("C");
         }
+
+
+        private void GenerarCompra()
+        {
+            try
+            {
+                if (carrito.Count == 0)
+                {
+                    MessageBox.Show("Carrito vacío");
+                    return;
+                }
+
+                if (proveedorSeleccionado == null)
+                {
+                    MessageBox.Show("Selecciona proveedor");
+                    return;
+                }
+
+                ClassCompras compras = new ClassCompras();
+
+                int idCompra = compras.RegistrarCompra(
+                    carrito.ToList(),
+                    proveedorSeleccionado.IdProveedor,
+                    1
+                );
+
+                MessageBox.Show($"Compra registrada ID: {idCompra}");
+
+                carrito.Clear();
+                ActualizarTotales();
+                ResetCantidad();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            GenerarCompra();
+        }
     }
 
     // 🔥 MODELO DE COMPRA (RESPETA TU XAML)

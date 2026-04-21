@@ -151,7 +151,6 @@ namespace SistemaDeVentas.Views
 
             if (resp == 0)
             {
-                MessageBox.Show("¡Éxito!");
                 CargarUsuarios();
                 CerrarPanel();
             }
@@ -173,7 +172,6 @@ namespace SistemaDeVentas.Views
 
                 if (resp == 0)
                 {
-                    MessageBox.Show("Usuario eliminado");
                     CargarUsuarios();
                 }
                 else

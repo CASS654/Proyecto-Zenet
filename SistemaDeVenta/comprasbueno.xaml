@@ -474,7 +474,7 @@
                 </Grid.RowDefinitions>
 
                 <!-- BOTÓN -->
-                <Button Grid.Row="2" BorderThickness="0" Cursor="Hand">
+                <Button Grid.Row="2" BorderThickness="0" Cursor="Hand" Click="Button_Click">
                     <Button.Template>
                         <ControlTemplate TargetType="Button">
                             <Border Background="{StaticResource Primary}" CornerRadius="12" Padding="24">

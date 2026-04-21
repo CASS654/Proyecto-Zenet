@@ -5,11 +5,14 @@
     using System.Windows;
     using System.Windows.Input;
     using System.Windows.Media.Animation;
+    using System.Windows.Threading;
 
-    namespace SistemaDeVenta
+namespace SistemaDeVenta
     {
         public partial class AdministradorWindow : Window
         {
+            private DispatcherTimer sidebarTimer;
+            private int segundosEspera = 5;
             private bool _isSidebarExpanded = true;
 
             private const double EXPANDED_WIDTH = 240;
@@ -19,10 +22,28 @@
             {
                 InitializeComponent();
                 this.PreviewKeyDown += AdministradorWindow_KeyDown;
+            sidebarTimer = new DispatcherTimer();
+            sidebarTimer.Interval = TimeSpan.FromSeconds(segundosEspera);
+            sidebarTimer.Tick += SidebarTimer_Tick;
+        }
 
+        private void SidebarTimer_Tick(object sender, EventArgs e)
+        {
+            sidebarTimer.Stop();
+
+            if (_isSidebarExpanded)
+            {
+                CollapseSidebar(); // 🔒 se cierra automáticamente
             }
+        }
 
-            private void AnimateSidebar(double from, double to)
+        private void ReiniciarTimerSidebar()
+        {
+            sidebarTimer.Stop();
+            sidebarTimer.Start();
+        }
+
+        private void AnimateSidebar(double from, double to)
             {
                 DoubleAnimation animation = new DoubleAnimation
                 {
@@ -132,59 +153,43 @@
 
             private void Button_Click_1(object sender, RoutedEventArgs e)
             {
-                if (_isSidebarExpanded)
-                {
-                    CollapseSidebar();
-                }
-                else
-                {
-                    ExpandSidebar();
-                }
+            ReiniciarTimerSidebar(); // 🔥 IMPORTANTE
 
-                MainContent.Content = new DashboardControl();
+            if (!_isSidebarExpanded)
+                ExpandSidebar();
+
+            MainContent.Content = new DashboardControl();
                 TxtTitulo.Text = "Dashboard";
             }
 
             private void Button_Click_2(object sender, RoutedEventArgs e)
             {
-                if (_isSidebarExpanded)
-                {
-                    CollapseSidebar();
-                }
-                else
-                {
-                    ExpandSidebar();
-                }
-                MainContent.Content = new UsuariosView();
+            ReiniciarTimerSidebar(); // 🔥 IMPORTANTE
+
+            if (!_isSidebarExpanded)
+                ExpandSidebar();
+            MainContent.Content = new UsuariosView();
                 TxtTitulo.Text = "Usuarios";
             }
 
             private void Button_Click_3(object sender, RoutedEventArgs e)
             {
-                if (_isSidebarExpanded)
-                {
-                    CollapseSidebar();
-                }
-                else
-                {
-                    ExpandSidebar();
-                }
-                MainContent.Content = new ProveedoresNUEVO();
+            ReiniciarTimerSidebar(); // 🔥 IMPORTANTE
+
+            if (!_isSidebarExpanded)
+                ExpandSidebar();
+            MainContent.Content = new ProveedoresNUEVO();
                 TxtTitulo.Text = "Proveedores";
             }
 
             private void Button_Click_4(object sender, RoutedEventArgs e)
             {
-                if (_isSidebarExpanded)
-                {
-                    CollapseSidebar();
-                }
-                else
-                {
-                    ExpandSidebar();
-                }
+            ReiniciarTimerSidebar(); // 🔥 IMPORTANTE
 
-                MainContent.Content = new VentanaInventario();
+            if (!_isSidebarExpanded)
+                ExpandSidebar();
+
+            MainContent.Content = new VentanaInventario();
                 TxtTitulo.Text = "Inventario";
             }
 
@@ -201,16 +206,12 @@
 
             private void Button_Click_5(object sender, RoutedEventArgs e)
             {
-                if (_isSidebarExpanded)
-                {
-                    CollapseSidebar();
-                }
-                else
-                {
-                    ExpandSidebar();
-                }
+            ReiniciarTimerSidebar(); // 🔥 IMPORTANTE
 
-                MainContent.Content = new comprasbueno();
+            if (!_isSidebarExpanded)
+                ExpandSidebar();
+
+            MainContent.Content = new comprasbueno();
                 TxtTitulo.Text = "Compras";
             }
 
@@ -239,16 +240,12 @@
 
             private void Button_Click_6(object sender, RoutedEventArgs e)
             {
-                if (_isSidebarExpanded)
-                {
-                    CollapseSidebar();
-                }
-                else
-                {
-                    ExpandSidebar();
-                }
+            ReiniciarTimerSidebar(); // 🔥 IMPORTANTE
 
-                MainContent.Content = new VentanaCobro();
+            if (!_isSidebarExpanded)
+                ExpandSidebar();
+
+            MainContent.Content = new VentanaCobro();
                 TxtTitulo.Text = "Ventas";
             }
         }

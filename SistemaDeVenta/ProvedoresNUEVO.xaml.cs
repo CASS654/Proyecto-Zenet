@@ -158,7 +158,6 @@ namespace SistemaDeVenta.Views
 
             if (resp == 0)
             {
-                MessageBox.Show("¡Éxito!");
                 CargarProveedores();
                 CerrarPanel();
             }
@@ -180,7 +179,6 @@ namespace SistemaDeVenta.Views
 
                 if (resp == 0)
                 {
-                    MessageBox.Show("Proveedor eliminado.");
                     CargarProveedores();
                 }
                 else
