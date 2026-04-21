@@ -6,6 +6,7 @@ using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Media;
 
 namespace SistemaDeVenta
 {
@@ -19,6 +20,18 @@ namespace SistemaDeVenta
             public string Password { get; set; }
             public string Rol { get; set; }
             public bool Activo { get; set; } // 1 = Activo, 0 = Inactivo
+                                             // Agrega estas propiedades a tu clase ClassUsuarios
+            public string EstadoTexto => Activo ? "ACTIVE" : "INACTIVE";
+
+            public SolidColorBrush EstadoColor => Activo
+                ? new SolidColorBrush((Color)ColorConverter.ConvertFromString("#22C55E"))
+                : new SolidColorBrush((Color)ColorConverter.ConvertFromString("#EF4444"));
+
+            public SolidColorBrush EstadoFondo => Activo
+                ? new SolidColorBrush((Color)ColorConverter.ConvertFromString("#0F2918"))
+                : new SolidColorBrush((Color)ColorConverter.ConvertFromString("#2A0F14"));
+
+
 
             // INSERTAR USUARIO
             // INSERTAR USUARIO CORREGIDO

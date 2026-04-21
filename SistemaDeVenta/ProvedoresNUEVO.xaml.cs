@@ -4,13 +4,16 @@ using System.Collections.Generic;
 using System.Data;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Media.Animation;
 using static SistemaDeVenta.ClassProveedores;
 
 namespace SistemaDeVenta.Views
 {
     public partial class ProveedoresNUEVO : UserControl
     {
-        private List<Proveedores1> listaProveedores = new List<Proveedores1>();
+        private bool _panelAbierto = false;
+        private bool _modoEdicion = false;
+        private Proveedores1 _proveedorSeleccionado = null;
 
         public ProveedoresNUEVO()
         {
@@ -18,6 +21,9 @@ namespace SistemaDeVenta.Views
             CargarProveedores();
         }
 
+        // ───────────────────────────────
+        // CARGAR PROVEEDORES
+        // ───────────────────────────────
         private void CargarProveedores()
         {
             try
@@ -25,11 +31,11 @@ namespace SistemaDeVenta.Views
                 ClassTest obj = new ClassTest();
                 DataTable registros = obj.ListarRegistros("SELECT * FROM Proveedores");
 
-                listaProveedores.Clear();
+                List<Proveedores1> lista = new List<Proveedores1>();
 
                 foreach (DataRow row in registros.Rows)
                 {
-                    listaProveedores.Add(new Proveedores1
+                    lista.Add(new Proveedores1
                     {
                         IdProveedor = row["IdProveedor"] == DBNull.Value ? 0 : Convert.ToInt32(row["IdProveedor"]),
                         Nombre = row["Nombre"] == DBNull.Value ? string.Empty : row["Nombre"].ToString(),
@@ -38,9 +44,7 @@ namespace SistemaDeVenta.Views
                     });
                 }
 
-                TablaProveedores.ItemsSource = null;
-                TablaProveedores.Items.Clear();
-                TablaProveedores.ItemsSource = listaProveedores;
+                TablaProveedores.ItemsSource = lista;
             }
             catch (Exception ex)
             {
@@ -48,133 +52,160 @@ namespace SistemaDeVenta.Views
             }
         }
 
-        private void GuardarProveedor_Click(object sender, RoutedEventArgs e)
+        // ───────────────────────────────
+        // PANEL
+        // ───────────────────────────────
+        private void AbrirPanel(bool editar = false)
         {
-            // Validar que los campos no estén vacíos
-            if (string.IsNullOrWhiteSpace(txtNombreProveedor.Text))
+            _modoEdicion = editar;
+            _panelAbierto = true;
+
+            Overlay.Visibility = Visibility.Visible;
+            SlidePanel.Visibility = Visibility.Visible;
+
+            if (editar)
             {
-                MessageBox.Show("El nombre es obligatorio.");
-                return;
-            }
-
-            ClassProveedores db = new ClassProveedores();
-            int resp;
-
-            // LÓGICA DE DECISIÓN: ¿Estamos editando o insertando?
-            if (TablaProveedores.SelectedItem != null)
-            {
-                // --- MODO EDICIÓN ---
-                Proveedores1 proveedorExistente = (Proveedores1)TablaProveedores.SelectedItem;
-
-                // Actualizamos los datos del objeto con lo que hay en los TextBox
-                proveedorExistente.Nombre = txtNombreProveedor.Text;
-                proveedorExistente.Telefono = txtTelefonoProveedor.Text;
-                proveedorExistente.Direccion = txtDireccionProveedor.Text;
-
-                resp = db.EditarProveedor(proveedorExistente);
-
-                if (resp == 0) MessageBox.Show("Proveedor actualizado correctamente.");
+                lblPanelTitulo.Text = "EDITAR PROVEEDOR";
+                lblPanelSubtitulo.Text = $"EDITAR_PROVEEDOR : #PR-{_proveedorSeleccionado?.IdProveedor}";
+                txtBotonGuardar.Text = "GUARDAR CAMBIOS";
+                iconBoton.Text = "\uE70F";
             }
             else
             {
-                // --- MODO NUEVO ---
-                var nuevoProveedor = new Proveedores1
-                {
-                    Nombre = txtNombreProveedor.Text,
-                    Telefono = txtTelefonoProveedor.Text,
-                    Direccion = txtDireccionProveedor.Text
-                };
-
-                resp = db.InsertarProveedor(nuevoProveedor);
-
-                if (resp == 0) MessageBox.Show("Proveedor agregado correctamente.");
+                lblPanelTitulo.Text = "NUEVO PROVEEDOR";
+                lblPanelSubtitulo.Text = "NUEVO_PROVEEDOR : #—";
+                txtBotonGuardar.Text = "GUARDAR PROVEEDOR";
+                iconBoton.Text = "\uE8FA";
             }
 
-            // Si la operación fue exitosa (resp == 0), refrescamos la vista
-            if (resp == 0)
-            {
-                CargarProveedores();
-                LimpiarCampos();
-            }
-            else
-            {
-                MessageBox.Show("Ocurrió un error en la base de datos.");
-            }
+            var sb = (Storyboard)Resources["SlideIn"];
+            sb.Begin();
         }
 
-        // Este método ahora solo sirve para CARGAR los datos al formulario
-        private void ModificarProveedor_Click(object sender, RoutedEventArgs e)
+        private void CerrarPanel()
         {
-            var boton = sender as Button;
-            var proveedor = boton.DataContext as Proveedores1;
+            if (!_panelAbierto) return;
 
-            if (proveedor != null)
+            var sb = (Storyboard)Resources["SlideOut"];
+            sb.Completed += (s, e) =>
             {
-                // Cargamos los datos en los campos
-                txtNombreProveedor.Text = proveedor.Nombre;
-                txtTelefonoProveedor.Text = proveedor.Telefono;
-                txtDireccionProveedor.Text = proveedor.Direccion;
+                Overlay.Visibility = Visibility.Collapsed;
+                SlidePanel.Visibility = Visibility.Collapsed;
+                LimpiarFormulario();
+            };
+            sb.Begin();
 
-                // Seleccionamos el ítem en la tabla para que 'Guardar' sepa que es una edición
-                TablaProveedores.SelectedItem = proveedor;
-            }
+            _panelAbierto = false;
         }
 
-        // MUY IMPORTANTE: Limpiar la selección al limpiar campos
-        private void LimpiarCampos()
+        private void LimpiarFormulario()
         {
             txtNombreProveedor.Text = "";
             txtTelefonoProveedor.Text = "";
             txtDireccionProveedor.Text = "";
-            TablaProveedores.SelectedItem = null; // Reset de la selección
+            _proveedorSeleccionado = null;
+        }
+
+        // ───────────────────────────────
+        // BOTONES
+        // ───────────────────────────────
+        private void AbrirPanelNuevo_Click(object sender, RoutedEventArgs e)
+        {
+            LimpiarFormulario();
+            AbrirPanel(false);
+        }
+
+        private void ModificarProveedor_Click(object sender, RoutedEventArgs e)
+        {
+            if (sender is Button btn && btn.DataContext is Proveedores1 proveedor)
+            {
+                _proveedorSeleccionado = proveedor;
+
+                txtNombreProveedor.Text = proveedor.Nombre;
+                txtTelefonoProveedor.Text = proveedor.Telefono;
+                txtDireccionProveedor.Text = proveedor.Direccion;
+
+                AbrirPanel(true);
+            }
+        }
+
+        private void GuardarProveedor_Click(object sender, RoutedEventArgs e)
+        {
+            if (!ValidarFormulario()) return;
+
+            ClassProveedores db = new ClassProveedores();
+            int resp;
+
+            if (_modoEdicion && _proveedorSeleccionado != null)
+            {
+                _proveedorSeleccionado.Nombre = txtNombreProveedor.Text.Trim();
+                _proveedorSeleccionado.Telefono = txtTelefonoProveedor.Text.Trim();
+                _proveedorSeleccionado.Direccion = txtDireccionProveedor.Text.Trim();
+
+                resp = db.EditarProveedor(_proveedorSeleccionado);
+            }
+            else
+            {
+                var nuevo = new Proveedores1
+                {
+                    Nombre = txtNombreProveedor.Text.Trim(),
+                    Telefono = txtTelefonoProveedor.Text.Trim(),
+                    Direccion = txtDireccionProveedor.Text.Trim()
+                };
+
+                resp = db.InsertarProveedor(nuevo);
+            }
+
+            if (resp == 0)
+            {
+                MessageBox.Show("¡Éxito!");
+                CargarProveedores();
+                CerrarPanel();
+            }
+            else
+            {
+                MessageBox.Show("Error en la base de datos.");
+            }
         }
 
         private void EliminarProveedor_Click(object sender, RoutedEventArgs e)
         {
-            if (TablaProveedores.SelectedItem == null)
+            if (sender is Button btn && btn.DataContext is Proveedores1 proveedor)
             {
-                MessageBox.Show("Seleccione un proveedor.");
-                return;
-            }
+                if (MessageBox.Show("¿Eliminar proveedor?", "Confirmar", MessageBoxButton.YesNo) == MessageBoxResult.No)
+                    return;
 
-            Proveedores1 proveedor = (Proveedores1)TablaProveedores.SelectedItem;
+                ClassProveedores db = new ClassProveedores();
+                int resp = db.EliminarProveedor(proveedor.IdProveedor);
 
-            if (MessageBox.Show("¿Eliminar proveedor seleccionado?",
-                                "Confirmar",
-                                MessageBoxButton.YesNo) == MessageBoxResult.No)
-                return;
-
-            ClassProveedores db = new ClassProveedores();
-            int resp = db.EliminarProveedor(proveedor.IdProveedor);
-
-            if (resp == 0)
-            {
-                MessageBox.Show("Proveedor eliminado correctamente.");
-                CargarProveedores();
-                LimpiarCampos();
-            }
-            else
-            {
-                MessageBox.Show("Error al eliminar proveedor.");
+                if (resp == 0)
+                {
+                    MessageBox.Show("Proveedor eliminado.");
+                    CargarProveedores();
+                }
+                else
+                {
+                    MessageBox.Show("Error al eliminar.");
+                }
             }
         }
 
-        private void TablaProveedores_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void CerrarPanel_Click(object sender, RoutedEventArgs e) => CerrarPanel();
+
+        private void Overlay_MouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e) => CerrarPanel();
+
+        // ───────────────────────────────
+        // VALIDACIÓN
+        // ───────────────────────────────
+        private bool ValidarFormulario()
         {
-            if (TablaProveedores.SelectedItem == null)
-                return;
+            if (string.IsNullOrWhiteSpace(txtNombreProveedor.Text))
+            {
+                MessageBox.Show("El nombre es obligatorio.");
+                return false;
+            }
 
-            Proveedores1 proveedor = (Proveedores1)TablaProveedores.SelectedItem;
-
-            txtNombreProveedor.Text = proveedor.Nombre;
-            txtTelefonoProveedor.Text = proveedor.Telefono;
-            txtDireccionProveedor.Text = proveedor.Direccion;
-        }
-
-
-        private void TablaProveedores_SelectionChanged_1(object sender, SelectionChangedEventArgs e)
-        {
-
+            return true;
         }
     }
 }

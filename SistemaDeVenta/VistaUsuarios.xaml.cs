@@ -4,14 +4,17 @@ using System.Collections.Generic;
 using System.Data;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Media;
+using System.Windows.Media.Animation;
 using static SistemaDeVenta.Classusuarios;
 
 namespace SistemaDeVentas.Views
 {
     public partial class UsuariosView : UserControl
     {
-        int IdSeleccionado = 0;
+        private bool _panelAbierto = false;
+        private bool _modoEdicion = false;
+
+        private ClassUsuarios _usuarioSeleccionado = null;
 
         public UsuariosView()
         {
@@ -19,6 +22,9 @@ namespace SistemaDeVentas.Views
             CargarUsuarios();
         }
 
+        // ───────────────────────────────
+        // CARGAR USUARIOS
+        // ───────────────────────────────
         private void CargarUsuarios()
         {
             ClassUsuarios db = new ClassUsuarios();
@@ -31,152 +37,219 @@ namespace SistemaDeVentas.Views
                 lista.Add(new ClassUsuarios
                 {
                     IdUsuario = row["IdUsuario"] == DBNull.Value ? 0 : Convert.ToInt32(row["IdUsuario"]),
-                    Nombre_Completo = row["Nombre_Completo"] == DBNull.Value ? "" : row["Nombre_Completo"].ToString(),
-                    Usser = row["usser"] == DBNull.Value ? "" : row["usser"].ToString(),
-                    Password = row["password"] == DBNull.Value ? "" : row["password"].ToString(),
-                    Rol = row["rol"] == DBNull.Value ? "" : row["rol"].ToString(),
-                    Activo = row["activo"] == DBNull.Value ? false : (Convert.ToInt32(row["activo"]) == 1)
+                    Nombre_Completo = row["Nombre_Completo"]?.ToString(),
+                    Usser = row["usser"]?.ToString(),
+                    Password = row["password"]?.ToString(),
+                    Rol = row["rol"]?.ToString(),
+                    Activo = row["activo"] != DBNull.Value && Convert.ToInt32(row["activo"]) == 1
                 });
             }
 
             TablaUsuarios.ItemsSource = lista;
         }
 
-        // Este método ahora se encarga de CARGAR los datos al formulario desde el botón de la tabla
-        // 1. CARGAR DATOS AL FORMULARIO
+        // ───────────────────────────────
+        // PANEL
+        // ───────────────────────────────
+        private void AbrirPanel(bool editar = false)
+        {
+            _modoEdicion = editar;
+            _panelAbierto = true;
+
+            Overlay.Visibility = Visibility.Visible;
+            SlidePanel.Visibility = Visibility.Visible;
+
+            if (editar)
+            {
+                lblPanelTitulo.Text = "EDITAR USUARIO";
+                txtBotonGuardar.Text = "GUARDAR CAMBIOS";
+                iconBoton.Text = "\uE70F";
+            }
+            else
+            {
+                lblPanelTitulo.Text = "NUEVO USUARIO";
+                txtBotonGuardar.Text = "CREAR USUARIO";
+                iconBoton.Text = "\uE8FA";
+            }
+
+            var sb = (Storyboard)Resources["SlideIn"];
+            sb.Begin();
+        }
+
+        private void CerrarPanel()
+        {
+            if (!_panelAbierto) return;
+
+            var sb = (Storyboard)Resources["SlideOut"];
+            sb.Completed += (s, e) =>
+            {
+                Overlay.Visibility = Visibility.Collapsed;
+                SlidePanel.Visibility = Visibility.Collapsed;
+                LimpiarFormulario();
+            };
+            sb.Begin();
+
+            _panelAbierto = false;
+        }
+
+        private void LimpiarFormulario()
+        {
+            txtNombre.Text = "";
+            txtUsuario.Text = "";
+            txtClave.Clear();
+            cbRol.SelectedIndex = -1;
+            chkActivo.IsChecked = true;
+            _usuarioSeleccionado = null;
+        }
+
+        // ───────────────────────────────
+        // BOTONES
+        // ───────────────────────────────
+        private void AbrirPanelNuevo_Click(object sender, RoutedEventArgs e)
+        {
+            LimpiarFormulario();
+            AbrirPanel(false);
+        }
+
         private void Modificar_Click(object sender, RoutedEventArgs e)
         {
-            if (sender is Button boton && boton.DataContext is ClassUsuarios usuario)
+            if (sender is Button btn && btn.DataContext is ClassUsuarios usuario)
             {
-                IdSeleccionado = usuario.IdUsuario;
+                _usuarioSeleccionado = usuario;
+
                 txtNombre.Text = usuario.Nombre_Completo;
                 txtUsuario.Text = usuario.Usser;
                 txtClave.Password = usuario.Password;
 
-                string rolBD = usuario.Rol?.Trim();
-                SeleccionarEnCombo(cbRol, rolBD);
+                SeleccionarEnCombo(cbRol, usuario.Rol);
+                chkActivo.IsChecked = usuario.Activo;
 
-                string estadoTexto = usuario.Activo ? "Activo" : "Inactivo";
-                SeleccionarEnCombo(cbEstado, estadoTexto);
-
-                // CAMBIO DE TEXTO E ICONO (Opcional)
-                txtBotonGuardar.Text = "Guardar Cambios";
-                iconBoton.Text = "\uE70F";
-                btnCancelar.Visibility = Visibility.Visible;
-            }
-        }
-        private void Limpiar()
-        {
-            txtNombre.Text = "";
-            txtUsuario.Text = "";
-            txtClave.Password = "";
-            cbRol.SelectedIndex = -1;
-            cbEstado.SelectedIndex = -1;
-            IdSeleccionado = 0;
-
-            // Restaurar interfaz original
-            IdSeleccionado = 0;
-            txtBotonGuardar.Text = "Guardar Usuario";
-            iconBoton.Text = "\uE74E";
-            btnCancelar.Visibility = Visibility.Collapsed; // OCULTAR botón cancelar
-        }
-        // Método auxiliar infalible
-        private void SeleccionarEnCombo(ComboBox combo, string valorABuscar)
-        {
-            if (string.IsNullOrEmpty(valorABuscar)) return;
-
-            foreach (var item in combo.Items)
-            {
-                if (item is ComboBoxItem cbItem)
-                {
-                    if (cbItem.Content.ToString().Trim().Equals(valorABuscar.Trim(), StringComparison.OrdinalIgnoreCase))
-                    {
-                        combo.SelectedItem = cbItem;
-                        return;
-                    }
-                }
+                AbrirPanel(true);
             }
         }
 
-
-        // 2. LÓGICA DE GUARDAR (INSERTAR O EDITAR)
         private void Guardar_Click(object sender, RoutedEventArgs e)
         {
-            // Aseguramos que los combos tengan selección
-            if (cbRol.SelectedIndex == -1 || cbEstado.SelectedIndex == -1)
-            {
-                MessageBox.Show("Seleccione Rol y Estado");
-                return;
-            }
+            if (!ValidarFormulario()) return;
 
             ClassUsuarios u = new ClassUsuarios();
-            u.IdUsuario = IdSeleccionado;
+
+            if (_modoEdicion && _usuarioSeleccionado != null)
+                u.IdUsuario = _usuarioSeleccionado.IdUsuario;
+
             u.Nombre_Completo = txtNombre.Text.Trim();
             u.Usser = txtUsuario.Text.Trim();
-            u.Password = txtClave.Password; // Verifica si tu CLASE encripta esto o si debes hacerlo aquí
-
-            // Forma más segura de obtener el texto del combo
+            u.Password = _mostrarPassword ? txtClaveVisible.Text : txtClave.Password;
             u.Rol = ((ComboBoxItem)cbRol.SelectedItem).Content.ToString();
-            u.Activo = ((ComboBoxItem)cbEstado.SelectedItem).Content.ToString() == "Activo";
+            u.Activo = chkActivo.IsChecked == true;
 
             ClassUsuarios db = new ClassUsuarios();
-            // Aquí es donde se ejecuta la lógica que dices que está bien
-            int resp = (IdSeleccionado == 0) ? db.InsertarUsuario(u) : db.EditarUsuario(u);
+
+            int resp = (_modoEdicion)
+                ? db.EditarUsuario(u)
+                : db.InsertarUsuario(u);
 
             if (resp == 0)
             {
                 MessageBox.Show("¡Éxito!");
                 CargarUsuarios();
-                Limpiar();
+                CerrarPanel();
             }
             else
             {
-                // Si entra aquí, la CLASE devolvió error aunque digas que está bien. 
-                // Revisa que los nombres de los parámetros en la clase coincidan con 'u.Nombre_Completo', etc.
-                MessageBox.Show("Error al ejecutar en la base de datos.");
+                MessageBox.Show("Error en la base de datos.");
             }
         }
 
-        private void Cancelar_Click(object sender, RoutedEventArgs e)
-        {
-            Limpiar(); // Al cancelar, simplemente reseteamos todo
-        }
         private void Eliminar_Click(object sender, RoutedEventArgs e)
         {
-            // Si el click viene de la tabla, obtenemos el ID primero
-            if (sender is Button boton)
+            if (sender is Button btn && btn.DataContext is ClassUsuarios usuario)
             {
-                var usuario = boton.DataContext as ClassUsuarios;
-                if (usuario != null) IdSeleccionado = usuario.IdUsuario;
+                if (MessageBox.Show("¿Eliminar usuario?", "Confirmar", MessageBoxButton.YesNo) == MessageBoxResult.No)
+                    return;
+
+                ClassUsuarios db = new ClassUsuarios();
+                int resp = db.EliminarUsuario(usuario.IdUsuario);
+
+                if (resp == 0)
+                {
+                    MessageBox.Show("Usuario eliminado");
+                    CargarUsuarios();
+                }
+                else
+                {
+                    MessageBox.Show("Error al eliminar");
+                }
+            }
+        }
+
+        private void CerrarPanel_Click(object sender, RoutedEventArgs e) => CerrarPanel();
+
+        private void Overlay_MouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e) => CerrarPanel();
+
+        // ───────────────────────────────
+        // UTILIDADES
+        // ───────────────────────────────
+        private void SeleccionarEnCombo(ComboBox combo, string valor)
+        {
+            foreach (ComboBoxItem item in combo.Items)
+            {
+                if (item.Content.ToString().Trim().Equals(valor?.Trim(), StringComparison.OrdinalIgnoreCase))
+                {
+                    combo.SelectedItem = item;
+                    return;
+                }
+            }
+        }
+
+        private bool ValidarFormulario()
+        {
+            if (string.IsNullOrWhiteSpace(txtNombre.Text))
+            {
+                MessageBox.Show("Nombre requerido");
+                return false;
             }
 
-            if (IdSeleccionado == 0)
+            if (string.IsNullOrWhiteSpace(txtUsuario.Text))
             {
-                MessageBox.Show("Seleccione un usuario.");
-                return;
+                MessageBox.Show("Usuario requerido");
+                return false;
             }
 
-            if (MessageBox.Show("¿Eliminar usuario seleccionado?", "Confirmar", MessageBoxButton.YesNo) == MessageBoxResult.No)
-                return;
-
-            ClassUsuarios db = new ClassUsuarios();
-            int resp = db.EliminarUsuario(IdSeleccionado);
-
-            if (resp == 0)
+            if (cbRol.SelectedIndex < 0)
             {
-                MessageBox.Show("Usuario eliminado correctamente.");
-                Limpiar();
-                CargarUsuarios();
+                MessageBox.Show("Selecciona un rol");
+                return false;
+            }
+
+            return true;
+        }
+        private bool _mostrarPassword = false;
+
+        private void TogglePassword_Click(object sender, RoutedEventArgs e)
+        {
+            _mostrarPassword = !_mostrarPassword;
+
+            if (_mostrarPassword)
+            {
+                txtClaveVisible.Text = txtClave.Password;
+                txtClave.Visibility = Visibility.Collapsed;
+                txtClaveVisible.Visibility = Visibility.Visible;
+
+                iconEye.Text = "\uE70F"; // ojo abierto
             }
             else
             {
-                MessageBox.Show("Error al eliminar usuario.");
+                txtClave.Password = txtClaveVisible.Text;
+                txtClaveVisible.Visibility = Visibility.Collapsed;
+                txtClave.Visibility = Visibility.Visible;
+
+                iconEye.Text = "\uED1A"; // ojo cerrado
             }
         }
 
-        private void cbRol_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
+        private void cbRol_SelectionChanged(object sender, SelectionChangedEventArgs e) { }
 
-        }
+
     }
 }
