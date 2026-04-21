@@ -120,7 +120,7 @@ namespace SistemaDeVenta
 
             foreach (string pass in passwords)
             {
-                if (ConectarDB("localhost", "Fruteria2", "root", pass))
+                if (ConectarDB("localhost", "Fruteria2", "Admin", pass))
                 {
                     conectado = true;
                     break;
@@ -228,6 +228,15 @@ namespace SistemaDeVenta
             PasswordHidden.Clear();
             PasswordVisible.Clear();
             UsernameTextBox.Focus();
+        }
+        private void BtnCerrar_Click(object sender, RoutedEventArgs e)
+        {
+            Application.Current.Shutdown();
+        }
+
+        private void BtnMinimizar_Click(object sender, RoutedEventArgs e)
+        {
+            this.WindowState = WindowState.Minimized;
         }
     }
 }
