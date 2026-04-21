@@ -8,9 +8,13 @@
              Background="#121624" FontFamily="Segoe UI">
 
     <UserControl.Resources>
-        <SolidColorBrush x:Key="BgDark" Color="#121624"/>
-        <SolidColorBrush x:Key="PanelDark" Color="#1C2132"/>
-        <SolidColorBrush x:Key="BorderDark" Color="#2D3348"/>
+
+        <SolidColorBrush x:Key="BgDark" Color="#0D1117"/>
+        <!-- fondo general -->
+        <SolidColorBrush x:Key="PanelDark" Color="#161B22"/>
+        <!-- cards -->
+        <SolidColorBrush x:Key="BorderDark" Color="#30363D"/>
+        <!-- bordes -->
         <SolidColorBrush x:Key="AccentRed" Color="#FF334D"/>
         <SolidColorBrush x:Key="SuccessGreen" Color="#2ECC71"/>
         <SolidColorBrush x:Key="WarningOrange" Color="#E67E22"/>
@@ -24,6 +28,44 @@
             <Setter Property="CornerRadius" Value="10"/>
             <Setter Property="Padding" Value="20"/>
             <Setter Property="Margin" Value="10"/>
+        </Style>
+
+        <!-- 🔥 AQUÍ PEGAS ESTO -->
+        <Style x:Key="MenuContextoOscuro" TargetType="ContextMenu">
+            <Setter Property="Background" Value="#1C2132"/>
+            <Setter Property="BorderBrush" Value="#2D3348"/>
+            <Setter Property="BorderThickness" Value="1"/>
+        </Style>
+        <Style x:Key="MenuItemOscuro" TargetType="MenuItem">
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="Background" Value="#1C2132"/>
+            <Setter Property="Padding" Value="12,8"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="MenuItem">
+                        <Border x:Name="Bg"
+                        Background="{TemplateBinding Background}"
+                        Padding="{TemplateBinding Padding}"
+                        MinWidth="150">
+
+                            <!-- AQUÍ ESTÁ LA CLAVE -->
+                            <ContentPresenter 
+                        ContentSource="Header"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Center"/>
+                        </Border>
+
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsHighlighted" Value="True">
+                                <Setter TargetName="Bg" Property="Background" Value="#2A3145"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
         </Style>
 
     </UserControl.Resources>
@@ -211,14 +253,19 @@
                                     </TextBlock>
 
                                     <Button Grid.Column="7"
-                                            Content="⋮"
-                                            Click="BtnAcciones_Click"
-                                            Tag="{Binding}"
-                                            Background="Transparent"
-                                            BorderThickness="0"
-                                            Foreground="#8B92A5"
-                                            FontSize="16"
-                                            HorizontalAlignment="Right"/>
+        Click="BtnAcciones_Click"
+        Tag="{Binding}"
+        Background="Transparent"
+        BorderThickness="0"
+        Padding="5"
+        Cursor="Hand">
+
+                                        <TextBlock Text="⋮"
+               FontSize="18"
+               Foreground="#8B949E"
+               VerticalAlignment="Center"
+               HorizontalAlignment="Center"/>
+                                    </Button>
                                 </Grid>
                             </DataTemplate>
                         </ItemsControl.ItemTemplate>

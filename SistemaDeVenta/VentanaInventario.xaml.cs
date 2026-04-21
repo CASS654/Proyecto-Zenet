@@ -66,9 +66,11 @@ namespace SistemaDeVenta
 
             // 🔥 CREAR MENÚ
             ContextMenu menu = new ContextMenu();
+            menu.Style = (Style)FindResource("MenuContextoOscuro");
 
             // OPCIÓN EDITAR
             MenuItem editar = new MenuItem { Header = "Editar" };
+            editar.Style = (Style)FindResource("MenuItemOscuro");
             editar.Click += (s, ev) =>
             {
                 VentanaEditarProducto ventana = new VentanaEditarProducto(producto);
@@ -78,30 +80,23 @@ namespace SistemaDeVenta
 
             // OPCIÓN MERMA
             MenuItem merma = new MenuItem { Header = "Registrar Merma" };
+            merma.Style = (Style)FindResource("MenuItemOscuro");
             merma.Click += (s, ev) =>
             {
                 VentanaMerma ventana = new VentanaMerma(producto);
                 ventana.ShowDialog();
                 CargarInventario();
             };
+
             // OPCIÓN DISPONIBILIDAD
             MenuItem disponibilidad = new MenuItem { Header = "Cambiar Disponibilidad" };
+            disponibilidad.Style = (Style)FindResource("MenuItemOscuro");
             disponibilidad.Click += (s, ev) =>
             {
-                if (producto == null)
-                {
-                    MessageBox.Show("Producto no válido");
-                    return;
-                }
-
                 bool nuevoEstado = !producto.Disponible;
 
-                string mensaje = nuevoEstado
-                    ? "¿Deseas ACTIVAR este producto?"
-                    : "¿Deseas DESACTIVAR este producto?";
-
                 var confirm = MessageBox.Show(
-                    mensaje,
+                    nuevoEstado ? "¿Deseas ACTIVAR este producto?" : "¿Deseas DESACTIVAR este producto?",
                     "Confirmar",
                     MessageBoxButton.YesNo,
                     MessageBoxImage.Question
@@ -129,7 +124,7 @@ namespace SistemaDeVenta
 
                     MessageBox.Show("Disponibilidad actualizada correctamente");
 
-                    CargarInventario(); // 🔥 refresca la tabla
+                    CargarInventario();
                 }
                 catch (Exception ex)
                 {
@@ -142,7 +137,7 @@ namespace SistemaDeVenta
             menu.Items.Add(merma);
             menu.Items.Add(disponibilidad);
 
-            // MOSTRAR MENÚ
+            // MOSTRAR
             btn.ContextMenu = menu;
             menu.IsOpen = true;
         }
@@ -189,10 +184,12 @@ namespace SistemaDeVenta
         {
             ContextMenu menu = new ContextMenu();
 
+            // 🔥 APLICAR ESTILO AL MENÚ
+            menu.Style = (Style)this.FindResource("MenuContextoOscuro");
+
             // TODOS
-            MenuItem todos = new MenuItem { Header = "Todos"  };
-
-
+            MenuItem todos = new MenuItem { Header = "Todos" };
+            todos.Style = (Style)this.FindResource("MenuItemOscuro");
             todos.Click += (s, ev) =>
             {
                 ItemsProductos.ItemsSource = listaOriginal;
@@ -200,6 +197,7 @@ namespace SistemaDeVenta
 
             // DISPONIBLES
             MenuItem disponibles = new MenuItem { Header = "Disponibles" };
+            disponibles.Style = (Style)this.FindResource("MenuItemOscuro");
             disponibles.Click += (s, ev) =>
             {
                 var filtrado = listaOriginal.Where(p => p.Disponible).ToList();
@@ -208,22 +206,25 @@ namespace SistemaDeVenta
 
             // NO DISPONIBLES
             MenuItem noDisponibles = new MenuItem { Header = "No disponibles" };
+            noDisponibles.Style = (Style)this.FindResource("MenuItemOscuro");
             noDisponibles.Click += (s, ev) =>
             {
                 var filtrado = listaOriginal.Where(p => !p.Disponible).ToList();
                 ItemsProductos.ItemsSource = filtrado;
             };
 
-            // STOCK BAJO (<20)
+            // STOCK BAJO
             MenuItem bajo = new MenuItem { Header = "Stock bajo" };
+            bajo.Style = (Style)this.FindResource("MenuItemOscuro");
             bajo.Click += (s, ev) =>
             {
                 var filtrado = listaOriginal.Where(p => p.Stock > 0 && p.Stock <= 20).ToList();
                 ItemsProductos.ItemsSource = filtrado;
-            };  
+            };
 
             // AGOTADOS
             MenuItem agotados = new MenuItem { Header = "Agotados" };
+            agotados.Style = (Style)this.FindResource("MenuItemOscuro");
             agotados.Click += (s, ev) =>
             {
                 var filtrado = listaOriginal.Where(p => p.Stock == 0).ToList();
@@ -239,6 +240,13 @@ namespace SistemaDeVenta
 
             // MOSTRAR
             var border = sender as Border;
+
+            if (border == null)
+            {
+                MessageBox.Show("Error: el sender no es un Border");
+                return;
+            }
+
             border.ContextMenu = menu;
             menu.IsOpen = true;
         }
