@@ -14,6 +14,7 @@
         FontFamily="Segoe UI">
 
     <Window.Resources>
+
         <Style x:Key="ModernButtonStyle" TargetType="Button">
             <Setter Property="Background" Value="#FF2D46"/>
             <Setter Property="Foreground" Value="White"/>
@@ -21,6 +22,7 @@
             <Setter Property="BorderThickness" Value="0"/>
             <Setter Property="Cursor" Value="Hand"/>
             <Setter Property="Template">
+
                 <Setter.Value>
                     <ControlTemplate TargetType="Button">
                         <Border Background="{TemplateBinding Background}" CornerRadius="8" Padding="{TemplateBinding Padding}">
@@ -32,9 +34,9 @@
         </Style>
 
         <Style x:Key="FilterButtonStyle" TargetType="Button">
-            <Setter Property="Background" Value="#0B0F14"/>
+            <Setter Property="Background" Value="#1E293B"/>
             <Setter Property="Foreground" Value="#FF2D46"/>
-            <Setter Property="BorderBrush" Value="#0B0F14"/>
+            <Setter Property="BorderBrush" Value="#334155"/>
             <Setter Property="BorderThickness" Value="1"/>
             <Setter Property="Cursor" Value="Hand"/>
             <Setter Property="Template">
@@ -52,29 +54,20 @@
         </Style>
 
         <Style x:Key="KbdBadge" TargetType="Border">
-            <Setter Property="Background" Value="#0B0F14"/>
+            <Setter Property="Background" Value="#1E293B"/>
             <Setter Property="CornerRadius" Value="4"/>
             <Setter Property="Padding" Value="6,2"/>
             <Setter Property="Margin" Value="0,0,6,0"/>
-            <Setter Property="BorderBrush" Value="#0B0F14"/>
+            <Setter Property="BorderBrush" Value="#334155"/>
             <Setter Property="BorderThickness" Value="1"/>
         </Style>
-        <Style TargetType="{x:Type DataGridColumnHeader}">
-            <Setter Property="Background" Value="Transparent"/>
-            <Setter Property="Foreground" Value="#64748B"/>
-            <Setter Property="FontSize" Value="11"/>
-            <Setter Property="FontWeight" Value="Bold"/>
-            <Setter Property="Padding" Value="15,10,10,10"/>
-            <Setter Property="BorderThickness" Value="0,0,0,1"/>
-            <Setter Property="BorderBrush" Value="#0B0F14"/>
-            <Setter Property="HorizontalContentAlignment" Value="Left"/>
-        </Style>
+        
     </Window.Resources>
 
     <Grid>
-        <Border Background="#0B0F14"
+        <Border Background="#0F172A"
             CornerRadius="12"
-            BorderBrush="#0B0F14"
+            BorderBrush="#1E293B"
             BorderThickness="1"
             Margin="20"
             ClipToBounds="True">
@@ -86,58 +79,100 @@
                     <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
 
-                <Border Grid.Row="0" Padding="25,20">
-                    <DockPanel>
-                        <StackPanel Orientation="Horizontal">
-                            <Path Data="M15.5,14h-.79l-.28-.27C15.41,12.59,16,11.11,16,9.5,16,5.91,13.09,3,9.5,3S3,5.91,3,9.5,5.91,16,9.5,16c1.61,0,3.09-.59,4.23-1.57l.27.28v.79l5,4.99L20.49,19l-4.99-5zm-6,0C7.01,14,5,11.99,5,9.5S7.01,5,9.5,5,14,7.01,14,9.5,11.99,14,9.5,14z" 
-                                  Fill="#FF2D46" Width="20" Height="20" Stretch="Uniform"/>
-                            <TextBlock Text="Product Search" Foreground="White" FontSize="18" FontWeight="SemiBold" VerticalAlignment="Center" Margin="10,0,0,0"/>
-                        </StackPanel>
-                        <TextBlock Text="STORE: MAIN BRANCH" Foreground="#475569" HorizontalAlignment="Right" VerticalAlignment="Center" FontSize="10" FontWeight="Bold"/>
-                    </DockPanel>
-                </Border>
+                <!-- ROW 0 + ROW 1 unificados -->
+                <Border Grid.Row="0" Grid.RowSpan="2"
+        Background="#141A22"
+        BorderBrush="#141A22"
+        BorderThickness="0,0,0,1"
+        Padding="25,20">
+                    <StackPanel>
 
-                <Border Grid.Row="1" Background="#141A22" BorderBrush="#141A22" BorderThickness="0,1" Padding="25,15">
-                    <StackPanel Orientation="Horizontal">
-
-                        <Button Style="{StaticResource FilterButtonStyle}" VerticalAlignment="Center">
+                        <!-- Header -->
+                        <DockPanel Margin="0,0,0,15">
                             <StackPanel Orientation="Horizontal">
-                                <TextBlock Text="Filters" Foreground="#FF2D46" FontWeight="SemiBold" VerticalAlignment="Center" Margin="0,0,8,0"/>
-                                <Border Background="#FF2D46" CornerRadius="3" Padding="4,1">
-                                    <TextBlock Text="F3" Foreground="White" FontSize="10" FontWeight="Bold"/>
-                                </Border>
+                                <Path Data="M15.5,14h-.79l-.28-.27C15.41,12.59,16,11.11,16,9.5,16,5.91,13.09,3,9.5,3S3,5.91,3,9.5,5.91,16,9.5,16c1.61,0,3.09-.59,4.23-1.57l.27.28v.79l5,4.99L20.49,19l-4.99-5zm-6,0C7.01,14,5,11.99,5,9.5S7.01,5,9.5,5,14,7.01,14,9.5,11.99,14,9.5,14z"
+                      Fill="#EF1C3A" Width="20" Height="20" Stretch="Uniform"/>
+                                <TextBlock Text="Product Search" Foreground="White" FontSize="18"
+                           FontWeight="SemiBold" VerticalAlignment="Center" Margin="10,0,0,0"/>
                             </StackPanel>
-                        </Button>
+                         </DockPanel>
 
-                        <Border Background="#2B3442" BorderBrush="#2B3442" BorderThickness="0,1,1,1" CornerRadius="0,8,8,0" Width="849" Padding="12,6" Height="34" Cursor="" >
+                        <!-- Search Bar con borde rojo -->
+                        <Border Background="#0B0F14"
+                BorderBrush="#EF1C3A"
+                BorderThickness="1"
+                CornerRadius="10"
+                Padding="12,8">
                             <Grid>
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="Auto"/>
                                     <ColumnDefinition Width="*"/>
                                     <ColumnDefinition Width="Auto"/>
                                 </Grid.ColumnDefinitions>
-                                <Path Data="M15.5,14h-.79l-.28-.27C15.41,12.59,16,11.11,16,9.5,16,5.91,13.09,3,9.5,3S3,5.91,3,9.5,5.91,16,9.5,16c1.61,0,3.09-.59,4.23-1.57l.27.28v.79l5,4.99L20.49,19l-4.99-5zm-6,0C7.01,14,5,11.99,5,9.5S7.01,5,9.5,5,14,7.01,14,9.5,11.99,14,9.5,14z" 
-                                      Fill="White" Height="19" VerticalAlignment="Center" Margin="0,0,6,0" Stretch="Fill"/>
-                                <TextBox x:Name="txtBuscar" Background="Transparent" Foreground="White" BorderThickness="0" FontSize="14" VerticalContentAlignment="Center" CaretBrush="#FF2D46" Grid.ColumnSpan="2" Margin="23,0,0,0" TextChanged="txtBuscar_TextChanged"/>
-                                <TextBlock Grid.Column="2" Text="F3 to filter" Foreground="White" FontStyle="Italic" VerticalAlignment="Center" FontSize="11" Margin="10,0,0,0"/>
+
+                                <Path Grid.Column="0"
+                      Data="M15.5,14h-.79l-.28-.27C15.41,12.59,16,11.11,16,9.5,16,5.91,13.09,3,9.5,3S3,5.91,3,9.5,5.91,16,9.5,16c1.61,0,3.09-.59,4.23-1.57l.27.28v.79l5,4.99L20.49,19l-4.99-5zm-6,0C7.01,14,5,11.99,5,9.5S7.01,5,9.5,5,14,7.01,14,9.5,11.99,14,9.5,14z"
+                      Fill="#2B3442" Width="18" Height="18"
+                      Stretch="Uniform" VerticalAlignment="Center" Margin="4,0,10,0"/>
+
+                                <TextBox x:Name="txtBuscar"
+                         Grid.Column="1"
+                         Background="Transparent"
+                         Foreground="White"
+                         BorderThickness="0"
+                         FontSize="14"
+                         Height="30"
+                         VerticalContentAlignment="Center"
+                         CaretBrush="#EF1C3A"
+                         TextChanged="txtBuscar_TextChanged"/>
+
+                                <!-- Placeholder -->
+                                <TextBlock Grid.Column="1"
+                           IsHitTestVisible="False"
+                           Text="Buscar producto o escanear código..."
+                           VerticalAlignment="Center"
+                           Foreground="#3A424F"
+                           FontSize="14"
+                           FontStyle="Italic">
+                                    <TextBlock.Style>
+                                        <Style TargetType="TextBlock">
+                                            <Setter Property="Visibility" Value="Collapsed"/>
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding Text, ElementName=txtBuscar}" Value="">
+                                                    <Setter Property="Visibility" Value="Visible"/>
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </TextBlock.Style>
+                                </TextBlock>
+
+                                <TextBlock Grid.Column="2"
+                           Text="F3 to filter"
+                           Foreground="#2B3442"
+                           FontStyle="Italic"
+                           VerticalAlignment="Center"
+                           FontSize="11"
+                           Margin="10,0,4,0"/>
                             </Grid>
                         </Border>
+
                     </StackPanel>
                 </Border>
+
 
                 <DataGrid x:Name="dgProductos" 
           Grid.Row="2" 
           AutoGenerateColumns="False" 
           CanUserAddRows="False" 
           IsReadOnly="True"
-          Background="Transparent" 
+          Background="#1a1b24" 
           BorderThickness="0" 
           HeadersVisibility="Column" 
           GridLinesVisibility="None" 
           RowHeight="70"
           SelectionMode="Single"
           SelectionUnit="FullRow"
-                          ScrollViewer.VerticalScrollBarVisibility="Hidden">
+                          ScrollViewer.VerticalScrollBarVisibility="Hidden" SelectionChanged="dgProductos_SelectionChanged">
 
                     <DataGrid.CellStyle>
                         <Style TargetType="DataGridCell">
@@ -146,7 +181,7 @@
                             <Setter Property="Foreground" Value="White"/>
                             <Style.Triggers>
                                 <Trigger Property="IsSelected" Value="True">
-                                    <Setter Property="Background" Value="#0B0F14"/>
+                                    <Setter Property="Background" Value="#1E293B"/>
                                     <Setter Property="Foreground" Value="#FF2D46"/>
                                 </Trigger>
                             </Style.Triggers>
@@ -155,11 +190,36 @@
 
                     <DataGrid.RowStyle>
                         <Style TargetType="DataGridRow">
-                            <Setter Property="Background" Value="Transparent"/>
+                            <Setter Property="Background" Value="#1a1b24" />
                             <Setter Property="BorderThickness" Value="0,0,0,1"/>
-                            <Setter Property="BorderBrush" Value="#1E293B"/>
+                            <Setter Property="BorderBrush" Value="#1a1b24"/>
                         </Style>
                     </DataGrid.RowStyle>
+
+                    <DataGrid.ColumnHeaderStyle>
+                        <Style TargetType="DataGridColumnHeader">
+                            <Setter Property="Foreground"                 Value="#8A94A6"/>
+                            <Setter Property="FontSize"                   Value="11"/>
+                            <Setter Property="FontWeight"                 Value="Bold"/>
+                            <Setter Property="Padding"                    Value="15,10,10,10"/>
+                            <Setter Property="BorderThickness"            Value="0,0,0,1"/>
+                            <Setter Property="BorderBrush"                Value="#141A22"/>
+                            <Setter Property="HorizontalContentAlignment" Value="Left"/>
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="DataGridColumnHeader">
+                                        <Border Background="#141A22"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="{TemplateBinding BorderThickness}"
+                            Padding="{TemplateBinding Padding}">
+                                            <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                          VerticalAlignment="Center"/>
+                                        </Border>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                        </Style>
+                    </DataGrid.ColumnHeaderStyle>
 
                     <DataGrid.Columns>
                         <DataGridTemplateColumn Header="#" Width="60">
@@ -181,19 +241,112 @@
                             </DataGridTemplateColumn.CellTemplate>
                         </DataGridTemplateColumn>
 
-                        <DataGridTemplateColumn Header="PRICE" Width="100">
+                        <DataGridTemplateColumn Header="PRICE" Width="130">
+                            <DataGridTemplateColumn.HeaderStyle>
+                                <Style TargetType="DataGridColumnHeader">
+                                    <Setter Property="HorizontalContentAlignment" Value="Center"/>
+                                    <Setter Property="Foreground"      Value="#8A94A6"/>
+                                    <Setter Property="FontSize"        Value="11"/>
+                                    <Setter Property="FontWeight"      Value="Bold"/>
+                                    <Setter Property="Padding"         Value="0,10"/>
+                                    <Setter Property="BorderThickness" Value="0,0,0,1"/>
+                                    <Setter Property="BorderBrush"     Value="#141A22"/>
+                                    <Setter Property="Template">
+                                        <Setter.Value>
+                                            <ControlTemplate TargetType="DataGridColumnHeader">
+                                                <Border Background="#141A22"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                Padding="{TemplateBinding Padding}">
+                                                    <ContentPresenter HorizontalAlignment="Center"
+                                              VerticalAlignment="Center"/>
+                                                </Border>
+                                            </ControlTemplate>
+                                        </Setter.Value>
+                                    </Setter>
+                                </Style>
+                            </DataGridTemplateColumn.HeaderStyle>
                             <DataGridTemplateColumn.CellTemplate>
                                 <DataTemplate>
-                                    <TextBlock Text="{Binding Precio, StringFormat={}{0:C}}" Foreground="White" FontWeight="Bold" FontSize="16" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="0,0,20,0"/>
+                                    <TextBlock Text="{Binding Precio, StringFormat={}{0:C}}"
+                       Foreground="White" FontWeight="Bold" FontSize="16"
+                       VerticalAlignment="Center"
+                       HorizontalAlignment="Center"
+                       TextAlignment="Center"
+                       Margin="0"/>
                                 </DataTemplate>
                             </DataGridTemplateColumn.CellTemplate>
                         </DataGridTemplateColumn>
 
-                        <DataGridTemplateColumn Header="STOCK" Width="120">
+                        <DataGridTemplateColumn Header="STOCK" Width="150">
+                            <DataGridTemplateColumn.HeaderStyle>
+                                <Style TargetType="DataGridColumnHeader">
+                                    <Setter Property="HorizontalContentAlignment" Value="Center"/>
+                                    <Setter Property="Foreground"      Value="#8A94A6"/>
+                                    <Setter Property="FontSize"        Value="11"/>
+                                    <Setter Property="FontWeight"      Value="Bold"/>
+                                    <Setter Property="Padding"         Value="0,10"/>
+                                    <Setter Property="BorderThickness" Value="0,0,0,1"/>
+                                    <Setter Property="BorderBrush"     Value="#141A22"/>
+                                    <Setter Property="Template">
+                                        <Setter.Value>
+                                            <ControlTemplate TargetType="DataGridColumnHeader">
+                                                <Border Background="#141A22"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                Padding="{TemplateBinding Padding}">
+                                                    <ContentPresenter HorizontalAlignment="Center"
+                                              VerticalAlignment="Center"/>
+                                                </Border>
+                                            </ControlTemplate>
+                                        </Setter.Value>
+                                    </Setter>
+                                </Style>
+                            </DataGridTemplateColumn.HeaderStyle>
                             <DataGridTemplateColumn.CellTemplate>
                                 <DataTemplate>
-                                    <Border Background="#1A2E26" CornerRadius="12" Padding="12,5" HorizontalAlignment="Center" VerticalAlignment="Center">
-                                        <TextBlock Text="{Binding Stock, StringFormat={}{0} In Stock}" Foreground="#4ADE80" FontSize="11" FontWeight="Bold"/>
+                                    <Border CornerRadius="12" Padding="12,5"
+                HorizontalAlignment="Center" VerticalAlignment="Center">
+                                        <Border.Style>
+                                            <Style TargetType="Border">
+                                                <!-- Verde: stock normal (>10) -->
+                                                <Setter Property="Background" Value="#1A2E26"/>
+                                                <Style.Triggers>
+                                                    <!-- Amarillo: pocos (entre 4 y 10) -->
+                                                    <DataTrigger Binding="{Binding StockNivel}" Value="Bajo">
+                                                        <Setter Property="Background" Value="#2E2A10"/>
+                                                    </DataTrigger>
+                                                    <!-- Rojo: casi nada (entre 1 y 3) -->
+                                                    <DataTrigger Binding="{Binding StockNivel}" Value="Critico">
+                                                        <Setter Property="Background" Value="#2E1010"/>
+                                                    </DataTrigger>
+                                                    <!-- Gris: sin stock (0) -->
+                                                    <DataTrigger Binding="{Binding StockNivel}" Value="Agotado">
+                                                        <Setter Property="Background" Value="#1E1E1E"/>
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </Border.Style>
+                                        <TextBlock Text="{Binding Stock, StringFormat={}{0} In Stock}"
+                       FontSize="11" FontWeight="Bold" TextAlignment="Center">
+                                            <TextBlock.Style>
+                                                <Style TargetType="TextBlock">
+                                                    <!-- Verde por defecto -->
+                                                    <Setter Property="Foreground" Value="#4ADE80"/>
+                                                    <Style.Triggers>
+                                                        <DataTrigger Binding="{Binding StockNivel}" Value="Bajo">
+                                                            <Setter Property="Foreground" Value="#FACC15"/>
+                                                        </DataTrigger>
+                                                        <DataTrigger Binding="{Binding StockNivel}" Value="Critico">
+                                                            <Setter Property="Foreground" Value="#F87171"/>
+                                                        </DataTrigger>
+                                                        <DataTrigger Binding="{Binding StockNivel}" Value="Agotado">
+                                                            <Setter Property="Foreground" Value="#6B7280"/>
+                                                        </DataTrigger>
+                                                    </Style.Triggers>
+                                                </Style>
+                                            </TextBlock.Style>
+                                        </TextBlock>
                                     </Border>
                                 </DataTemplate>
                             </DataGridTemplateColumn.CellTemplate>
@@ -202,8 +355,8 @@
                 </DataGrid>
 
                 <Border Grid.Row="2"
-        Background="#0B0F14"
-        BorderBrush="#0B0F14"
+        Background="#141A22"
+        BorderBrush="#1E293B"
         BorderThickness="0,1,0,0"
         Padding="25"
         CornerRadius="0,0,12,12" HorizontalAlignment="Left" Margin="0,441,0,0" Grid.RowSpan="2" Width="1008">

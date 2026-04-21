@@ -102,36 +102,26 @@
                         </Border>
                     </StackPanel>
 
+                    <!-- TextBox — agregar TextChanged -->
                     <TextBox x:Name="TxtBusqueda"
-                             Grid.Column="1"
-                             Background="Transparent"
-                             Foreground="White"
-                             BorderThickness="0"
-                             FontSize="15"
-                             VerticalContentAlignment="Center"
-                             KeyDown="TxtBusqueda_KeyDown"
-                             PreviewTextInput="TxtBusqueda_PreviewTextInput"/>
+         Grid.Column="1"
+         Background="Transparent"
+         Foreground="White"
+         BorderThickness="0"
+         FontSize="15"
+         VerticalContentAlignment="Center"
+         KeyDown="TxtBusqueda_KeyDown"
+         PreviewTextInput="TxtBusqueda_PreviewTextInput"
+         TextChanged="TxtBusqueda_TextChanged"/>
 
-                    <TextBlock IsHitTestVisible="False"
-                               Text="Escriba el producto o presione [F2] para buscar..."
-                               VerticalAlignment="Center"
-                               Foreground="#505A6B"
-                               FontSize="15"
-                               FontStyle="Italic">
-                        <TextBlock.Style>
-                            <Style TargetType="TextBlock">
-                                <Setter Property="Visibility" Value="Collapsed"/>
-                                <Style.Triggers>
-                                    <DataTrigger Binding="{Binding Text, ElementName=TxtBusqueda}" Value="">
-                                        <Setter Property="Visibility" Value="Visible"/>
-                                    </DataTrigger>
-                                    <DataTrigger Binding="{Binding Visibility, ElementName=PanelQty}" Value="Visible">
-                                        <Setter Property="Visibility" Value="Collapsed"/>
-                                    </DataTrigger>
-                                </Style.Triggers>
-                            </Style>
-                        </TextBlock.Style>
-                    </TextBlock>
+                    <!-- Placeholder — reemplazar el TextBlock con DataTrigger por este -->
+                    <TextBlock x:Name="PlaceholderBusqueda"
+           IsHitTestVisible="False"
+           Text="Presione [F2] para buscar..."
+           VerticalAlignment="Center"
+           Foreground="#505A6B"
+           FontSize="15"
+           FontStyle="Italic"/>
 
                     <StackPanel Grid.Column="2" Orientation="Horizontal" VerticalAlignment="Center">
                         <Border Background="{StaticResource AccentRed}" CornerRadius="8"

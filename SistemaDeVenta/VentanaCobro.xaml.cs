@@ -11,41 +11,90 @@ namespace SistemaDeVenta
 {
     public partial class VentanaCobro : UserControl
     {
-        private const decimal TasaImpuesto = 0.08m; // 8% — cámbialo aquí si necesitas otro %
+        private const decimal TasaImpuesto = 0.08m;
 
+        private bool bloqueandoESC = false;
         private bool modoCantidad = false;
         private string bufferCantidad = "";
         private int cantidadActual = 1;
 
+        // Control del placeholder (igual que VetanaCobrousuario)
+        private bool mostrarPlaceholder = true;
+
+        // Producto pendiente — se agrega con ENTER, no al abrir el buscador
+        private ProductoPOS productoPendiente = null;
+
         public ObservableCollection<ProductoPOS> carrito { get; set; }
             = new ObservableCollection<ProductoPOS>();
-
 
         public VentanaCobro()
         {
             InitializeComponent();
             GridProductos.ItemsSource = carrito;
-
             carrito.CollectionChanged += Carrito_CollectionChanged;
         }
+
         private void Carrito_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
             ActualizarTotales();
         }
 
-        private void AbrirBuscador()
+        // ── Placeholder ────────────────────────────────────────────────
+        private void ActualizarPlaceholder()
         {
-            BusquedaProducto buscador = new BusquedaProducto();
-            if (buscador.ShowDialog() == true)
+            if (!mostrarPlaceholder)
             {
-                if (buscador.ProductoSeleccionado != null)
-                {
-                    AgregarAlCarrito(buscador.ProductoSeleccionado, cantidadActual);
-                }
+                PlaceholderBusqueda.Visibility = Visibility.Collapsed;
+                return;
             }
-            ResetCantidad();
+
+            PlaceholderBusqueda.Visibility =
+                string.IsNullOrEmpty(TxtBusqueda.Text)
+                ? Visibility.Visible
+                : Visibility.Collapsed;
         }
 
+        private void TxtBusqueda_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            ActualizarPlaceholder();
+        }
+
+        // ── Buscador ───────────────────────────────────────────────────
+        private void AbrirBuscador()
+        {
+            bloqueandoESC = true;
+
+            mostrarPlaceholder = false;
+            ActualizarPlaceholder();
+            TxtBusqueda.Text = "";
+
+            BusquedaProducto buscador = new BusquedaProducto();
+
+            try
+            {
+                if (buscador.ShowDialog() == true)
+                {
+                    if (buscador.ProductoSeleccionado != null)
+                    {
+                        // Guardar producto pero NO agregar aún — esperar ENTER
+                        productoPendiente = buscador.ProductoSeleccionado;
+
+                        TxtBusqueda.Text = cantidadActual <= 1
+                            ? productoPendiente.Name
+                            : $" * {productoPendiente.Name}";
+
+                        mostrarPlaceholder = false;
+                        ActualizarPlaceholder();
+                    }
+                }
+            }
+            finally
+            {
+                bloqueandoESC = false;
+            }
+        }
+
+        // ── Carrito ────────────────────────────────────────────────────
         private void AgregarAlCarrito(ProductoPOS producto, int qty)
         {
             var existente = carrito.FirstOrDefault(p => p.Id == producto.Id);
@@ -53,12 +102,12 @@ namespace SistemaDeVenta
             {
                 existente.Quantity += qty;
                 GridProductos.Items.Refresh();
-                ActualizarTotales(); // ← cuando cambia cantidad de existente (no dispara CollectionChanged)
+                ActualizarTotales();
             }
             else
             {
                 producto.Quantity = qty;
-                carrito.Add(producto); // ← esto sí dispara CollectionChanged
+                carrito.Add(producto);
             }
         }
 
@@ -68,63 +117,80 @@ namespace SistemaDeVenta
             decimal impuesto = subtotal * TasaImpuesto;
             decimal total = subtotal + impuesto;
 
-            // Subtotal y Tax
             TxtSubtotal.Text = subtotal.ToString("C");
             TxtTax.Text = impuesto.ToString("C");
 
-            // Total separado en entero y decimales para el efecto visual grande
-            string totalStr = total.ToString("F2");          // ej: "456.82"
+            string totalStr = total.ToString("F2");
             string[] partes = totalStr.Split('.');
-            TxtTotalEntero.Text = "$" + partes[0];               // "$456"
-            TxtTotalDecimal.Text = "." + (partes.Length > 1 ? partes[1] : "00"); // ".82"
 
-            // Contador de items en el footer
+            TxtTotalEntero.Text = "$" + partes[0];
+            TxtTotalDecimal.Text = "." + (partes.Length > 1 ? partes[1] : "00");
+
             int totalItems = carrito.Sum(p => p.Quantity);
             TxtTotalItems.Text = $"TOTAL ITEMS: {totalItems}";
         }
 
+        // ── Teclado ────────────────────────────────────────────────────
         private void TxtBusqueda_KeyDown(object sender, KeyEventArgs e)
         {
-            // 1. Activar modo cantidad con la tecla X
+            // X — activar modo cantidad
             if (e.Key == Key.X)
             {
                 modoCantidad = true;
                 bufferCantidad = "";
                 cantidadActual = 1;
 
-                if (PanelQty != null) PanelQty.Visibility = Visibility.Visible;
-                if (TxtQty != null) TxtQty.Text = "1";
+                PanelQty.Visibility = Visibility.Visible;
+                TxtQty.Text = "1";
 
-                e.Handled = true; // Evita que la 'x' se escriba en el buscador
+                TxtBusqueda.Clear();
+                productoPendiente = null;
+                mostrarPlaceholder = false;
+                ActualizarPlaceholder();
+
+                TxtBusqueda.Focus();
+                e.Handled = true;
                 return;
             }
 
-            // 2. Abrir buscador con F2 o ENTER
-            if (e.Key == Key.F2 || e.Key == Key.Enter)
+            // ENTER — agrega el producto pendiente al carrito
+            if (e.Key == Key.Enter)
             {
-                // Si el modo cantidad está activo y hay un número en el buffer, lo aseguramos
-                if (modoCantidad && !string.IsNullOrEmpty(bufferCantidad))
+                if (productoPendiente != null)
                 {
-                    int.TryParse(bufferCantidad, out cantidadActual);
+                    if (modoCantidad && !string.IsNullOrEmpty(bufferCantidad))
+                        int.TryParse(bufferCantidad, out cantidadActual);
+
+                    AgregarAlCarrito(productoPendiente, cantidadActual);
+                    productoPendiente = null;
+
+                    ResetCantidad();
+                    TxtBusqueda.Clear();
+                    ActualizarPlaceholder();
                 }
 
+                e.Handled = true;
+                return;
+            }
+
+            // F2 — solo abre el buscador
+            if (e.Key == Key.F2)
+            {
                 AbrirBuscador();
                 e.Handled = true;
             }
 
-            // 3. Cancelar modo cantidad con ESC
+            // ESC — cancelar modo cantidad
             if (e.Key == Key.Escape)
-            {
                 ResetCantidad();
-            }
         }
 
         private void TxtBusqueda_PreviewTextInput(object sender, TextCompositionEventArgs e)
         {
             if (modoCantidad)
             {
-                // Solo permitir números (Regex de 0 a 9)
                 Regex regex = new Regex("[^0-9]+");
+
                 if (!regex.IsMatch(e.Text))
                 {
                     bufferCantidad += e.Text;
@@ -132,11 +198,11 @@ namespace SistemaDeVenta
                     if (int.TryParse(bufferCantidad, out int resultado))
                     {
                         cantidadActual = resultado;
-                        if (TxtQty != null) TxtQty.Text = cantidadActual.ToString();
+                        TxtQty.Text = cantidadActual.ToString();
                     }
                 }
 
-                e.Handled = true; // Bloquea la escritura en el TextBox principal mientras pones la cantidad
+                e.Handled = true;
             }
         }
 
@@ -145,19 +211,24 @@ namespace SistemaDeVenta
             modoCantidad = false;
             bufferCantidad = "";
             cantidadActual = 1;
-            if (PanelQty != null) PanelQty.Visibility = Visibility.Collapsed;
-            if (TxtQty != null) TxtQty.Text = "1";
+
+            PanelQty.Visibility = Visibility.Collapsed;
+            TxtQty.Text = "1";
+
             TxtBusqueda.Clear();
-            TxtBusqueda.Focus();
+            mostrarPlaceholder = true;
+            ActualizarPlaceholder();
         }
 
+        // ── Botones ────────────────────────────────────────────────────
         private void Border_MouseDown(object sender, MouseButtonEventArgs e)
         {
-            // Si el modo cantidad está activo y hay un número en el buffer, lo aseguramos
             if (modoCantidad && !string.IsNullOrEmpty(bufferCantidad))
-            {
                 int.TryParse(bufferCantidad, out cantidadActual);
-            }
+
+            mostrarPlaceholder = false;
+            ActualizarPlaceholder();
+            TxtBusqueda.Text = "";
 
             AbrirBuscador();
             e.Handled = true;
@@ -168,43 +239,28 @@ namespace SistemaDeVenta
             if (e.LeftButton != MouseButtonState.Pressed) return;
 
             if (carrito.Count == 0)
-
             {
-
                 MessageBox.Show("El carrito está vacío.", "Aviso",
-
                                 MessageBoxButton.OK, MessageBoxImage.Warning);
-
                 return;
-
             }
 
             var confirmacion = MessageBox.Show(
-
                 $"¿Confirmar venta por {TxtTotalEntero.Text}{TxtTotalDecimal.Text}?",
-
                 "Confirmar Pago", MessageBoxButton.YesNo, MessageBoxImage.Question);
 
             if (confirmacion != MessageBoxResult.Yes) return;
 
-            // Sin ConnectionString, usa la conexión estática directamente
-
             var service = new VentaService();
-
             int idVenta = service.GuardarVenta(carrito, globales.IdUsuarioGlobal, "EFECTIVO");
 
             if (idVenta > 0)
-
             {
-
                 MessageBox.Show($"✅ Venta #{idVenta} registrada.", "Éxito",
-
                                 MessageBoxButton.OK, MessageBoxImage.Information);
 
                 carrito.Clear();
-
                 ActualizarTotales();
-
             }
         }
     }

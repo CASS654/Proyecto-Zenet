@@ -131,6 +131,11 @@ namespace SistemaDeVenta
         private void btnBuscar_Click(object sender, RoutedEventArgs e) => AplicarFiltroManual();
         private void dgProductos_MouseDoubleClick(object sender, MouseButtonEventArgs e) => SeleccionarYSalir();
         private void txtBuscar_TextChanged(object sender, TextChangedEventArgs e) => AplicarFiltroManual();
+
+        private void dgProductos_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+
+        }
     }
 
     public class ProductoBusqueda
@@ -139,5 +144,16 @@ namespace SistemaDeVenta
         public string Nombre { get; set; }
         public decimal Precio { get; set; }
         public decimal Stock { get; set; } // Cambiado de int a decimal para soportar Kilos
+
+        public string StockNivel
+        {
+            get
+            {
+                if (Stock == 0) return "Agotado";
+                if (Stock <= 10) return "Critico";
+                if (Stock <= 20) return "Bajo";
+                return "Normal";
+            }
+        }
     }
 }
