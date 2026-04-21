@@ -163,7 +163,8 @@ namespace SistemaDeVenta
                     break;
 
                 case "Cajero":
-                    VetanaCobrousuario cobro = new VetanaCobrousuario(nombreUsuario);
+                    VetanaCobrousuario cobro = new VetanaCobrousuario();
+                    cobro.CargarUsuario(nombreUsuario); // 🔥 ESTA LÍNEA FALTA
                     cobro.Show();
                     Window.GetWindow(this).Close();
                     break;

@@ -183,13 +183,17 @@
                                             <TextBlock Grid.Column="1" Text="{Binding Stock}" FontWeight="Bold" Margin="10,0,0,0">
                                                 <TextBlock.Style>
                                                     <Style TargetType="TextBlock">
-                                                        <Setter Property="Foreground" Value="#22C55E"/>
+                                                        <!-- Verde por defecto -->
+                                                        <Setter Property="Foreground" Value="#4ADE80"/>
                                                         <Style.Triggers>
-                                                            <DataTrigger Binding="{Binding Stock}" Value="0">
-                                                                <Setter Property="Foreground" Value="#EF1C3A"/>
+                                                            <DataTrigger Binding="{Binding StockNivel}" Value="Bajo">
+                                                                <Setter Property="Foreground" Value="#FACC15"/>
                                                             </DataTrigger>
-                                                            <DataTrigger Binding="{Binding Stock}" Value="10">
-                                                                <Setter Property="Foreground" Value="#F59E0B"/>
+                                                            <DataTrigger Binding="{Binding StockNivel}" Value="Critico">
+                                                                <Setter Property="Foreground" Value="#F87171"/>
+                                                            </DataTrigger>
+                                                            <DataTrigger Binding="{Binding StockNivel}" Value="Agotado">
+                                                                <Setter Property="Foreground" Value="#6B7280"/>
                                                             </DataTrigger>
                                                         </Style.Triggers>
                                                     </Style>

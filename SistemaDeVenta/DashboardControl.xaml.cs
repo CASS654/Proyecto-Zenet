@@ -69,7 +69,7 @@
                     TxtClientes.Text = cmd.ExecuteScalar().ToString();
 
                     // 4. PRODUCTOS BAJOS (Este KPI suele ser estático, no depende del mes)
-                    cmd.CommandText = "SELECT COUNT(*) FROM Inventario WHERE Stock <= 10";
+                    cmd.CommandText = "SELECT COUNT(*) FROM Inventario WHERE Stock <= 20";
                     TxtBajoStock.Text = cmd.ExecuteScalar().ToString();
                 }
             }
@@ -83,7 +83,19 @@
             {
                 public string Nombre { get; set; }
                 public decimal Stock { get; set; }
-            }
+
+                public string StockNivel
+                {
+                    get
+                    {
+                        if (Stock == 0) return "Agotado";
+                        if (Stock <= 10) return "Critico";
+                        if (Stock <= 20) return "Bajo";
+                        return "Normal";
+                    }
+                }
+
+        }
 
             private void CargarProductosBajos()
             {

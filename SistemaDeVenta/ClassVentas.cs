@@ -12,9 +12,9 @@ namespace SistemaDeVenta
         /// Usa la conexión estática que ya abrió LoginPage
         /// </summary>
         public int GuardarVenta(ObservableCollection<ProductoPOS> carrito,
-                                int idUsuario,
-                                string metodoPago = "EFECTIVO",
-                                decimal tasaImpuesto = 0.08m)
+                        int idUsuario,
+                        string metodoPago = "EFECTIVO",
+                        decimal tasaImpuesto = 0.08m)
         {
             if (carrito == null || carrito.Count == 0)
             {
@@ -29,28 +29,40 @@ namespace SistemaDeVenta
 
             decimal total = subtotal + (subtotal * tasaImpuesto);
 
-            // Reutiliza la conexión que ya abrió el Login
             MySqlConnection conn = ClassConexion.SQLConnection;
 
-            using (MySqlTransaction transaction = conn.BeginTransaction())
+            try
             {
-                try
-                {
-                    int idVenta = InsertarVenta(conn, transaction, idUsuario, total, metodoPago);
+                // 🔥 ASEGURAR QUE LA CONEXIÓN ESTÉ ABIERTA
+                if (conn.State != System.Data.ConnectionState.Open)
+                    conn.Open();
 
-                    foreach (var producto in carrito)
-                        InsertarDetalleVenta(conn, transaction, idVenta, producto);
-
-                    transaction.Commit();
-                    return idVenta;
-                }
-                catch (Exception ex)
+                using (MySqlTransaction transaction = conn.BeginTransaction())
                 {
-                    transaction.Rollback();
-                    MessageBox.Show($"Error al guardar la venta:\n{ex.Message}",
-                                    "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                    return -1;
+                    try
+                    {
+                        int idVenta = InsertarVenta(conn, transaction, idUsuario, total, metodoPago);
+
+                        foreach (var producto in carrito)
+                            InsertarDetalleVenta(conn, transaction, idVenta, producto);
+
+                        transaction.Commit();
+                        return idVenta;
+                    }
+                    catch (Exception ex)
+                    {
+                        transaction.Rollback();
+                        MessageBox.Show($"Error al guardar la venta:\n{ex.Message}",
+                                        "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                        return -1;
+                    }
                 }
+            }
+            finally
+            {
+                // 🔥 OPCIONAL PERO RECOMENDADO
+                if (conn.State == System.Data.ConnectionState.Open)
+                    conn.Close();
             }
         }
 
